@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
-        <main className="prose container mx-auto flex min-h-screen max-w-md flex-col items-start justify-center p-8">
+        <main className="prose container mx-auto flex min-h-screen max-w-xl flex-col items-start justify-center p-8">
           {children}
         </main>
       </body>
