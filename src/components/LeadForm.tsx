@@ -15,6 +15,7 @@ type Lane = "umbrella" | "delivery-margin-recovery" | "review-insights";
 
 type Payload = {
   lane: Lane;
+  packet?: string;
   name: string;
   company: string;
   email: string;
@@ -32,6 +33,9 @@ type LeadFormProps = {
   heading: string;
   subheading: string;
   askVenues?: boolean;
+  /** When set, renders a "which system" select recorded on the lead. */
+  packets?: readonly string[];
+  ctaLabel?: string;
 };
 
 export function LeadForm(props: LeadFormProps) {
@@ -52,6 +56,8 @@ function LeadFormShell({
   heading,
   subheading,
   askVenues = false,
+  packets,
+  ctaLabel = "Book a Profit Audit →",
   send,
 }: LeadFormProps & { send: ((p: Payload) => Promise<void>) | null }) {
   const pathname = usePathname();
@@ -65,6 +71,9 @@ function LeadFormShell({
     const data = new FormData(form);
     const payload: Payload = {
       lane,
+      packet: packets
+        ? String(data.get("packet") ?? "") || undefined
+        : undefined,
       name: String(data.get("name") ?? ""),
       company: String(data.get("company") ?? ""),
       email: String(data.get("email") ?? ""),
@@ -104,7 +113,7 @@ function LeadFormShell({
 
   if (state === "done") {
     return (
-      <div className="border border-green-700 bg-green-800 p-8">
+      <div className="border border-line bg-panel-3 p-8">
         <p className="font-display text-2xl font-bold text-bone">
           Got it. I reply within one working day.
         </p>
@@ -118,7 +127,7 @@ function LeadFormShell({
   }
 
   const inputCls =
-    "w-full border border-green-700 bg-green-950/60 px-4 py-3 text-bone placeholder:text-bone-dim/50 focus:border-coral focus:outline-none focus:ring-2 focus:ring-coral/40";
+    "w-full border border-line bg-panel/60 px-4 py-3 text-bone placeholder:text-bone-dim/50 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40";
   const labelCls =
     "mb-1.5 block font-mono text-xs tracking-wide text-bone-dim uppercase";
 
@@ -222,6 +231,27 @@ function LeadFormShell({
         )}
       </div>
 
+      {packets && (
+        <div>
+          <label htmlFor={`${lane}-packet`} className={labelCls}>
+            Which system?
+          </label>
+          <select
+            id={`${lane}-packet`}
+            name="packet"
+            className={inputCls}
+            defaultValue=""
+          >
+            <option value="" disabled>
+              Select
+            </option>
+            {packets.map((p) => (
+              <option key={p}>{p}</option>
+            ))}
+          </select>
+        </div>
+      )}
+
       <div>
         <label htmlFor={`${lane}-notes`} className={labelCls}>
           Anything I should know (optional)
@@ -238,16 +268,16 @@ function LeadFormShell({
         <button
           type="submit"
           disabled={state === "sending"}
-          className="bg-coral px-8 py-4 font-display text-lg font-bold text-coral-ink transition-transform duration-200 hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-2 focus-visible:ring-offset-green-900 disabled:opacity-60"
+          className="bg-accent px-8 py-4 font-display text-lg font-bold text-accent-ink transition-transform duration-200 hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-panel-2 disabled:opacity-60"
         >
-          {state === "sending" ? "Sending…" : "Book a Profit Audit →"}
+          {state === "sending" ? "Sending…" : ctaLabel}
         </button>
         <p className="font-mono text-xs text-bone-dim">
           A short call. Your real numbers. No deck.
         </p>
       </div>
       {state === "error" && (
-        <p className="text-coral">
+        <p className="text-accent">
           That didn&apos;t go through — email me instead at{" "}
           <a href={`mailto:${FALLBACK_EMAIL}`} className="underline">
             {FALLBACK_EMAIL}

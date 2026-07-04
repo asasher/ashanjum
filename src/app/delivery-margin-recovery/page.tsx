@@ -141,7 +141,7 @@ const faqs = [
 
 export default function DeliveryMarginRecoveryPage() {
   return (
-    <div className="min-h-screen bg-green-900 font-body text-bone">
+    <div className="lane-blue min-h-screen bg-panel-2 font-body text-bone">
       <header className="mx-auto flex max-w-6xl items-baseline justify-between px-6 pt-8">
         <Link
           href="/"
@@ -149,7 +149,7 @@ export default function DeliveryMarginRecoveryPage() {
         >
           ← ash anjum
         </Link>
-        <p className="font-mono text-xs tracking-widest text-mint uppercase">
+        <p className="font-mono text-xs tracking-widest text-accent-2 uppercase">
           Margin Recovery
         </p>
       </header>
@@ -159,7 +159,7 @@ export default function DeliveryMarginRecoveryPage() {
         <section className="mx-auto grid max-w-6xl gap-14 px-6 pt-16 pb-24 lg:grid-cols-[1.1fr_1fr] lg:items-center">
           <div>
             <p
-              className="font-mono text-xs tracking-widest text-mint uppercase"
+              className="font-mono text-xs tracking-widest text-accent-2 uppercase"
               style={{ animation: "var(--animate-rise)" }}
             >
               Delivery reconciliation, done for you · built by the ex-Talabat
@@ -173,7 +173,7 @@ export default function DeliveryMarginRecoveryPage() {
               }}
             >
               You&apos;re losing{" "}
-              <span className="text-coral">AED&nbsp;15k+</span> a month on
+              <span className="text-accent">AED&nbsp;15k+</span> a month on
               delivery you can&apos;t see.
             </h1>
             <p
@@ -199,13 +199,13 @@ export default function DeliveryMarginRecoveryPage() {
             >
               <a
                 href="#audit"
-                className="font-display bg-coral px-8 py-4 text-lg font-bold text-coral-ink transition-transform duration-200 hover:-translate-y-0.5"
+                className="font-display bg-accent px-8 py-4 text-lg font-bold text-accent-ink transition-transform duration-200 hover:-translate-y-0.5"
               >
                 Book a Profit Audit →
               </a>
               <a
                 href="#sprint"
-                className="font-mono text-sm text-bone-dim underline decoration-green-700 underline-offset-4 transition-colors hover:text-bone"
+                className="font-mono text-sm text-bone-dim underline decoration-line underline-offset-4 transition-colors hover:text-bone"
               >
                 See how the 30 days work
               </a>
@@ -225,19 +225,19 @@ export default function DeliveryMarginRecoveryPage() {
 
           {/* Exception ledger */}
           <div
-            className="border border-green-700 bg-green-950/70 shadow-2xl"
+            className="border border-line bg-panel/70 shadow-2xl"
             style={{ animation: "var(--animate-rise)", animationDelay: "200ms" }}
           >
-            <div className="flex items-center justify-between border-b border-green-700 px-5 py-3">
+            <div className="flex items-center justify-between border-b border-line px-5 py-3">
               <p className="font-mono text-xs text-bone-dim">
                 Exception dashboard · Talabat payout · week of 16 Jun
               </p>
-              <span className="flex items-center gap-1.5 font-mono text-[10px] text-mint">
-                <span className="h-1.5 w-1.5 rounded-full bg-mint" /> LIVE
+              <span className="flex items-center gap-1.5 font-mono text-[10px] text-accent-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent-2" /> LIVE
               </span>
             </div>
             <div className="px-5 py-4">
-              <div className="grid grid-cols-[1.3fr_0.7fr_0.7fr_1fr] gap-2 border-b border-green-700/60 pb-2 font-mono text-[10px] tracking-wider text-bone-dim uppercase">
+              <div className="grid grid-cols-[1.3fr_0.7fr_0.7fr_1fr] gap-2 border-b border-line/60 pb-2 font-mono text-[10px] tracking-wider text-bone-dim uppercase">
                 <span>Order batch</span>
                 <span className="text-right">POS</span>
                 <span className="text-right">Paid out</span>
@@ -246,7 +246,7 @@ export default function DeliveryMarginRecoveryPage() {
               {ledgerRows.map((row, i) => (
                 <div
                   key={row.batch}
-                  className="grid grid-cols-[1.3fr_0.7fr_0.7fr_1fr] items-center gap-2 border-b border-green-700/30 py-3 font-mono text-xs tabular-nums"
+                  className="grid grid-cols-[1.3fr_0.7fr_0.7fr_1fr] items-center gap-2 border-b border-line/30 py-3 font-mono text-xs tabular-nums"
                   style={{
                     animation: "var(--animate-deal)",
                     animationDelay: `${400 + i * 140}ms`,
@@ -263,8 +263,8 @@ export default function DeliveryMarginRecoveryPage() {
                   <span
                     className={
                       row.kind === "leak"
-                        ? "animate-flag justify-self-end bg-coral px-2 py-0.5 text-[10px] font-bold text-coral-ink"
-                        : "justify-self-end text-[10px] text-mint"
+                        ? "animate-flag justify-self-end bg-accent px-2 py-0.5 text-[10px] font-bold text-accent-ink"
+                        : "justify-self-end text-[10px] text-accent-2"
                     }
                   >
                     {row.status}
@@ -274,10 +274,10 @@ export default function DeliveryMarginRecoveryPage() {
               <div className="flex items-center justify-between pt-4">
                 <p className="text-xs text-bone-dim">
                   Flagged this week:{" "}
-                  <span className="font-bold text-coral">AED 5,145</span>{" "}
+                  <span className="font-bold text-accent">AED 5,145</span>{" "}
                   recoverable
                 </p>
-                <p className="font-mono text-[10px] text-mint">
+                <p className="font-mono text-[10px] text-accent-2">
                   ⤷ Draft dispute pack
                 </p>
               </div>
@@ -286,9 +286,9 @@ export default function DeliveryMarginRecoveryPage() {
         </section>
 
         {/* Where the money goes */}
-        <section className="bg-green-950">
+        <section className="bg-panel">
           <div className="mx-auto max-w-6xl px-6 py-24">
-            <p className="reveal font-mono text-xs tracking-widest text-mint uppercase">
+            <p className="reveal font-mono text-xs tracking-widest text-accent-2 uppercase">
               Where the money actually goes
             </p>
             <h2 className="reveal font-display mt-4 max-w-2xl text-4xl font-bold sm:text-5xl">
@@ -305,7 +305,7 @@ export default function DeliveryMarginRecoveryPage() {
                   key={leak.title}
                   className={`reveal max-w-3xl ${i === 1 ? "sm:ml-24" : i === 2 ? "sm:ml-48" : ""}`}
                 >
-                  <p className="font-display text-6xl font-extrabold tracking-tight text-coral sm:text-7xl">
+                  <p className="font-display text-6xl font-extrabold tracking-tight text-accent sm:text-7xl">
                     {leak.figure}
                   </p>
                   <p className="mt-1 font-mono text-xs tracking-wider text-bone-dim uppercase">
@@ -325,7 +325,7 @@ export default function DeliveryMarginRecoveryPage() {
 
         {/* The 30-day sprint */}
         <section id="sprint" className="mx-auto max-w-6xl px-6 py-24">
-          <p className="reveal font-mono text-xs tracking-widest text-mint uppercase">
+          <p className="reveal font-mono text-xs tracking-widest text-accent-2 uppercase">
             The 30-day sprint
           </p>
           <h2 className="reveal font-display mt-4 max-w-2xl text-4xl font-bold sm:text-5xl">
@@ -340,14 +340,14 @@ export default function DeliveryMarginRecoveryPage() {
             {weeks.map((week, i) => (
               <li
                 key={week.label}
-                className="reveal relative grid gap-4 border-l-2 border-green-700 pb-12 pl-10 last:pb-0 sm:grid-cols-[7rem_1fr]"
+                className="reveal relative grid gap-4 border-l-2 border-line pb-12 pl-10 last:pb-0 sm:grid-cols-[7rem_1fr]"
               >
                 <span
                   aria-hidden
                   className={`font-display absolute top-0 -left-5 flex h-10 w-10 items-center justify-center text-lg font-bold ${
                     i === weeks.length - 1
-                      ? "bg-mint text-green-950"
-                      : "bg-coral text-coral-ink"
+                      ? "bg-accent-2 text-panel"
+                      : "bg-accent text-accent-ink"
                   }`}
                 >
                   {week.n}
@@ -369,19 +369,19 @@ export default function DeliveryMarginRecoveryPage() {
         </section>
 
         {/* Deliverables */}
-        <section className="bg-green-800/60">
+        <section className="bg-panel-3/60">
           <div className="mx-auto max-w-6xl px-6 py-24">
-            <p className="reveal font-mono text-xs tracking-widest text-mint uppercase">
+            <p className="reveal font-mono text-xs tracking-widest text-accent-2 uppercase">
               What you actually own at day 30
             </p>
             <h2 className="reveal font-display mt-4 text-4xl font-bold sm:text-5xl">
               A working system you keep.
             </h2>
-            <dl className="mt-14 max-w-3xl divide-y divide-green-700/60">
+            <dl className="mt-14 max-w-3xl divide-y divide-line/60">
               {deliverables.map((d) => (
                 <div key={d.title} className="reveal grid gap-2 py-6 sm:grid-cols-[minmax(14rem,0.9fr)_1.6fr] sm:gap-8">
                   <dt className="font-display flex gap-3 text-xl font-bold">
-                    <span className="text-mint">✓</span> {d.title}
+                    <span className="text-accent-2">✓</span> {d.title}
                   </dt>
                   <dd className="leading-relaxed text-bone-dim">
                     {"arabic" in d && d.arabic ? (
@@ -407,13 +407,13 @@ export default function DeliveryMarginRecoveryPage() {
 
         {/* Credential */}
         <section className="mx-auto max-w-6xl px-6 py-24">
-          <p className="reveal font-mono text-xs tracking-widest text-mint uppercase">
+          <p className="reveal font-mono text-xs tracking-widest text-accent-2 uppercase">
             Why me, and not an agency
           </p>
           <h2 className="reveal font-display mt-4 max-w-2xl text-4xl font-bold sm:text-5xl">
             The one credential a competitor can&apos;t copy.
           </h2>
-          <blockquote className="reveal mt-10 max-w-3xl border-l-4 border-coral pl-6">
+          <blockquote className="reveal mt-10 max-w-3xl border-l-4 border-accent pl-6">
             <p className="font-display text-2xl leading-snug font-bold sm:text-3xl">
               &ldquo;I sat on the side that builds aggregator payouts. I know
               exactly where the economics leak, because I helped design the
@@ -458,9 +458,9 @@ export default function DeliveryMarginRecoveryPage() {
         </section>
 
         {/* Price */}
-        <section className="bg-green-950">
+        <section className="bg-panel">
           <div className="mx-auto max-w-6xl px-6 py-24">
-            <p className="reveal font-mono text-xs tracking-widest text-mint uppercase">
+            <p className="reveal font-mono text-xs tracking-widest text-accent-2 uppercase">
               What it costs, in full
             </p>
             <h2 className="reveal font-display mt-4 max-w-2xl text-4xl font-bold sm:text-5xl">
@@ -468,7 +468,7 @@ export default function DeliveryMarginRecoveryPage() {
             </h2>
             <div className="reveal mt-14 flex max-w-3xl flex-wrap items-end gap-x-10 gap-y-6">
               <div>
-                <p className="font-display text-6xl font-extrabold tracking-tight text-coral">
+                <p className="font-display text-6xl font-extrabold tracking-tight text-accent">
                   AED 20,000
                 </p>
                 <p className="mt-1 font-mono text-xs tracking-wider text-bone-dim uppercase">
@@ -487,7 +487,7 @@ export default function DeliveryMarginRecoveryPage() {
             </div>
             <ul className="reveal mt-10 max-w-2xl space-y-3 text-bone-dim">
               <li className="flex gap-3">
-                <span className="text-mint">✓</span>
+                <span className="text-accent-2">✓</span>
                 <span>
                   <strong className="text-bone">
                     50% upfront, 50% at go-live.
@@ -496,17 +496,17 @@ export default function DeliveryMarginRecoveryPage() {
                 </span>
               </li>
               <li className="flex gap-3">
-                <span className="text-mint">✓</span> The retainer covers
+                <span className="text-accent-2">✓</span> The retainer covers
                 optimization and support as new edge cases surface across your
                 channels.
               </li>
               <li className="flex gap-3">
-                <span className="text-mint">✓</span> Fixed scope, fixed price.
+                <span className="text-accent-2">✓</span> Fixed scope, fixed price.
                 Never billed by the hour. You know the number before we start.
               </li>
             </ul>
-            <div className="reveal mt-12 max-w-2xl border border-coral/50 bg-green-900 p-8">
-              <p className="font-mono text-xs tracking-widest text-coral uppercase">
+            <div className="reveal mt-12 max-w-2xl border border-accent/50 bg-panel-2 p-8">
+              <p className="font-mono text-xs tracking-widest text-accent uppercase">
                 Founding clients · first 1–2 only
               </p>
               <h3 className="font-display mt-3 text-2xl font-bold">
@@ -531,18 +531,18 @@ export default function DeliveryMarginRecoveryPage() {
 
         {/* FAQ */}
         <section className="mx-auto max-w-6xl px-6 py-24">
-          <p className="reveal font-mono text-xs tracking-widest text-mint uppercase">
+          <p className="reveal font-mono text-xs tracking-widest text-accent-2 uppercase">
             Straight answers before you book
           </p>
           <h2 className="reveal font-display mt-4 text-4xl font-bold sm:text-5xl">
             The questions operators actually ask.
           </h2>
-          <div className="mt-12 max-w-3xl divide-y divide-green-700/60">
+          <div className="mt-12 max-w-3xl divide-y divide-line/60">
             {faqs.map((faq) => (
               <details key={faq.q} className="reveal group py-5">
                 <summary className="font-display flex cursor-pointer list-none items-baseline justify-between gap-4 text-xl font-bold">
                   {faq.q}
-                  <span className="font-mono text-coral transition-transform duration-200 group-open:rotate-45">
+                  <span className="font-mono text-accent transition-transform duration-200 group-open:rotate-45">
                     +
                   </span>
                 </summary>
@@ -555,7 +555,7 @@ export default function DeliveryMarginRecoveryPage() {
         </section>
 
         {/* Closing CTA + form */}
-        <section id="audit" className="bg-green-950">
+        <section id="audit" className="bg-panel">
           <div className="mx-auto grid max-w-6xl gap-14 px-6 py-24 lg:grid-cols-[1fr_1.2fr]">
             <div>
               <h2 className="reveal font-display text-4xl leading-tight font-extrabold sm:text-5xl">
@@ -582,7 +582,7 @@ export default function DeliveryMarginRecoveryPage() {
         </section>
       </main>
 
-      <footer className="border-t border-green-700/40 bg-green-950">
+      <footer className="border-t border-line/40 bg-panel">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-8 font-mono text-xs text-bone-dim">
           <Link href="/" className="transition-colors hover:text-bone">
             ← ashanjum.com

@@ -11,6 +11,7 @@ export const submit = mutation({
       v.literal("delivery-margin-recovery"),
       v.literal("review-insights"),
     ),
+    packet: v.optional(v.string()),
     name: v.string(),
     company: v.string(),
     email: v.string(),

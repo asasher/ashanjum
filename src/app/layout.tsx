@@ -2,27 +2,12 @@ import "~/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
-import {
-  Bricolage_Grotesque,
-  Hanken_Grotesk,
-  Noto_Kufi_Arabic,
-} from "next/font/google";
+import { Noto_Kufi_Arabic } from "next/font/google";
 import { type Metadata } from "next";
 
 import { ConvexClientProvider } from "~/components/ConvexClientProvider";
 import { RevealObserver } from "~/components/RevealObserver";
-
-const bricolage = Bricolage_Grotesque({
-  subsets: ["latin"],
-  weight: ["600", "700", "800"],
-  variable: "--font-bricolage",
-});
-
-const hanken = Hanken_Grotesk({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-hanken",
-});
+import { ScrollScenes } from "~/components/ScrollScenes";
 
 const kufi = Noto_Kufi_Arabic({
   subsets: ["arabic"],
@@ -41,7 +26,7 @@ export const metadata: Metadata = {
   icons: [
     {
       rel: "icon",
-      url: "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2218%22 fill=%22%23103e2e%22/><text x=%2250%22 y=%2268%22 font-size=%2252%22 text-anchor=%22middle%22 fill=%22%23f4f1e8%22 font-family=%22monospace%22>a.</text></svg>",
+      url: "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2218%22 fill=%22%23070708%22/><text x=%2250%22 y=%2268%22 font-size=%2252%22 text-anchor=%22middle%22 fill=%22%23feca00%22 font-family=%22monospace%22>a.</text></svg>",
     },
   ],
 };
@@ -52,11 +37,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${GeistSans.variable} ${GeistMono.variable} ${bricolage.variable} ${hanken.variable} ${kufi.variable}`}
+      className={`${GeistSans.variable} ${GeistMono.variable} ${kufi.variable}`}
     >
       <body className="bg-ink-deep text-bone">
         <ConvexClientProvider>
           <RevealObserver />
+          <ScrollScenes />
           {children}
         </ConvexClientProvider>
       </body>

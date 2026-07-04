@@ -109,7 +109,7 @@ const faqs = [
 
 export default function ReviewInsightsPage() {
   return (
-    <div className="min-h-screen bg-green-950 font-body text-bone">
+    <div className="lane-violet min-h-screen bg-panel font-body text-bone">
       <header className="mx-auto flex max-w-6xl items-baseline justify-between px-6 pt-8">
         <Link
           href="/"
@@ -117,7 +117,7 @@ export default function ReviewInsightsPage() {
         >
           ← ash anjum
         </Link>
-        <p className="font-mono text-xs tracking-widest text-mint uppercase">
+        <p className="font-mono text-xs tracking-widest text-accent-2 uppercase">
           Review Insights
         </p>
       </header>
@@ -127,7 +127,7 @@ export default function ReviewInsightsPage() {
         <section className="mx-auto grid max-w-6xl gap-14 px-6 pt-16 pb-24 lg:grid-cols-[1.1fr_1fr] lg:items-center">
           <div>
             <p
-              className="font-mono text-xs tracking-widest text-mint uppercase"
+              className="font-mono text-xs tracking-widest text-accent-2 uppercase"
               style={{ animation: "var(--animate-rise)" }}
             >
               Review triage, done for you · for multi-brand delivery operators
@@ -140,7 +140,7 @@ export default function ReviewInsightsPage() {
               }}
             >
               Your reviews already say{" "}
-              <span className="text-coral">which brand is bleeding</span>. Read
+              <span className="text-accent">which brand is bleeding</span>. Read
               them in five seconds.
             </h1>
             <p
@@ -165,13 +165,13 @@ export default function ReviewInsightsPage() {
             >
               <a
                 href="#audit"
-                className="font-display bg-coral px-8 py-4 text-lg font-bold text-coral-ink transition-transform duration-200 hover:-translate-y-0.5"
+                className="font-display bg-accent px-8 py-4 text-lg font-bold text-accent-ink transition-transform duration-200 hover:-translate-y-0.5"
               >
                 Book a Review Audit →
               </a>
               <a
                 href="#sprint"
-                className="font-mono text-sm text-bone-dim underline decoration-green-700 underline-offset-4 transition-colors hover:text-bone"
+                className="font-mono text-sm text-bone-dim underline decoration-line underline-offset-4 transition-colors hover:text-bone"
               >
                 See how the 30 days work
               </a>
@@ -180,19 +180,19 @@ export default function ReviewInsightsPage() {
 
           {/* Triage board */}
           <div
-            className="border border-green-700 bg-green-900/70 shadow-2xl"
+            className="border border-line bg-panel-2/70 shadow-2xl"
             style={{ animation: "var(--animate-rise)", animationDelay: "200ms" }}
           >
-            <div className="flex items-center justify-between border-b border-green-700 px-5 py-3">
+            <div className="flex items-center justify-between border-b border-line px-5 py-3">
               <p className="font-mono text-xs text-bone-dim">
                 Portfolio triage · this week · all aggregators
               </p>
-              <span className="flex items-center gap-1.5 font-mono text-[10px] text-mint">
-                <span className="h-1.5 w-1.5 rounded-full bg-mint" /> SYNCED
+              <span className="flex items-center gap-1.5 font-mono text-[10px] text-accent-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent-2" /> SYNCED
               </span>
             </div>
             <div className="px-5 py-4">
-              <div className="grid grid-cols-[1.4fr_0.6fr_1.1fr_0.9fr] gap-2 border-b border-green-700/60 pb-2 font-mono text-[10px] tracking-wider text-bone-dim uppercase">
+              <div className="grid grid-cols-[1.4fr_0.6fr_1.1fr_0.9fr] gap-2 border-b border-line/60 pb-2 font-mono text-[10px] tracking-wider text-bone-dim uppercase">
                 <span>Brand</span>
                 <span className="text-right">Attn</span>
                 <span>Top issue</span>
@@ -201,7 +201,7 @@ export default function ReviewInsightsPage() {
               {triageRows.map((row, i) => (
                 <div
                   key={row.brand}
-                  className="grid grid-cols-[1.4fr_0.6fr_1.1fr_0.9fr] items-center gap-2 border-b border-green-700/30 py-3 font-mono text-xs tabular-nums"
+                  className="grid grid-cols-[1.4fr_0.6fr_1.1fr_0.9fr] items-center gap-2 border-b border-line/30 py-3 font-mono text-xs tabular-nums"
                   style={{
                     animation: "var(--animate-deal)",
                     animationDelay: `${400 + i * 140}ms`,
@@ -211,10 +211,10 @@ export default function ReviewInsightsPage() {
                   <span
                     className={`text-right font-bold ${
                       row.kind === "leak"
-                        ? "text-coral"
+                        ? "text-accent"
                         : row.kind === "mid"
                           ? "text-bone"
-                          : "text-mint"
+                          : "text-accent-2"
                     }`}
                   >
                     {row.attention}
@@ -222,7 +222,7 @@ export default function ReviewInsightsPage() {
                   <span className="text-bone-dim">{row.issue}</span>
                   <span
                     className={`text-right text-[10px] ${
-                      row.kind === "leak" ? "text-coral" : "text-mint"
+                      row.kind === "leak" ? "text-accent" : "text-accent-2"
                     }`}
                   >
                     {row.trend}
@@ -232,11 +232,11 @@ export default function ReviewInsightsPage() {
               <div className="flex items-center justify-between pt-4">
                 <p className="text-xs text-bone-dim">
                   Worst issue this week:{" "}
-                  <span className="font-bold text-coral">
+                  <span className="font-bold text-accent">
                     missing / wrong item
                   </span>
                 </p>
-                <p className="font-mono text-[10px] text-mint">
+                <p className="font-mono text-[10px] text-accent-2">
                   ⤷ Open playbook
                 </p>
               </div>
@@ -245,9 +245,9 @@ export default function ReviewInsightsPage() {
         </section>
 
         {/* The problem */}
-        <section className="bg-green-900">
+        <section className="bg-panel-2">
           <div className="mx-auto max-w-6xl px-6 py-24">
-            <p className="reveal font-mono text-xs tracking-widest text-mint uppercase">
+            <p className="reveal font-mono text-xs tracking-widest text-accent-2 uppercase">
               What the reviews are worth
             </p>
             <h2 className="reveal font-display mt-4 max-w-2xl text-4xl font-bold sm:text-5xl">
@@ -259,7 +259,7 @@ export default function ReviewInsightsPage() {
                   key={p.title}
                   className={`reveal max-w-3xl ${i === 1 ? "sm:ml-24" : i === 2 ? "sm:ml-48" : ""}`}
                 >
-                  <p className="font-display text-6xl font-extrabold tracking-tight text-coral sm:text-7xl">
+                  <p className="font-display text-6xl font-extrabold tracking-tight text-accent sm:text-7xl">
                     {p.figure}
                   </p>
                   <p className="mt-1 font-mono text-xs tracking-wider text-bone-dim uppercase">
@@ -279,7 +279,7 @@ export default function ReviewInsightsPage() {
 
         {/* Sprint */}
         <section id="sprint" className="mx-auto max-w-6xl px-6 py-24">
-          <p className="reveal font-mono text-xs tracking-widest text-mint uppercase">
+          <p className="reveal font-mono text-xs tracking-widest text-accent-2 uppercase">
             The 30-day build
           </p>
           <h2 className="reveal font-display mt-4 max-w-2xl text-4xl font-bold sm:text-5xl">
@@ -289,14 +289,14 @@ export default function ReviewInsightsPage() {
             {weeks.map((week, i) => (
               <li
                 key={week.label}
-                className="reveal relative grid gap-4 border-l-2 border-green-700 pb-12 pl-10 last:pb-0 sm:grid-cols-[7rem_1fr]"
+                className="reveal relative grid gap-4 border-l-2 border-line pb-12 pl-10 last:pb-0 sm:grid-cols-[7rem_1fr]"
               >
                 <span
                   aria-hidden
                   className={`font-display absolute top-0 -left-5 flex h-10 w-10 items-center justify-center text-lg font-bold ${
                     i === weeks.length - 1
-                      ? "bg-mint text-green-950"
-                      : "bg-coral text-coral-ink"
+                      ? "bg-accent-2 text-panel"
+                      : "bg-accent text-accent-ink"
                   }`}
                 >
                   {week.n}
@@ -318,9 +318,9 @@ export default function ReviewInsightsPage() {
         </section>
 
         {/* Price */}
-        <section className="bg-green-900">
+        <section className="bg-panel-2">
           <div className="mx-auto max-w-6xl px-6 py-24">
-            <p className="reveal font-mono text-xs tracking-widest text-mint uppercase">
+            <p className="reveal font-mono text-xs tracking-widest text-accent-2 uppercase">
               What it costs, in full
             </p>
             <h2 className="reveal font-display mt-4 max-w-2xl text-4xl font-bold sm:text-5xl">
@@ -328,7 +328,7 @@ export default function ReviewInsightsPage() {
             </h2>
             <div className="reveal mt-14 flex max-w-3xl flex-wrap items-end gap-x-10 gap-y-6">
               <div>
-                <p className="font-display text-6xl font-extrabold tracking-tight text-coral">
+                <p className="font-display text-6xl font-extrabold tracking-tight text-accent">
                   AED 12,000
                 </p>
                 <p className="mt-1 font-mono text-xs tracking-wider text-bone-dim uppercase">
@@ -347,7 +347,7 @@ export default function ReviewInsightsPage() {
             </div>
             <ul className="reveal mt-10 max-w-2xl space-y-3 text-bone-dim">
               <li className="flex gap-3">
-                <span className="text-mint">✓</span>
+                <span className="text-accent-2">✓</span>
                 <span>
                   <strong className="text-bone">
                     50% upfront, 50% at go-live.
@@ -357,12 +357,12 @@ export default function ReviewInsightsPage() {
                 </span>
               </li>
               <li className="flex gap-3">
-                <span className="text-mint">✓</span> The retainer covers new
+                <span className="text-accent-2">✓</span> The retainer covers new
                 brands, new aggregators, and playbook tuning as your portfolio
                 moves.
               </li>
               <li className="flex gap-3">
-                <span className="text-mint">✓</span> Fixed scope, fixed price.
+                <span className="text-accent-2">✓</span> Fixed scope, fixed price.
                 Never billed by the hour.
               </li>
             </ul>
@@ -376,18 +376,18 @@ export default function ReviewInsightsPage() {
 
         {/* FAQ */}
         <section className="mx-auto max-w-6xl px-6 py-24">
-          <p className="reveal font-mono text-xs tracking-widest text-mint uppercase">
+          <p className="reveal font-mono text-xs tracking-widest text-accent-2 uppercase">
             Straight answers before you book
           </p>
           <h2 className="reveal font-display mt-4 text-4xl font-bold sm:text-5xl">
             The questions operators actually ask.
           </h2>
-          <div className="mt-12 max-w-3xl divide-y divide-green-700/60">
+          <div className="mt-12 max-w-3xl divide-y divide-line/60">
             {faqs.map((faq) => (
               <details key={faq.q} className="reveal group py-5">
                 <summary className="font-display flex cursor-pointer list-none items-baseline justify-between gap-4 text-xl font-bold">
                   {faq.q}
-                  <span className="font-mono text-coral transition-transform duration-200 group-open:rotate-45">
+                  <span className="font-mono text-accent transition-transform duration-200 group-open:rotate-45">
                     +
                   </span>
                 </summary>
@@ -400,7 +400,7 @@ export default function ReviewInsightsPage() {
         </section>
 
         {/* CTA + form */}
-        <section id="audit" className="bg-green-900">
+        <section id="audit" className="bg-panel-2">
           <div className="mx-auto grid max-w-6xl gap-14 px-6 py-24 lg:grid-cols-[1fr_1.2fr]">
             <div>
               <h2 className="reveal font-display text-4xl leading-tight font-extrabold sm:text-5xl">
@@ -427,7 +427,7 @@ export default function ReviewInsightsPage() {
         </section>
       </main>
 
-      <footer className="border-t border-green-700/40 bg-green-900">
+      <footer className="border-t border-line/40 bg-panel-2">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-8 font-mono text-xs text-bone-dim">
           <Link href="/" className="transition-colors hover:text-bone">
             ← ashanjum.com

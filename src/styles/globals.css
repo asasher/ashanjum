@@ -1,20 +1,34 @@
 @import "tailwindcss";
 
 @theme {
-  /* Drench palette — see dubai-ai-training-market-research/variants/drench/DESIGN.md */
-  --color-green-950: oklch(0.23 0.06 162);
-  --color-green-900: oklch(0.3 0.078 162);
-  --color-green-800: oklch(0.36 0.082 162);
-  --color-green-700: oklch(0.44 0.072 162);
-  --color-ink-deep: oklch(0.17 0.032 162);
-  --color-bone: oklch(0.955 0.012 92);
-  --color-bone-dim: oklch(0.86 0.018 95);
-  --color-coral: oklch(0.74 0.165 38);
-  --color-coral-ink: oklch(0.26 0.05 40);
-  --color-mint: oklch(0.84 0.1 165);
+  /* Palette derived from the code.storage system: a neutral near-black
+     gray world (gray mixed toward black, never pure) with vivid accents
+     assigned per surface. Accent tokens are overridable per subtree —
+     see the .lane-* classes below. */
+  --color-ink-deep: #070708;
+  --color-panel: #101014;
+  --color-panel-2: #17171c;
+  --color-panel-3: #1f1f26;
+  --color-line: #2b2b33;
+  --color-bone: #f4f4f5;
+  --color-bone-dim: #a1a1aa;
 
-  --font-display: var(--font-bricolage), system-ui, sans-serif;
-  --font-body: var(--font-hanken), system-ui, sans-serif;
+  /* Default accent trio (umbrella): highlight yellow, like the reference */
+  --color-accent: #feca00;
+  --color-accent-ink: #0a0a0a;
+  --color-accent-2: #08c0ef;
+
+  /* The rainbow, for per-card assignment */
+  --color-ray-blue: #35a4ff;
+  --color-ray-indigo: #9a6bff;
+  --color-ray-pink: #fc5c93;
+  --color-ray-orange: #fe8c2c;
+  --color-ray-mint: #00cab1;
+  --color-ray-teal: #00c4d0;
+  --color-ray-yellow: #feca00;
+
+  --font-display: var(--font-geist-mono), ui-monospace, monospace;
+  --font-body: var(--font-geist-sans), system-ui, sans-serif;
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --font-arabic: var(--font-kufi), sans-serif;
@@ -25,6 +39,7 @@
   --animate-deal: deal 0.6s var(--ease-out-expo) both;
   --animate-flag: flag 1.6s ease-out 1.1s 1 both;
   --animate-caret: caret 1.1s steps(1) infinite;
+  --animate-ticker: ticker 40s linear infinite;
 
   @keyframes rise {
     from {
@@ -48,13 +63,13 @@
   }
   @keyframes flag {
     0% {
-      box-shadow: 0 0 0 0 oklch(0.74 0.165 38 / 0.55);
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 55%, transparent);
     }
     60% {
-      box-shadow: 0 0 0 10px oklch(0.74 0.165 38 / 0);
+      box-shadow: 0 0 0 10px transparent;
     }
     100% {
-      box-shadow: 0 0 0 0 oklch(0.74 0.165 38 / 0);
+      box-shadow: 0 0 0 0 transparent;
     }
   }
   @keyframes caret {
@@ -67,6 +82,27 @@
       opacity: 0;
     }
   }
+  @keyframes ticker {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+/* Per-lane accent overrides. Tailwind v4 utilities resolve these vars at
+   use-time, so a wrapper class rethemes a whole page. */
+.lane-blue {
+  --color-accent: #35a4ff;
+  --color-accent-ink: #06131f;
+  --color-accent-2: #8ad2ff;
+}
+.lane-violet {
+  --color-accent: #9a6bff;
+  --color-accent-ink: #120a24;
+  --color-accent-2: #ff8fc0;
 }
 
 html {
@@ -103,6 +139,101 @@ p {
   transform: none;
 }
 
+/* ---------------------------------------------------------------- */
+/* Scroll-driven 3D scene system.                                    */
+/* ScrollScenes.tsx arms `html.fx-armed` (skipped for reduced        */
+/* motion / no JS) and writes --p (0..1) on every [data-scene]       */
+/* element each frame. All effects are transform/opacity only.       */
+/* Without .fx-armed every element below renders in its final state. */
+/* ---------------------------------------------------------------- */
+
+[data-scene] {
+  --p: 1;
+}
+.fx-armed [data-scene="exit"] {
+  --p: 0;
+}
+.fx-armed [data-scene="enter"],
+.fx-armed [data-scene="pin"] {
+  --p: 0;
+}
+
+/* Hero: tilts back and sinks into depth as you scroll past it. */
+.fx-stage {
+  perspective: 1100px;
+  perspective-origin: 50% 20%;
+}
+.fx-armed .fx-hero {
+  transform-origin: 50% 100%;
+  transform: rotateX(calc(var(--p) * 16deg))
+    translate3d(0, calc(var(--p) * -4vh), calc(var(--p) * -180px));
+  opacity: calc(1 - var(--p) * 0.85);
+  will-change: transform, opacity;
+}
+
+/* Cards: rise out of the page plane as they enter the viewport. */
+.fx-armed .fx-card {
+  transform: perspective(900px)
+    translate3d(0, calc((1 - var(--p)) * 56px), calc((1 - var(--p)) * -240px))
+    rotateX(calc((1 - var(--p)) * 16deg));
+  opacity: calc(0.1 + var(--p) * 0.9);
+  will-change: transform, opacity;
+}
+
+/* Pinned manifesto: each line's highlight sweeps in over a third of
+   the pin scroll. --i is the line index (0,1,2). */
+.fx-line {
+  --pi: 1;
+  background-image: linear-gradient(
+    color-mix(in srgb, var(--color-accent) 26%, transparent),
+    color-mix(in srgb, var(--color-accent) 26%, transparent)
+  );
+  background-repeat: no-repeat;
+  background-size: calc(var(--pi) * 100%) 78%;
+  background-position: 0 60%;
+}
+.fx-armed [data-scene="pin"] .fx-line {
+  --pi: clamp(0, calc((var(--p) - var(--i) / 3) * 3.4), 1);
+  opacity: calc(0.28 + var(--pi) * 0.72);
+}
+
+/* Perspective grid floor — fixed backdrop giving the whole page depth.
+   Drifts slowly with scroll via --scroll-y (set by ScrollScenes). */
+.fx-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  perspective: 620px;
+}
+.fx-grid::before {
+  content: "";
+  position: absolute;
+  inset: -60% -40%;
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      color-mix(in srgb, var(--color-bone) 7%, transparent) 0 1px,
+      transparent 1px 72px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-bone) 7%, transparent) 0 1px,
+      transparent 1px 72px
+    );
+  background-position: 0 calc(var(--scroll-y, 0) * -0.06px);
+  transform: rotateX(62deg);
+}
+.fx-grid::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, var(--color-ink-deep) 12%, transparent 55%),
+    linear-gradient(to top, var(--color-ink-deep) 8%, transparent 45%);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -117,5 +248,18 @@ p {
   .reveal-armed .reveal {
     opacity: 1;
     transform: none;
+  }
+  /* Kill every scroll-driven effect. */
+  .fx-armed .fx-hero,
+  .fx-armed .fx-card {
+    transform: none;
+    opacity: 1;
+  }
+  .fx-armed [data-scene="pin"] .fx-line {
+    --pi: 1;
+    opacity: 1;
+  }
+  .fx-grid {
+    display: none;
   }
 }
