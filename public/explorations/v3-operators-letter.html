@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A letter from Asher Anjum</title>
+<style>
+  :root {
+    --paper: #f7f3ea;
+    --paper-deep: #efe9dc;
+    --ink: #1b1916;
+    --ink-soft: #57503f;
+    --ink-faint: #8a8172;
+    --pen: #2742c8;      /* fountain-pen blue */
+    --pen-deep: #1e339c;
+    --rule: #ddd5c4;
+    --grain-opacity: .5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #16140f;
+      --paper-deep: #1d1a13;
+      --ink: #ece6d8;
+      --ink-soft: #b3aa96;
+      --ink-faint: #7d7563;
+      --pen: #8698ff;
+      --pen-deep: #a5b2ff;
+      --rule: #2e2a20;
+      --grain-opacity: .25;
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 1.1875rem;          /* 19px */
+    line-height: 1.68;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    position: relative;
+  }
+
+  /* paper grain — static, inline turbulence */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: var(--grain-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.42 0 0 0 0 0.36 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  main { position: relative; z-index: 1; }
+
+  .sheet {
+    max-width: 41rem;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 7vw, 6rem) 1.375rem 0;
+  }
+
+  /* ---------- letterhead ---------- */
+  .letterhead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 1.1rem;
+    border-bottom: 1px solid var(--rule);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .78rem;
+    letter-spacing: .02em;
+    color: var(--ink-soft);
+  }
+  .letterhead .from strong { color: var(--ink); font-weight: 600; }
+  .letterhead .place { color: var(--ink-faint); }
+
+  /* ---------- kinetic opening ---------- */
+  .opening {
+    margin: clamp(3rem, 8vw, 5.5rem) 0 0;
+    font-size: clamp(1.9rem, 5.2vw, 3.1rem);
+    line-height: 1.22;
+    font-weight: 650;
+    letter-spacing: -0.022em;
+    text-wrap: balance;
+  }
+  .opening .w {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(.55em);
+    filter: blur(6px);
+  }
+  .fx .opening .w {
+    animation: settle 1.05s cubic-bezier(.16,.84,.18,1) forwards;
+    animation-delay: calc(var(--i) * 72ms + 220ms);
+  }
+  @keyframes settle {
+    60% { filter: blur(0); }
+    to { opacity: 1; transform: none; filter: blur(0); }
+  }
+  .opening .held {
+    position: relative;
+    white-space: nowrap;
+  }
+  .opening .held::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -.08em;
+    height: .075em;
+    background: var(--pen);
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+  .fx .opening .held::after {
+    animation: draw-rule .9s cubic-bezier(.7,0,.16,1) forwards;
+    animation-delay: 1.9s;
+  }
+  @keyframes draw-rule { to { transform: scaleX(1); } }
+
+  /* ---------- letter body ---------- */
+  .letter { margin-top: clamp(2.6rem, 6vw, 4rem); }
+
+  .fx .letter > * { opacity: 0; transform: translateY(14px); }
+  .fx .letter > * {
+    animation: rise .9s cubic-bezier(.16,.84,.18,1) forwards;
+    animation-delay: calc(2.15s + var(--j, 0) * 90ms);
+  }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  /* only the first screenful staggers off the intro; the rest appears settled */
+  .letter > :nth-child(n+5) { opacity: 1; transform: none; animation: none !important; }
+
+  .letter p { margin-bottom: 1.45rem; max-width: 62ch; }
+  .letter p.salutation {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .92rem;
+    color: var(--ink-soft);
+    margin-bottom: 2.2rem;
+  }
+
+  .letter strong { font-weight: 650; }
+  .letter em { font-style: normal; color: var(--pen-deep); font-weight: 550; }
+
+  .aside-anchor { position: relative; }
+
+  /* margin notes — pencil asides, wide screens only */
+  .note {
+    display: none;
+  }
+  @media (min-width: 1180px) {
+    .note {
+      display: block;
+      position: absolute;
+      left: calc(100% + 3.2rem);
+      top: .25em;
+      width: 13.5rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .74rem;
+      line-height: 1.55;
+      color: var(--pen);
+      border-left: 2px solid var(--pen);
+      padding-left: .8rem;
+      opacity: .92;
+    }
+  }
+
+  /* ---------- the work list ---------- */
+  ul.work {
+    list-style: none;
+    margin: 2.4rem 0 2.6rem;
+    border-top: 1px solid var(--rule);
+  }
+  ul.work li {
+    padding: 1.05rem 0 1.05rem 1.9rem;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    max-width: 62ch;
+  }
+  ul.work li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--pen);
+    font-weight: 600;
+  }
+  ul.work .what { font-weight: 650; }
+  ul.work .so { color: var(--ink-soft); }
+
+  /* ---------- two ways ---------- */
+  .ways {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 2.4rem 0 2.6rem;
+  }
+  @media (max-width: 620px) { .ways { grid-template-columns: 1fr; } }
+  .way {
+    background: var(--paper-deep);
+    padding: 1.5rem 1.4rem 1.6rem;
+  }
+  .way h2 {
+    font-size: 1.02rem;
+    font-weight: 650;
+    letter-spacing: -.01em;
+    margin-bottom: .55rem;
+  }
+  .way h2 .k {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .72rem;
+    color: var(--pen);
+    display: block;
+    margin-bottom: .5rem;
+    letter-spacing: .04em;
+  }
+  .way p { font-size: .95rem; line-height: 1.6; color: var(--ink-soft); margin: 0; }
+
+  /* ---------- terms ---------- */
+  .terms {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .88rem;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    border-left: 2px solid var(--pen);
+    padding: .35rem 0 .35rem 1.15rem;
+    margin: 2.4rem 0 2.6rem;
+    max-width: 56ch;
+  }
+  .terms b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- signature ---------- */
+  .signoff { margin-top: 3.2rem; }
+  .signature {
+    display: block;
+    width: 168px;
+    height: auto;
+    margin: .8rem 0 .4rem;
+  }
+  .signature path {
+    fill: none;
+    stroke: var(--pen);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .fx .signature.arm path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: sign 2.1s cubic-bezier(.45,.05,.35,1) forwards .2s;
+  }
+  @keyframes sign { to { stroke-dashoffset: 0; } }
+  .signoff .name { font-weight: 650; }
+  .signoff .role {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .78rem;
+    color: var(--ink-faint);
+    margin-top: .15rem;
+  }
+
+  /* ---------- postscript / contact ---------- */
+  .contact {
+    margin: clamp(3.5rem, 8vw, 5.5rem) auto 0;
+    border-top: 1px solid var(--rule);
+    padding: 2.6rem 0 0;
+    max-width: 41rem;
+  }
+  .contact .ps {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .78rem;
+    color: var(--pen);
+    letter-spacing: .04em;
+    margin-bottom: .9rem;
+  }
+  .contact p { max-width: 60ch; margin-bottom: 1.6rem; }
+  .write {
+    display: inline-block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .95rem;
+    color: var(--paper);
+    background: var(--ink);
+    text-decoration: none;
+    padding: .85rem 1.35rem;
+    border-radius: 8px;
+    transition: transform .25s cubic-bezier(.16,.84,.18,1), background .25s;
+  }
+  .write:hover { background: var(--pen-deep); transform: translateY(-1px); }
+  .write:focus-visible { outline: 3px solid var(--pen); outline-offset: 3px; }
+  .write .addr { opacity: .75; }
+
+  footer {
+    max-width: 41rem;
+    margin: 0 auto;
+    padding: 3.2rem 1.375rem 3rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .74rem;
+    color: var(--ink-faint);
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  footer a { color: inherit; }
+
+  .contact-wrap { padding: 0 1.375rem; }
+
+  /* ---------- reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .fx .opening .w,
+    .fx .letter > *,
+    .fx .opening .held::after,
+    .fx .signature.arm path { animation: none !important; }
+    .opening .w, .letter > * { opacity: 1 !important; transform: none !important; filter: none !important; }
+    .opening .held::after { transform: scaleX(1); }
+    .write { transition: none; }
+  }
+  /* no-JS fallback: everything visible */
+  .opening .w, .letter > * { }
+</style>
+</head>
+<body>
+<main>
+  <div class="sheet">
+
+    <div class="letterhead">
+      <span class="from">From the desk of <strong>Asher Anjum</strong></span>
+      <span class="place">Dubai, UAE</span>
+    </div>
+
+    <h1 class="opening" id="opening">
+      I build AI systems for companies that run on real money — then I
+      <span class="held">hand&nbsp;over&nbsp;the&nbsp;keys.</span>
+    </h1>
+
+    <div class="letter">
+      <p class="salutation" style="--j:0">Dear operator,</p>
+
+      <p style="--j:1">You've sat through the agency pitch. The deck, the retainer, the
+      dashboard you'll never open. This letter is the opposite of that pitch, so I'll keep
+      it plain: I build working systems, I hand them over, and <strong>you own everything
+      when I leave</strong> — the code, the data, the accounts it runs on.</p>
+
+      <p style="--j:2">I spent years inside the delivery platforms, on the product side,
+      watching exactly where operators' money leaks. Now I build with AI agents daily —
+      not because it's fashionable, but because it's the first technology that lets one
+      accountable person ship what used to take a team.</p>
+
+      <p style="--j:3" class="aside-anchor">Some of what I've built recently, for real
+      companies:<span class="note">every line here is live in production — names withheld,
+      numbers available on a call</span></p>
+
+      <ul class="work">
+        <li><span class="what">Payout reconciliation for a multi-venue delivery group.</span>
+          <span class="so"> Every aggregator payout checked against the till, weekly. The leaks stopped being invisible.</span></li>
+        <li><span class="what">Review intelligence across dozens of consumer brands.</span>
+          <span class="so"> Thousands of customer reviews triaged into the short list of what to fix this week.</span></li>
+        <li><span class="what">A constraint-finding method for founders.</span>
+          <span class="so"> Finds the one bottleneck limiting revenue before you spend on anything else.</span></li>
+        <li><span class="what">A backlog that clears itself.</span>
+          <span class="so"> Agents groom the issue list and turn ready work into reviewed pull requests.</span></li>
+        <li><span class="what">Agents inside Google Workspace.</span>
+          <span class="so"> Documents, sheets, and calendars maintained without anyone touching them.</span></li>
+        <li><span class="what">A canvas for structuring deals between partners.</span>
+          <span class="so"> Two founders agree a fair split without wrecking the friendship.</span></li>
+      </ul>
+
+      <p class="aside-anchor">There are two ways we can work, and I'll tell you honestly
+      which one fits when we talk:<span class="note">most operators pick the second, then
+      wish their team had done the first</span></p>
+
+      <div class="ways">
+        <div class="way">
+          <h2><span class="k">BUILT WITH YOU</span> We build it together.</h2>
+          <p>Your team ships it alongside me and learns by doing. When it's done, they can
+          run it, extend it, and build the next one without me.</p>
+        </div>
+        <div class="way">
+          <h2><span class="k">BUILT FOR YOU</span> I build it. You keep it.</h2>
+          <p>I build the system, document it, and hand it over working. If I disappeared
+          tomorrow, nothing you depend on disappears with me.</p>
+        </div>
+      </div>
+
+      <p>How I work is deliberately old-fashioned:</p>
+
+      <div class="terms">
+        <b>Precise scope.</b> Written before we start, priced fixed.<br>
+        <b>Half in advance.</b> That's what makes me drop everything for your build.<br>
+        <b>Weeks, not quarters.</b> A working system, not a strategy document.<br>
+        <b>Your name on everything.</b> Repos, accounts, data — yours from day one.
+      </div>
+
+      <p>If you're evaluating three agencies right now, I'm probably not for you — I don't
+      present well in a bake-off. But if you want a system that works, built by a person
+      you can name and call, we should talk.</p>
+
+      <div class="signoff">
+        <svg class="signature" viewBox="0 0 240 90" aria-hidden="true" focusable="false">
+          <path d="M18 72 C34 30, 48 14, 56 16 C64 18, 52 52, 46 68 M32 52 C42 50, 54 48, 62 48
+                   M74 62 C70 70, 78 72, 84 64 C90 56, 86 48, 80 52 C74 56, 76 68, 86 66
+                   M100 44 C96 58, 96 68, 100 66 C106 62, 110 52, 112 46 C112 56, 114 66, 122 60
+                   M134 20 C130 40, 128 58, 130 66 C136 64, 144 56, 148 50 M132 48 C140 46, 148 44, 154 44
+                   M166 52 C162 62, 166 68, 172 64 C178 60, 180 52, 176 50 C172 48, 166 52, 166 52
+                   M188 50 C186 58, 186 64, 188 64 C192 62, 198 52, 202 48 C202 56, 204 64, 212 58 C220 52, 226 40, 224 34" />
+        </svg>
+        <div class="name">Asher Anjum</div>
+        <div class="role">builds and hands over — ashanjum.com</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-wrap">
+    <section class="contact" id="write">
+      <div class="ps">P.S.</div>
+      <p>The fastest way to find out if I can help is a short call about your numbers —
+      no deck, no discovery workshop, no obligation. Write to me directly and tell me what
+      you run. I reply within one working day.</p>
+      <a class="write" href="mailto:as.asher.anjum@gmail.com?subject=From%20your%20letter">
+        write to me — <span class="addr">as.asher.anjum@gmail.com</span>
+      </a>
+    </section>
+  </div>
+
+  <footer>
+    <span>© 2026 Asher Anjum</span>
+    <span>Dubai, UAE — systems built and handed over</span>
+  </footer>
+</main>
+
+<script>
+(function () {
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduced) return;
+
+  document.documentElement.classList.add("fx");
+  document.body.classList.add("fx");
+
+  // split the opening line into words for the kinetic settle
+  var opening = document.getElementById("opening");
+  var idx = 0;
+  function splitWords(node) {
+    var kids = Array.prototype.slice.call(node.childNodes);
+    kids.forEach(function (child) {
+      if (child.nodeType === 3) {
+        var frag = document.createDocumentFragment();
+        child.textContent.split(/(\s+)/).forEach(function (piece) {
+          if (/^\s+$/.test(piece) || piece === "") {
+            frag.appendChild(document.createTextNode(piece));
+          } else {
+            var s = document.createElement("span");
+            s.className = "w";
+            s.style.setProperty("--i", idx++);
+            s.textContent = piece;
+            frag.appendChild(s);
+          }
+        });
+        node.replaceChild(frag, child);
+      } else if (child.nodeType === 1 && child.classList.contains("held")) {
+        // treat the underlined phrase as one settling unit
+        var wrap = document.createElement("span");
+        wrap.className = "w";
+        wrap.style.setProperty("--i", idx++);
+        child.parentNode.insertBefore(wrap, child);
+        wrap.appendChild(child);
+      } else if (child.nodeType === 1) {
+        splitWords(child);
+      }
+    });
+  }
+  splitWords(opening);
+
+  // signature draws itself when it scrolls into view
+  var sig = document.querySelector(".signature");
+  if ("IntersectionObserver" in window && sig) {
+    var seen = false;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting && !seen) {
+          seen = true;
+          sig.classList.add("arm");
+          io.disconnect();
+        }
+      });
+    }, { threshold: 0.6 });
+    io.observe(sig);
+  } else if (sig) {
+    sig.classList.add("arm");
+  }
+})();
+</script>
+</body>
+</html>

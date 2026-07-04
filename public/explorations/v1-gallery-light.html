@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en" data-exploration="v1-gallery-light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Asher Anjum — Systems built properly</title>
+<style>
+  /* ============ Gallery Light — code.storage light mode, monograph restraint ============ */
+  :root{
+    --gray:#8e8e95;
+    --bg:#ffffff;
+    --bg0:color-mix(in srgb, white 95%, var(--gray));
+    --bg1:color-mix(in srgb, white 93%, var(--gray));
+    --bg2:color-mix(in srgb, white 91%, var(--gray));
+    --bg3:color-mix(in srgb, white 85%, var(--gray));
+    --fg:color-mix(in srgb, black 95%, var(--gray));   /* ~#070708 */
+    --fg1:color-mix(in srgb, black 45%, var(--gray));
+    --fg2:color-mix(in srgb, black 30%, var(--gray));
+    --fg3:var(--gray);
+    --fg4:color-mix(in srgb, white 20%, var(--gray));
+    --border:color-mix(in srgb, white 80%, var(--gray));
+    --hairline:color-mix(in srgb, var(--fg) 10%, transparent);
+    --hairline-soft:color-mix(in srgb, var(--fg) 6%, transparent);
+    --accent:#008df4;
+    --accent-text:color-mix(in srgb, black 22%, #008df4);
+    --accent-wash:color-mix(in srgb, white 92%, #008df4);
+    --sans:"Helvetica Neue", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    --mono:ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    --serif:Georgia, "Times New Roman", serif;
+    --measure:34em;
+    --pad:clamp(20px, 4vw, 48px);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--fg);
+    font-family:var(--sans); font-size:16px; line-height:1.6;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  }
+  a{color:inherit; text-decoration:none}
+  ::selection{background:var(--accent-wash); color:var(--accent-text)}
+
+  .frame{max-width:1180px; margin:0 auto; padding-left:var(--pad); padding-right:var(--pad)}
+
+  /* micro labels */
+  .label{
+    font-family:var(--mono); font-size:11px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--fg3); font-weight:400;
+  }
+  .label--dark{color:var(--fg1)}
+  .label .tick{color:var(--accent-text)}
+
+  /* ============ header ============ */
+  header{
+    position:sticky; top:0; z-index:10;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--hairline-soft);
+  }
+  .hd{display:flex; align-items:baseline; justify-content:space-between; padding-top:18px; padding-bottom:18px}
+  .wordmark{font-weight:500; letter-spacing:-.01em; font-size:15px}
+  .wordmark em{font-style:normal; color:var(--fg3)}
+  nav{display:flex; gap:28px}
+  nav a{font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--fg2); transition:color .18s ease}
+  nav a:hover{color:var(--fg)}
+  .hd-meta{display:none}
+  @media(min-width:900px){ .hd-meta{display:block} }
+
+  /* ============ hero ============ */
+  .hero{padding-top:clamp(64px,10vh,130px); padding-bottom:clamp(56px,9vh,120px)}
+  .hero-grid{display:grid; grid-template-columns:1fr; gap:48px; align-items:center}
+  @media(min-width:900px){ .hero-grid{grid-template-columns:7fr 5fr; gap:64px} }
+  h1{
+    font-size:clamp(38px, 5.4vw, 64px); line-height:1.04; font-weight:500;
+    letter-spacing:-.032em; max-width:11em;
+  }
+  h1 .quiet{color:var(--fg4)}
+  .hero-sub{
+    margin-top:28px; color:var(--fg1); font-size:clamp(16px,1.5vw,19px);
+    line-height:1.65; max-width:var(--measure);
+  }
+  .hero-cta{margin-top:40px; display:flex; gap:14px; flex-wrap:wrap; align-items:center}
+  .btn{
+    display:inline-block; font-family:var(--mono); font-size:12px; letter-spacing:.1em; text-transform:uppercase;
+    padding:13px 22px; border:1px solid var(--fg); transition:background .18s ease, color .18s ease;
+  }
+  .btn--solid{background:var(--fg); color:var(--bg)}
+  .btn--solid:hover{background:transparent; color:var(--fg)}
+  .btn--ghost{border-color:var(--hairline); color:var(--fg1)}
+  .btn--ghost:hover{border-color:var(--fg); color:var(--fg)}
+
+  /* the motion object */
+  .obj{
+    position:relative; aspect-ratio:4/5; max-height:520px; width:100%;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .obj canvas{width:100%; height:100%; display:block}
+  .obj-caption{
+    position:absolute; left:0; bottom:-6px;
+    display:flex; gap:10px; align-items:baseline;
+  }
+  .obj-caption .rule{width:28px; height:1px; background:var(--fg); transform:translateY(-4px)}
+
+  /* ============ section scaffolding ============ */
+  section{border-top:1px solid var(--hairline-soft); padding-top:56px; padding-bottom:clamp(64px,9vh,120px)}
+  .sec-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:clamp(40px,6vh,72px)}
+  h2{font-size:clamp(26px,3vw,36px); font-weight:500; letter-spacing:-.025em; line-height:1.15}
+  .sec-note{display:none; color:var(--fg3); font-size:14px; max-width:22em; text-align:right}
+  @media(min-width:900px){ .sec-note{display:block} }
+
+  /* ============ systems index ============ */
+  .sys{border-top:1px solid var(--hairline)}
+  .sys-row{
+    display:grid; grid-template-columns:1fr; gap:8px;
+    padding:26px 0; border-bottom:1px solid var(--hairline);
+    transition:background .18s ease;
+  }
+  @media(min-width:820px){
+    .sys-row{grid-template-columns:70px 3fr 4fr 160px; gap:24px; align-items:baseline; padding:30px 0}
+  }
+  .sys-row:hover{background:var(--bg0)}
+  .sys-num{font-family:var(--mono); font-size:12px; color:var(--fg4)}
+  .sys-name{font-size:19px; font-weight:500; letter-spacing:-.015em}
+  .sys-desc{color:var(--fg1); font-size:15px; line-height:1.6; max-width:36em}
+  .sys-for{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--fg3)}
+  @media(min-width:820px){ .sys-for{text-align:right} }
+
+  /* ============ engagements ============ */
+  .modes{display:grid; grid-template-columns:1fr; gap:1px; background:var(--hairline); border:1px solid var(--hairline)}
+  @media(min-width:820px){ .modes{grid-template-columns:1fr 1fr} }
+  .mode{background:var(--bg); padding:clamp(28px,4vw,48px)}
+  .mode .label{display:block; margin-bottom:22px}
+  .mode h3{font-size:clamp(21px,2.2vw,26px); font-weight:500; letter-spacing:-.02em; margin-bottom:14px}
+  .mode p{color:var(--fg1); font-size:15px; max-width:30em}
+  .mode ul{list-style:none; margin-top:24px}
+  .mode li{
+    padding:10px 0; border-top:1px solid var(--hairline-soft);
+    font-size:14px; color:var(--fg2); display:flex; gap:12px;
+  }
+  .mode li::before{content:"—"; color:var(--fg4)}
+  .terms{
+    margin-top:56px; display:flex; gap:12px; align-items:baseline; flex-wrap:wrap;
+  }
+  .terms p{font-family:var(--serif); font-style:italic; font-size:clamp(17px,1.8vw,21px); color:var(--fg1)}
+  .terms .rule{width:36px; height:1px; background:var(--fg); transform:translateY(-6px)}
+
+  /* ============ contact ============ */
+  .contact-grid{display:grid; grid-template-columns:1fr; gap:56px}
+  @media(min-width:900px){ .contact-grid{grid-template-columns:5fr 7fr; gap:80px} }
+  .contact-lede{font-size:clamp(20px,2.4vw,28px); font-weight:500; letter-spacing:-.02em; line-height:1.3; max-width:16em}
+  .contact-meta{margin-top:28px; display:grid; gap:8px}
+  .contact-meta div{display:flex; gap:16px; font-size:14px; color:var(--fg1)}
+  .contact-meta .label{width:88px; flex:none; transform:translateY(2px)}
+  form{display:grid; gap:0}
+  .field{border-top:1px solid var(--hairline); padding:18px 0 20px}
+  .field:last-of-type{border-bottom:1px solid var(--hairline)}
+  .field label{display:block; margin-bottom:10px}
+  .field input,.field select,.field textarea{
+    width:100%; border:0; background:transparent; font-family:var(--sans);
+    font-size:17px; color:var(--fg); outline:none; padding:2px 0;
+  }
+  .field textarea{resize:vertical; min-height:72px; line-height:1.55}
+  .field input::placeholder,.field textarea::placeholder{color:var(--fg4)}
+  .field select{color:var(--fg1); appearance:none; -webkit-appearance:none; cursor:pointer}
+  form .btn{margin-top:28px; justify-self:start; cursor:pointer; background:var(--fg); color:var(--bg); border:1px solid var(--fg); font-family:var(--mono)}
+  form .btn:hover{background:transparent; color:var(--fg)}
+  .form-note{margin-top:16px; font-size:13px; color:var(--fg3)}
+
+  /* ============ footer ============ */
+  footer{border-top:1px solid var(--hairline-soft); padding:32px 0 44px}
+  .ft{display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap}
+  .ft span{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--fg3)}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none !important}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="frame hd">
+    <a class="wordmark" href="#">Asher Anjum <em>— Systems</em></a>
+    <nav>
+      <a href="#systems">Systems</a>
+      <a href="#engagements">Engagements</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <span class="label hd-meta">Dubai&nbsp;·&nbsp;GST+4</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <div class="frame hero">
+    <div class="hero-grid">
+      <div>
+        <span class="label"><span class="tick">●</span>&nbsp; Independent systems studio</span>
+        <h1 style="margin-top:26px">Systems built properly, <span class="quiet">by one person you can name.</span></h1>
+        <p class="hero-sub">
+          I design and build the operational software your business runs on — margin recovery,
+          decision pipelines, agent-driven workflows. You own everything I hand over:
+          the code, the data, the keys.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn--solid" href="#contact">Start a conversation</a>
+          <a class="btn btn--ghost" href="#systems">See the systems</a>
+        </div>
+      </div>
+      <div class="obj" aria-hidden="true">
+        <canvas id="column"></canvas>
+        <div class="obj-caption">
+          <span class="rule"></span>
+          <span class="label">Fig. 01 — Structure, in motion</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SYSTEMS ============ -->
+  <section id="systems">
+    <div class="frame">
+      <div class="sec-head">
+        <h2>Systems</h2>
+        <p class="sec-note">Built from delivered work, not decks. Named clients on request, under NDA where required.</p>
+      </div>
+      <div class="sys">
+        <div class="sys-row">
+          <span class="sys-num">01</span>
+          <span class="sys-name">Delivery-margin recovery</span>
+          <span class="sys-desc">Reconciles every delivery-platform order against what actually reached the bank, and finds the commissions, refunds, and missing payouts eating the margin. Built for a multi-brand cloud kitchen group.</span>
+          <span class="sys-for">F&amp;B · Delivery</span>
+        </div>
+        <div class="sys-row">
+          <span class="sys-num">02</span>
+          <span class="sys-name">Review intelligence</span>
+          <span class="sys-desc">Turns thousands of customer reviews across brands and platforms into a triaged, owner-ready queue: what broke, where, and what to fix first.</span>
+          <span class="sys-for">F&amp;B · Ops</span>
+        </div>
+        <div class="sys-row">
+          <span class="sys-num">03</span>
+          <span class="sys-name">Constraint finding</span>
+          <span class="sys-desc">A structured hunt for the one thing limiting your growth — mapped, tested, and worked with Theory-of-Constraints discipline, on a living page your team can see.</span>
+          <span class="sys-for">Founders · COOs</span>
+        </div>
+        <div class="sys-row">
+          <span class="sys-num">04</span>
+          <span class="sys-name">Partnership structuring</span>
+          <span class="sys-desc">Two founders, two agents, one canvas. A mediated process that gets contributions, splits, and roles agreed on paper before resentment does it for you.</span>
+          <span class="sys-for">Co-founders</span>
+        </div>
+        <div class="sys-row">
+          <span class="sys-num">05</span>
+          <span class="sys-name">Backlog-to-PR loops</span>
+          <span class="sys-desc">Your issue tracker groomed, scoped, and worked by supervised agents — from raw backlog to reviewed pull requests, with a human gate where it matters.</span>
+          <span class="sys-for">Software teams</span>
+        </div>
+        <div class="sys-row">
+          <span class="sys-num">06</span>
+          <span class="sys-name">Agents in the workspace</span>
+          <span class="sys-desc">Agents that read, write, and file inside Google Workspace — documents, sheets, and drives kept current without a person doing the keeping.</span>
+          <span class="sys-for">Operations</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ENGAGEMENTS ============ -->
+  <section id="engagements">
+    <div class="frame">
+      <div class="sec-head">
+        <h2>Two ways to engage</h2>
+        <p class="sec-note">Both end the same way: you, owning a system that works.</p>
+      </div>
+      <div class="modes">
+        <div class="mode">
+          <span class="label label--dark">Mode A</span>
+          <h3>Built with you</h3>
+          <p>We build the system together, in your business, with your people. Your team learns to run and extend it because they helped make it.</p>
+          <ul>
+            <li>Weekly working sessions, real deliverables</li>
+            <li>Your team ships alongside me</li>
+            <li>Capability stays when I leave</li>
+          </ul>
+        </div>
+        <div class="mode">
+          <span class="label label--dark">Mode B</span>
+          <h3>Built and handed over</h3>
+          <p>I build it, prove it on your real data, and hand it over completely. No black box, no hostage retainer — a retainer exists only if you want the system to keep getting better.</p>
+          <ul>
+            <li>Fixed scope, fixed price, real deadline</li>
+            <li>Code, data, and accounts in your name</li>
+            <li>Optional retainer for continuous improvement</li>
+          </ul>
+        </div>
+      </div>
+      <div class="terms">
+        <span class="rule"></span>
+        <p>Serious work, paid in advance. Half on signature — that part isn’t negotiable.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact">
+    <div class="frame">
+      <div class="contact-grid">
+        <div>
+          <p class="contact-lede">Tell me what’s leaking — money, time, or attention. I’ll tell you if a system can stop it.</p>
+          <div class="contact-meta">
+            <div><span class="label">Reply</span><span>Within one working day</span></div>
+            <div><span class="label">Base</span><span>Dubai, United Arab Emirates</span></div>
+            <div><span class="label">Works</span><span>English · اردو</span></div>
+          </div>
+        </div>
+        <form onsubmit="return false" aria-label="Contact form (preview)">
+          <div class="field">
+            <label class="label" for="f-name">Name</label>
+            <input id="f-name" type="text" placeholder="Your name" autocomplete="name">
+          </div>
+          <div class="field">
+            <label class="label" for="f-email">Email</label>
+            <input id="f-email" type="email" placeholder="you@company.com" autocomplete="email">
+          </div>
+          <div class="field">
+            <label class="label" for="f-sys">Which system</label>
+            <select id="f-sys">
+              <option>Not sure yet — that’s fine</option>
+              <option>Delivery-margin recovery</option>
+              <option>Review intelligence</option>
+              <option>Constraint finding</option>
+              <option>Partnership structuring</option>
+              <option>Backlog-to-PR loops</option>
+              <option>Agents in the workspace</option>
+              <option>Something else</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="label" for="f-msg">The situation</label>
+            <textarea id="f-msg" placeholder="Two or three sentences is plenty."></textarea>
+          </div>
+          <button class="btn" type="submit">Send</button>
+          <p class="form-note">Preview only — submission is wired to the production form.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="frame ft">
+    <span>© 2026 Asher Anjum</span>
+    <span>ashanjum.com</span>
+    <span>Dubai · GST+4</span>
+  </div>
+</footer>
+
+<script>
+/* ============ Fig. 01 — the twisting column ============
+   A stack of square frames, each rotated slightly against its neighbour,
+   slowly twisting as a whole. Hairline dark strokes on white; a handful of
+   edges carry the accent. Perspective projection, continuous loop.        */
+(function(){
+  var canvas = document.getElementById('column');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  var W = 0, H = 0, DPR = 1;
+  function resize(){
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    var r = canvas.getBoundingClientRect();
+    W = r.width; H = r.height;
+    canvas.width = Math.round(W * DPR);
+    canvas.height = Math.round(H * DPR);
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  window.addEventListener('resize', function(){ resize(); if (reduced.matches) draw(0.35); });
+  resize();
+
+  var LAYERS = 26;                 // square frames in the stack
+  var FOV = 640;                   // perspective strength
+  var ACCENT = '#008df4';
+  var INK = '#131316';
+
+  // rotate point around Y then X, then project
+  function project(x, y, z, ry, rx, cx, cy){
+    var c = Math.cos(ry), s = Math.sin(ry);
+    var x1 = x * c - z * s, z1 = x * s + z * c;
+    var c2 = Math.cos(rx), s2 = Math.sin(rx);
+    var y1 = y * c2 - z1 * s2, z2 = y * s2 + z1 * c2;
+    var k = FOV / (FOV + z2 + 260);
+    return { x: cx + x1 * k, y: cy + y1 * k, k: k };
+  }
+
+  function draw(t){
+    ctx.clearRect(0, 0, W, H);
+    var cx = W / 2, cy = H / 2;
+    var size = Math.min(W, H) * 0.30;          // half-width of a square
+    var height = Math.min(H * 0.72, size * 3.4);
+    var ry = t * 0.28;                          // whole-object slow spin
+    var rx = -0.16;                             // gentle downward tilt
+    var breathe = Math.sin(t * 0.5) * 0.5;      // twist oscillation
+
+    for (var i = 0; i < LAYERS; i++){
+      var f = i / (LAYERS - 1);                 // 0 bottom → 1 top
+      var y = (f - 0.5) * height;
+      // twist gradient: layers rotate against each other, oscillating
+      var tw = (f - 0.5) * (0.9 + breathe) + Math.sin(t * 0.35 + f * 2.2) * 0.06;
+      var half = size * (0.92 - 0.28 * Math.pow(Math.abs(f - 0.5) * 2, 1.6)); // subtle entasis
+      var pts = [];
+      for (var corner = 0; corner < 4; corner++){
+        var a = tw + corner * Math.PI / 2 + Math.PI / 4;
+        pts.push(project(Math.cos(a) * half * 1.414, y, Math.sin(a) * half * 1.414, ry, rx, cx, cy));
+      }
+      // depth-weighted hairline
+      var depth = (pts[0].k + pts[2].k) / 2;
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (var p = 1; p < 4; p++) ctx.lineTo(pts[p].x, pts[p].y);
+      ctx.closePath();
+      var isAccent = (i === 7 || i === 18);
+      ctx.strokeStyle = isAccent ? ACCENT : INK;
+      ctx.globalAlpha = isAccent ? 0.9 : 0.16 + depth * 0.5;
+      ctx.lineWidth = isAccent ? 1.1 : 0.7;
+      ctx.stroke();
+
+      // verticals: connect to previous layer's corners
+      if (i > 0){
+        for (var v = 0; v < 4; v++){
+          var a2 = tw + v * Math.PI / 2 + Math.PI / 4;
+          var fPrev = (i - 1) / (LAYERS - 1);
+          var twPrev = (fPrev - 0.5) * (0.9 + breathe) + Math.sin(t * 0.35 + fPrev * 2.2) * 0.06;
+          var halfPrev = size * (0.92 - 0.28 * Math.pow(Math.abs(fPrev - 0.5) * 2, 1.6));
+          var aPrev = twPrev + v * Math.PI / 2 + Math.PI / 4;
+          var p1 = project(Math.cos(a2) * half * 1.414, y, Math.sin(a2) * half * 1.414, ry, rx, cx, cy);
+          var p0 = project(Math.cos(aPrev) * halfPrev * 1.414, (fPrev - 0.5) * height, Math.sin(aPrev) * halfPrev * 1.414, ry, rx, cx, cy);
+          ctx.beginPath();
+          ctx.moveTo(p0.x, p0.y);
+          ctx.lineTo(p1.x, p1.y);
+          ctx.strokeStyle = INK;
+          ctx.globalAlpha = 0.07 + p1.k * 0.18;
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
+        }
+      }
+    }
+    // ground shadow — a soft ellipse
+    ctx.globalAlpha = 0.05;
+    ctx.fillStyle = INK;
+    ctx.beginPath();
+    ctx.ellipse(cx, cy + height / 2 + 26, size * 1.15, size * 0.16, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+
+  var raf = null, start = null;
+  function loop(ts){
+    if (start === null) start = ts;
+    draw((ts - start) / 1000);
+    raf = requestAnimationFrame(loop);
+  }
+  function arm(){
+    if (reduced.matches){
+      if (raf) cancelAnimationFrame(raf), raf = null;
+      draw(0.35);                                // considered static pose
+    } else if (!raf){
+      start = null;
+      raf = requestAnimationFrame(loop);
+    }
+  }
+  reduced.addEventListener ? reduced.addEventListener('change', arm)
+                           : reduced.addListener(arm);
+  document.addEventListener('visibilitychange', function(){
+    if (document.hidden){ if (raf) cancelAnimationFrame(raf), raf = null; }
+    else arm();
+  });
+  arm();
+})();
+</script>
+
+</body>
+</html>

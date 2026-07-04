@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>ashanjum.com — five directions</title>
+<style>
+  :root {
+    --bg: #101014; --panel: #16161c; --line: #26262e;
+    --fg: #e9e9ee; --mid: #a7a7b3; --dim: #70707c;
+  }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f7f7f5; --panel: #ffffff; --line: #e3e3de; --fg: #131316; --mid: #55555c; --dim: #8e8e95; }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--fg); font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, sans-serif; padding: 48px 24px 96px; }
+  main { max-width: 880px; margin: 0 auto; }
+  .eyebrow { font: 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
+  h1 { font-size: 28px; font-weight: 650; margin: 10px 0 6px; letter-spacing: -.01em; }
+  .sub { color: var(--mid); max-width: 60ch; }
+  .card { display: block; text-decoration: none; color: inherit; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 26px 28px; margin-top: 20px; transition: transform .15s ease, border-color .15s ease; }
+  .card:hover { transform: translateY(-2px); border-color: var(--dim); }
+  .card:first-of-type { margin-top: 36px; }
+  .row { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+  .num { font: 13px/1 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--dim); }
+  .card h2 { font-size: 20px; font-weight: 650; }
+  .pos { color: var(--mid); font-style: italic; margin-top: 6px; }
+  .desc { color: var(--mid); margin-top: 10px; font-size: 15px; }
+  .meta { margin-top: 14px; display: flex; gap: 18px; flex-wrap: wrap; font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--dim); align-items: center; }
+  .chips { display: inline-flex; gap: 5px; }
+  .chip { width: 13px; height: 13px; border-radius: 3px; border: 1px solid rgba(128,128,128,.35); display: inline-block; }
+  .open { margin-left: auto; color: var(--fg); }
+  .note { margin-top: 40px; color: var(--dim); font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">ashanjum.com — explorations · 2026-07-04</p>
+  <h1>Five directions</h1>
+  <p class="sub">Five radically different takes on the landing page — design, positioning, and copy. Open each full-screen, note what earns its place, and we combine the best bits.</p>
+
+  <a class="card" href="./v1-gallery-light.html">
+    <div class="row"><span class="num">01</span><h2>Gallery Light</h2></div>
+    <p class="pos">"Systems built properly, by one person you can name."</p>
+    <p class="desc">code.storage's light mode studied properly: white ground, hairline rules, editorial numbered systems index, magazine contact form. Restraint does the selling.</p>
+    <div class="meta">
+      <span class="chips"><span class="chip" style="background:#fff"></span><span class="chip" style="background:#070708"></span><span class="chip" style="background:#008df4"></span></span>
+      <span>motion: twisting wireframe column sculpture</span>
+      <span class="open">open →</span>
+    </div>
+  </a>
+
+  <a class="card" href="./v2-machine-dark.html">
+    <div class="row"><span class="num">02</span><h2>Machine Dark</h2></div>
+    <p class="pos">"I build the machine. You run it."</p>
+    <p class="desc">Warm near-black world where the hero's co-star is a living isometric factory: blocks ride a conveyor, get stamped into refined blue, and assemble into a wall that ships. The metaphor carries the positioning.</p>
+    <div class="meta">
+      <span class="chips"><span class="chip" style="background:#0e0e12"></span><span class="chip" style="background:#4da3ff"></span><span class="chip" style="background:#8f6bff"></span><span class="chip" style="background:#ffb054"></span></span>
+      <span>motion: deterministic isometric factory loop</span>
+      <span class="open">open →</span>
+    </div>
+  </a>
+
+  <a class="card" href="./v3-operators-letter.html">
+    <div class="row"><span class="num">03</span><h2>The Operator's Letter</h2></div>
+    <p class="pos">"You're not hiring an agency. You're hiring a person you can name."</p>
+    <p class="desc">The anti-landing-page: a single typeset letter on warm paper, fountain-pen blue, work shown as a ruled ledger inside the letter, one quiet ask — write to me. Filters out bake-off shoppers on purpose.</p>
+    <div class="meta">
+      <span class="chips"><span class="chip" style="background:#f7f3ea"></span><span class="chip" style="background:#1b1916"></span><span class="chip" style="background:#2742c8"></span></span>
+      <span>motion: opening line composes itself; signature hand-draws</span>
+      <span class="open">open →</span>
+    </div>
+  </a>
+
+  <a class="card" href="./v4-systems-catalog.html">
+    <div class="row"><span class="num">04</span><h2>Systems Catalog</h2></div>
+    <p class="pos">"Pick a system. I install it in your business."</p>
+    <p class="desc">The library IS the site: nine systems as numbered precision instruments (MR-01 … TD-09) with FOR / REPLACES / OUTPUT spec rows and status stamps, on graph paper. Working light/dark toggle.</p>
+    <div class="meta">
+      <span class="chips"><span class="chip" style="background:#f5f4ef"></span><span class="chip" style="background:#1f4fd8"></span><span class="chip" style="background:#d8551f"></span></span>
+      <span>motion: exploded-view assembly, 9s mechanical loop</span>
+      <span class="open">open →</span>
+    </div>
+  </a>
+
+  <a class="card" href="./v5-proof-ledger.html">
+    <div class="row"><span class="num">05</span><h2>Proof Ledger</h2></div>
+    <p class="pos">"The books don't lie. Your delivery platforms might."</p>
+    <p class="desc">Evidence aesthetics: real anonymized numbers as audit exhibits (40,803 orders reconciled; 9,039 outage events), NDA redaction bars where figures are private, terms as a stamped invoice. Talks money openly.</p>
+    <div class="meta">
+      <span class="chips"><span class="chip" style="background:#f5f1e8"></span><span class="chip" style="background:#181510"></span><span class="chip" style="background:#b03028"></span></span>
+      <span>motion: thermal receipt prints line-by-line, stamps RECONCILED</span>
+      <span class="open">open →</span>
+    </div>
+  </a>
+
+  <p class="note">Each page is self-contained and safe to open full-screen. All five: no yellow, no green, no internal strategy in the copy, reduced-motion respected.</p>
+</main>
+</body>
+</html>

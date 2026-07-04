@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ASH ANJUM — Systems Catalog No. 01</title>
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    --bg:#f5f4ef;
+    --surface:#fdfdfa;
+    --surface-2:#efeee7;
+    --ink:#16181d;
+    --muted:#5d6169;
+    --faint:#8b8e95;
+    --line:#d9d6cc;
+    --line-strong:#b9b5a8;
+    --accent:#1f4fd8;
+    --accent-ink:#ffffff;
+    --accent-2:#d8551f;
+    --grid:rgba(22,24,29,.045);
+    --shadow:0 18px 40px -18px rgba(22,24,29,.25);
+    --plate-top:#fdfdfa;
+    --plate-side:#e3e1d7;
+    --plate-stroke:#16181d;
+  }
+  :root[data-theme="dark"]{
+    --bg:#101114;
+    --surface:#17181d;
+    --surface-2:#1d1f25;
+    --ink:#e9e8e2;
+    --muted:#a0a2a8;
+    --faint:#6d7077;
+    --line:#2b2d34;
+    --line-strong:#3d404a;
+    --accent:#6f96ff;
+    --accent-ink:#0d1120;
+    --accent-2:#ff8250;
+    --grid:rgba(233,232,226,.05);
+    --shadow:0 18px 40px -18px rgba(0,0,0,.7);
+    --plate-top:#1d1f25;
+    --plate-side:#101114;
+    --plate-stroke:#e9e8e2;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme]){
+      --bg:#101114; --surface:#17181d; --surface-2:#1d1f25;
+      --ink:#e9e8e2; --muted:#a0a2a8; --faint:#6d7077;
+      --line:#2b2d34; --line-strong:#3d404a;
+      --accent:#6f96ff; --accent-ink:#0d1120; --accent-2:#ff8250;
+      --grid:rgba(233,232,226,.05);
+      --shadow:0 18px 40px -18px rgba(0,0,0,.7);
+      --plate-top:#1d1f25; --plate-side:#101114; --plate-stroke:#e9e8e2;
+    }
+  }
+
+  /* ============ BASE ============ */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:28px 28px;
+    color:var(--ink);
+    font-family:-apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size:16px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace}
+  a{color:inherit}
+  ::selection{background:var(--accent);color:var(--accent-ink)}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+  section{border-bottom:1px solid var(--line-strong)}
+
+  .seclabel{
+    font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--muted);
+    display:flex;align-items:center;gap:12px;
+    padding:14px 0;border-bottom:1px solid var(--line);
+  }
+  .seclabel::after{content:"";flex:1;border-top:1px dashed var(--line-strong)}
+
+  /* ============ TOP BAR ============ */
+  header{
+    border-bottom:1px solid var(--line-strong);
+    position:sticky;top:0;z-index:50;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(8px);
+  }
+  .bar{display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px}
+  .brand{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+  .brand b{font-weight:700}
+  .brand span{color:var(--muted)}
+  .barmeta{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:11px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:18px}
+  .barmeta .doc{display:none}
+  @media(min-width:760px){.barmeta .doc{display:inline}}
+  #themeBtn{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    background:none;border:1px solid var(--line-strong);color:var(--ink);
+    padding:6px 12px;cursor:pointer;border-radius:2px;
+  }
+  #themeBtn:hover{border-color:var(--ink)}
+
+  /* ============ HERO ============ */
+  .hero{display:grid;grid-template-columns:1fr;gap:40px;padding:64px 0 72px}
+  @media(min-width:920px){.hero{grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}}
+  .kicker{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:22px}
+  h1{font-size:clamp(34px,5vw,58px);line-height:1.04;letter-spacing:-.02em;font-weight:700;max-width:14ch}
+  .hero p.lede{margin-top:22px;font-size:18px;color:var(--muted);max-width:46ch}
+  .hero .ctas{margin-top:32px;display:flex;gap:12px;flex-wrap:wrap}
+  .btn{
+    display:inline-block;text-decoration:none;
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+    padding:13px 22px;border-radius:2px;border:1px solid var(--ink);
+  }
+  .btn.primary{background:var(--ink);color:var(--bg)}
+  .btn.primary:hover{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+  .btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
+  .hero-note{margin-top:26px;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:11.5px;letter-spacing:.06em;color:var(--faint)}
+
+  /* ============ FIGURE / EXPLODED VIEW ============ */
+  .fig{
+    border:1px solid var(--line-strong);
+    background:var(--surface);
+    box-shadow:var(--shadow);
+    padding:10px 10px 0;
+    border-radius:3px;
+  }
+  .fig-inner{border:1px dashed var(--line);padding:6px 4px 0}
+  .fig svg{display:block;width:100%;height:auto}
+  .figcap{
+    display:flex;justify-content:space-between;gap:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+    padding:10px 6px 12px;
+  }
+  .figcap b{color:var(--ink);font-weight:600}
+
+  .plate-top{fill:var(--plate-top);stroke:var(--plate-stroke);stroke-width:1.1}
+  .plate-side{fill:var(--plate-side);stroke:var(--plate-stroke);stroke-width:1.1}
+  .plate-accent .plate-top{fill:var(--accent);stroke:var(--accent)}
+  .plate-accent .plate-side{fill:color-mix(in srgb, var(--accent) 60%, #000);stroke:var(--accent)}
+  .leader{stroke:var(--line-strong);stroke-width:1;stroke-dasharray:3 3}
+  .ptlabel{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:10px;letter-spacing:.12em;fill:var(--muted)}
+  .ptlabel tspan{fill:var(--ink);font-weight:600}
+  .dim{stroke:var(--faint);stroke-width:1}
+  .dimtext{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:9px;letter-spacing:.1em;fill:var(--faint)}
+
+  /* mechanical assemble / disassemble loop */
+  .plate{animation:explode 9s cubic-bezier(.65,.05,.17,1) infinite}
+  .plate .tag{animation:tagfade 9s linear infinite}
+  @keyframes explode{
+    0%,12%   {transform:translateY(var(--y0))}
+    38%,66%  {transform:translateY(var(--y1))}
+    92%,100% {transform:translateY(var(--y0))}
+  }
+  @keyframes tagfade{
+    0%,20%{opacity:0}
+    36%,66%{opacity:1}
+    82%,100%{opacity:0}
+  }
+  .p1{--y0:0px;   --y1:0px}
+  .p2{--y0:26px;  --y1:96px;  animation-delay:-.06s}
+  .p3{--y0:52px;  --y1:192px; animation-delay:-.12s}
+  .p4{--y0:78px;  --y1:288px; animation-delay:-.18s}
+  .p5{--y0:104px; --y1:384px; animation-delay:-.24s}
+  .p2 .tag{animation-delay:-.06s}.p3 .tag{animation-delay:-.12s}
+  .p4 .tag{animation-delay:-.18s}.p5 .tag{animation-delay:-.24s}
+
+  /* ============ INDEX ============ */
+  .indexgrid{display:grid;grid-template-columns:1fr;padding:0 0 8px}
+  @media(min-width:760px){.indexgrid{grid-template-columns:1fr 1fr}}
+  .idx{
+    display:grid;grid-template-columns:92px 1fr auto;gap:14px;align-items:baseline;
+    padding:13px 8px;border-bottom:1px solid var(--line);text-decoration:none;
+  }
+  .idx:hover{background:var(--surface)}
+  .idx .code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:12px;letter-spacing:.1em;color:var(--accent);font-weight:600}
+  .idx .nm{font-size:15px;font-weight:600}
+  .idx .pg{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:11px;color:var(--faint);letter-spacing:.1em}
+
+  /* ============ CATALOG ENTRIES ============ */
+  .series-note{padding:22px 0 6px;color:var(--muted);max-width:64ch}
+  .entry{
+    display:grid;grid-template-columns:1fr;gap:18px;
+    border:1px solid var(--line-strong);background:var(--surface);
+    margin:22px 0;padding:22px;border-radius:3px;
+    position:relative;
+    transition:transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s cubic-bezier(.2,.7,.2,1);
+  }
+  .entry:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+  @media(min-width:920px){.entry{grid-template-columns:170px 1.2fr 1fr;gap:28px;padding:26px 28px}}
+  .entry .desig{display:flex;flex-direction:column;gap:8px}
+  .entry .code{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:15px;font-weight:700;letter-spacing:.1em;color:var(--accent)
+  }
+  .entry .status{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+    border:1px solid var(--line-strong);color:var(--muted);
+    padding:4px 8px;border-radius:2px;width:max-content;
+  }
+  .entry .status.proven{border-color:var(--accent-2);color:var(--accent-2)}
+  .entry h3{font-size:20px;letter-spacing:-.01em;margin-bottom:8px}
+  .entry .fn{color:var(--muted);max-width:52ch}
+  .spec{border-top:1px solid var(--line);margin-top:4px}
+  .spec .row{display:grid;grid-template-columns:98px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .spec .k{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);padding-top:3px}
+  .spec .v{color:var(--ink)}
+  .entry .modes{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+  .chip{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;border:1px dashed var(--line-strong);padding:4px 9px;border-radius:2px;color:var(--muted)}
+
+  /* ============ ENGAGEMENT ============ */
+  .modesgrid{display:grid;grid-template-columns:1fr;gap:0;border:1px solid var(--line-strong);background:var(--surface);margin:26px 0;border-radius:3px;overflow:hidden}
+  @media(min-width:820px){.modesgrid{grid-template-columns:1fr 1fr}}
+  .mode{padding:28px}
+  .mode+.mode{border-top:1px solid var(--line-strong)}
+  @media(min-width:820px){.mode+.mode{border-top:none;border-left:1px solid var(--line-strong)}}
+  .mode .mcode{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:12px;letter-spacing:.16em;color:var(--accent);font-weight:700;margin-bottom:12px}
+  .mode h3{font-size:19px;margin-bottom:10px}
+  .mode p{color:var(--muted);font-size:15px}
+  .ownership{
+    padding:18px 24px 26px;color:var(--muted);font-size:15px;max-width:72ch;
+  }
+  .ownership b{color:var(--ink)}
+
+  /* ============ CONTACT ============ */
+  .contact{display:grid;grid-template-columns:1fr;gap:36px;padding:30px 0 64px}
+  @media(min-width:920px){.contact{grid-template-columns:1fr 1.1fr}}
+  .contact h2{font-size:clamp(26px,3.4vw,38px);letter-spacing:-.02em;line-height:1.1;max-width:16ch}
+  .contact .sub{margin-top:16px;color:var(--muted);max-width:44ch}
+  .contact .terms{margin-top:22px;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:11.5px;letter-spacing:.08em;color:var(--faint);line-height:2}
+  form{border:1px solid var(--line-strong);background:var(--surface);padding:26px;border-radius:3px;box-shadow:var(--shadow)}
+  .field{margin-bottom:16px}
+  label{display:block;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+  input,select,textarea{
+    width:100%;background:var(--bg);border:1px solid var(--line-strong);color:var(--ink);
+    font-family:inherit;font-size:15px;padding:11px 12px;border-radius:2px;
+  }
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+  textarea{min-height:96px;resize:vertical}
+  form .btn{width:100%;text-align:center;cursor:pointer;background:var(--ink);color:var(--bg);border:1px solid var(--ink);font-size:13px}
+  form .btn:hover{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+  .formnote{margin-top:12px;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:10.5px;letter-spacing:.08em;color:var(--faint);text-align:center}
+
+  /* ============ FOOTER ============ */
+  footer{padding:26px 0 48px;border:none}
+  .foot{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-play-state:paused !important;transition:none !important}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="#top"><b>ASH&nbsp;ANJUM</b>&nbsp;<span>/ SYSTEMS CATALOG</span></a>
+    <div class="barmeta">
+      <span class="doc">DOC. No. AA-CAT-01 · DUBAI · 2026</span>
+      <button id="themeBtn" type="button" aria-label="Toggle color theme">Theme</button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ §00 HERO ============ -->
+<section id="top">
+  <div class="wrap hero">
+    <div>
+      <div class="kicker">§00 — Working systems, not advice</div>
+      <h1>Pick a system. I install it in your business.</h1>
+      <p class="lede">Every entry in this catalog is a working system — built on real operations, specified like a part, installed in yours. You run it. You own it.</p>
+      <div class="ctas">
+        <a class="btn primary" href="#contact">Request an installation</a>
+        <a class="btn ghost" href="#index">Browse the catalog</a>
+      </div>
+      <p class="hero-note">NINE SYSTEMS LISTED · TWO INSTALLATION MODES · REPLY WITHIN ONE WORKING DAY</p>
+    </div>
+
+    <figure class="fig" aria-label="Exploded view of a reconciliation system, continuously assembling and disassembling">
+      <div class="fig-inner">
+        <svg viewBox="0 0 560 620" role="img" aria-hidden="true">
+          <!-- dimension bracket -->
+          <g>
+            <line class="dim" x1="36" y1="70" x2="36" y2="560"/>
+            <line class="dim" x1="30" y1="70" x2="42" y2="70"/>
+            <line class="dim" x1="30" y1="560" x2="42" y2="560"/>
+            <text class="dimtext" x="24" y="320" transform="rotate(-90 24 320)" text-anchor="middle">ASSEMBLY AA-RC-03 · FIVE STAGES</text>
+          </g>
+
+          <!-- plates: top of stack drawn first, front-most (lowest) last -->
+          <g transform="translate(90,80)">
+            <g class="plate p1">
+              <path class="plate-side" d="M0,0 L0,13 L120,73 L120,60 Z"/>
+              <path class="plate-side" d="M240,0 L240,13 L120,73 L120,60 Z"/>
+              <path class="plate-top"  d="M0,0 L120,-60 L240,0 L120,60 Z"/>
+              <g class="tag">
+                <line class="leader" x1="242" y1="2" x2="300" y2="-14"/>
+                <text class="ptlabel" x="306" y="-11">01 / <tspan>INTAKE</tspan> — statements, exports, feeds</text>
+              </g>
+            </g>
+            <g class="plate p2">
+              <path class="plate-side" d="M0,0 L0,13 L120,73 L120,60 Z"/>
+              <path class="plate-side" d="M240,0 L240,13 L120,73 L120,60 Z"/>
+              <path class="plate-top"  d="M0,0 L120,-60 L240,0 L120,60 Z"/>
+              <g class="tag">
+                <line class="leader" x1="242" y1="2" x2="300" y2="-14"/>
+                <text class="ptlabel" x="306" y="-11">02 / <tspan>NORMALIZE</tspan> — one shape for every source</text>
+              </g>
+            </g>
+            <g class="plate p3 plate-accent">
+              <path class="plate-side" d="M0,0 L0,13 L120,73 L120,60 Z"/>
+              <path class="plate-side" d="M240,0 L240,13 L120,73 L120,60 Z"/>
+              <path class="plate-top"  d="M0,0 L120,-60 L240,0 L120,60 Z"/>
+              <g class="tag">
+                <line class="leader" x1="242" y1="2" x2="300" y2="-14"/>
+                <text class="ptlabel" x="306" y="-11">03 / <tspan>MATCH</tspan> — every line accounted for</text>
+              </g>
+            </g>
+            <g class="plate p4">
+              <path class="plate-side" d="M0,0 L0,13 L120,73 L120,60 Z"/>
+              <path class="plate-side" d="M240,0 L240,13 L120,73 L120,60 Z"/>
+              <path class="plate-top"  d="M0,0 L120,-60 L240,0 L120,60 Z"/>
+              <g class="tag">
+                <line class="leader" x1="242" y1="2" x2="300" y2="-14"/>
+                <text class="ptlabel" x="306" y="-11">04 / <tspan>RULES</tspan> — your policy, made executable</text>
+              </g>
+            </g>
+            <g class="plate p5">
+              <path class="plate-side" d="M0,0 L0,13 L120,73 L120,60 Z"/>
+              <path class="plate-side" d="M240,0 L240,13 L120,73 L120,60 Z"/>
+              <path class="plate-top"  d="M0,0 L120,-60 L240,0 L120,60 Z"/>
+              <g class="tag">
+                <line class="leader" x1="242" y1="2" x2="300" y2="-14"/>
+                <text class="ptlabel" x="306" y="-11">05 / <tspan>LEDGER</tspan> — exceptions, recoveries, proof</text>
+              </g>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <figcaption class="figcap">
+        <span><b>FIG. 1</b> — Reconciliation system, exploded view</span>
+        <span>SCALE — NONE · LOOP — CONTINUOUS</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ §01 INDEX ============ -->
+<section id="index">
+  <div class="wrap">
+    <div class="seclabel">§01 — Index of systems</div>
+    <div class="indexgrid">
+      <a class="idx" href="#mr-01"><span class="code">MR-01</span><span class="nm">Margin Recovery</span><span class="pg">FIELD</span></a>
+      <a class="idx" href="#cf-05"><span class="code">CF-05</span><span class="nm">Constraint Finder</span><span class="pg">PROCESS</span></a>
+      <a class="idx" href="#ri-02"><span class="code">RI-02</span><span class="nm">Review Intelligence</span><span class="pg">FIELD</span></a>
+      <a class="idx" href="#fd-06"><span class="code">FD-06</span><span class="nm">Fair Deal Canvas</span><span class="pg">PROCESS</span></a>
+      <a class="idx" href="#rc-03"><span class="code">RC-03</span><span class="nm">Reconciliation Pipeline</span><span class="pg">FIELD</span></a>
+      <a class="idx" href="#bt-07"><span class="code">BT-07</span><span class="nm">Backlog Triage Loop</span><span class="pg">PROCESS</span></a>
+      <a class="idx" href="#oa-04"><span class="code">OA-04</span><span class="nm">Ops Analytics</span><span class="pg">FIELD</span></a>
+      <a class="idx" href="#sl-08"><span class="code">SL-08</span><span class="nm">Skill Loop</span><span class="pg">PROCESS</span></a>
+      <a class="idx" href="#td-09"><span class="code">TD-09</span><span class="nm">TeamDrive</span><span class="pg">PROCESS</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ §02 FIELD UNITS ============ -->
+<section>
+  <div class="wrap" style="padding-bottom:40px">
+    <div class="seclabel">§02 — Field units · built and running in real operations</div>
+    <p class="series-note">These systems exist because a real business needed them. They have processed real statements, real reviews, real orders. Installation adapts them to your operation — it does not start from a blank page.</p>
+
+    <article class="entry" id="mr-01">
+      <div class="desig">
+        <span class="code">MR-01</span>
+        <span class="status proven">Field-proven</span>
+      </div>
+      <div>
+        <h3>Margin Recovery</h3>
+        <p class="fn">Reconciles delivery-platform statements against your orders, line by line, and finds the money that never arrived — wrong commissions, missed refunds, silent adjustments.</p>
+        <div class="modes"><span class="chip">Installed with you</span><span class="chip">Installed &amp; handed over</span></div>
+      </div>
+      <div class="spec">
+        <div class="row"><span class="k">For</span><span class="v">Restaurants and cloud kitchens selling through delivery platforms</span></div>
+        <div class="row"><span class="k">Replaces</span><span class="v">Trusting the platform statement; writing off discrepancies as noise</span></div>
+        <div class="row"><span class="k">Output</span><span class="v">An exception ledger with the dirhams attached to every line</span></div>
+      </div>
+    </article>
+
+    <article class="entry" id="ri-02">
+      <div class="desig">
+        <span class="code">RI-02</span>
+        <span class="status proven">Field-proven</span>
+      </div>
+      <div>
+        <h3>Review Intelligence</h3>
+        <p class="fn">Reads every customer review across your brands and locations, separates signal from venting, and routes what matters to the person who can fix it. Proven across a 30-brand operation.</p>
+        <div class="modes"><span class="chip">Installed with you</span><span class="chip">Installed &amp; handed over</span></div>
+      </div>
+      <div class="spec">
+        <div class="row"><span class="k">For</span><span class="v">Multi-brand and multi-location operators drowning in review volume</span></div>
+        <div class="row"><span class="k">Replaces</span><span class="v">Skimming ratings dashboards; finding out about problems a month late</span></div>
+        <div class="row"><span class="k">Output</span><span class="v">A triage board: issue, evidence, owner, trend</span></div>
+      </div>
+    </article>
+
+    <article class="entry" id="rc-03">
+      <div class="desig">
+        <span class="code">RC-03</span>
+        <span class="status proven">Field-proven</span>
+      </div>
+      <div>
+        <h3>Reconciliation Pipeline</h3>
+        <p class="fn">The general machine behind MR-01: takes financial data from systems that disagree — banks, platforms, POS, ERP exports — and produces one matched, auditable ledger.</p>
+        <div class="modes"><span class="chip">Installed with you</span><span class="chip">Installed &amp; handed over</span></div>
+      </div>
+      <div class="spec">
+        <div class="row"><span class="k">For</span><span class="v">Finance teams closing the month from spreadsheets and hope</span></div>
+        <div class="row"><span class="k">Replaces</span><span class="v">VLOOKUP marathons; discrepancies nobody can explain</span></div>
+        <div class="row"><span class="k">Output</span><span class="v">Matched records, flagged exceptions, an audit trail</span></div>
+      </div>
+    </article>
+
+    <article class="entry" id="oa-04">
+      <div class="desig">
+        <span class="code">OA-04</span>
+        <span class="status proven">Field-proven</span>
+      </div>
+      <div>
+        <h3>Ops Analytics</h3>
+        <p class="fn">Turns raw operational exports — menus, orders, platform data — into the handful of numbers an operator actually decides with, refreshed without anyone assembling a report.</p>
+        <div class="modes"><span class="chip">Installed with you</span><span class="chip">Installed &amp; handed over</span></div>
+      </div>
+      <div class="spec">
+        <div class="row"><span class="k">For</span><span class="v">Operators who make weekly calls on menus, pricing, and locations</span></div>
+        <div class="row"><span class="k">Replaces</span><span class="v">The analyst bottleneck; decisions made on last quarter's numbers</span></div>
+        <div class="row"><span class="k">Output</span><span class="v">Live decision views per brand, per location, per item</span></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ §03 PROCESS UNITS ============ -->
+<section>
+  <div class="wrap" style="padding-bottom:40px">
+    <div class="seclabel">§03 — Process units · working methods installed as systems</div>
+    <p class="series-note">Not every system is a pipeline. These install a working method into your team — run by agents, supervised by people, with the state visible on one page.</p>
+
+    <article class="entry" id="cf-05">
+      <div class="desig">
+        <span class="code">CF-05</span>
+        <span class="status">In service</span>
+      </div>
+      <div>
+        <h3>Constraint Finder</h3>
+        <p class="fn">A structured hunt for the one thing limiting your business right now — flow-mapped, suspects eliminated with evidence, then an experiment designed to exploit the constraint before you spend on anything else.</p>
+        <div class="modes"><span class="chip">Installed with you</span></div>
+      </div>
+      <div class="spec">
+        <div class="row"><span class="k">For</span><span class="v">Founders and COOs asking "why aren't we growing / shipping / finishing more?"</span></div>
+        <div class="row"><span class="k">Replaces</span><span class="v">Improving everything a little; fixing what's loudest instead of what's binding</span></div>
+        <div class="row"><span class="k">Output</span><span class="v">One named constraint, one live experiment, one visual state page</span></div>
+      </div>
+    </article>
+
+    <article class="entry" id="fd-06">
+      <div class="desig">
+        <span class="code">FD-06</span>
+        <span class="status">In service</span>
+      </div>
+      <div>
+        <h3>Fair Deal Canvas</h3>
+        <p class="fn">Structures a partnership before it starts — contributions, split, roles, funding — with each side's position researched against objective benchmarks and negotiated on the record, not over dinner.</p>
+        <div class="modes"><span class="chip">Installed with you</span></div>
+      </div>
+      <div class="spec">
+        <div class="row"><span class="k">For</span><span class="v">Co-founders, JV partners, and friends going into business together</span></div>
+        <div class="row"><span class="k">Replaces</span><span class="v">Handshake equity; the deal you regret because you liked the person</span></div>
+        <div class="row"><span class="k">Output</span><span class="v">A completed deal canvas both sides signed off on</span></div>
+      </div>
+    </article>
+
+    <article class="entry" id="bt-07">
+      <div class="desig">
+        <span class="code">BT-07</span>
+        <span class="status">In service</span>
+      </div>
+      <div>
+        <h3>Backlog Triage Loop</h3>
+        <p class="fn">Grooms your issue backlog to agent-ready, runs qualified issues through AI agents, and lands reviewed pull requests — a standing loop, not a one-off cleanup.</p>
+        <div class="modes"><span class="chip">Installed with you</span><span class="chip">Installed &amp; handed over</span></div>
+      </div>
+      <div class="spec">
+        <div class="row"><span class="k">For</span><span class="v">Software teams with a backlog that only ever grows</span></div>
+        <div class="row"><span class="k">Replaces</span><span class="v">Stale issues, idle AI seats, engineers doing janitorial tickets</span></div>
+        <div class="row"><span class="k">Output</span><span class="v">A groomed backlog and a steady stream of reviewed PRs</span></div>
+      </div>
+    </article>
+
+    <article class="entry" id="sl-08">
+      <div class="desig">
+        <span class="code">SL-08</span>
+        <span class="status">In service</span>
+      </div>
+      <div>
+        <h3>Skill Loop</h3>
+        <p class="fn">Takes an AI workflow your team already runs and improves it against evaluations — iterating until the numbers stop moving, so quality is measured, not vibes.</p>
+        <div class="modes"><span class="chip">Installed with you</span><span class="chip">Installed &amp; handed over</span></div>
+      </div>
+      <div class="spec">
+        <div class="row"><span class="k">For</span><span class="v">Teams whose AI workflows work "usually" and fail quietly</span></div>
+        <div class="row"><span class="k">Replaces</span><span class="v">Prompt tweaking by feel; discovering regressions from complaints</span></div>
+        <div class="row"><span class="k">Output</span><span class="v">An eval suite and a workflow that beats its own baseline</span></div>
+      </div>
+    </article>
+
+    <article class="entry" id="td-09">
+      <div class="desig">
+        <span class="code">TD-09</span>
+        <span class="status">In service</span>
+      </div>
+      <div>
+        <h3>TeamDrive</h3>
+        <p class="fn">Puts AI agents to work inside the tools your team already lives in — Google Drive, Docs, Sheets, Slides — editing in place with revision history intact, instead of copy-pasting through a chat window.</p>
+        <div class="modes"><span class="chip">Installed with you</span><span class="chip">Installed &amp; handed over</span></div>
+      </div>
+      <div class="spec">
+        <div class="row"><span class="k">For</span><span class="v">Ops and back-office teams that run on Google Workspace</span></div>
+        <div class="row"><span class="k">Replaces</span><span class="v">The chat-to-doc copy-paste loop; documents nobody keeps current</span></div>
+        <div class="row"><span class="k">Output</span><span class="v">Agents working your real files, with every change tracked</span></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ §04 ENGAGEMENT ============ -->
+<section>
+  <div class="wrap" style="padding-bottom:32px">
+    <div class="seclabel">§04 — Installation modes</div>
+    <div class="modesgrid">
+      <div class="mode">
+        <div class="mcode">MODE A</div>
+        <h3>Installed with you</h3>
+        <p>We build the system inside your operation, together. Your team learns how it works while it's being fitted, and can run and modify it the day I leave.</p>
+      </div>
+      <div class="mode">
+        <div class="mcode">MODE B</div>
+        <h3>Installed and handed over</h3>
+        <p>I build it, fit it, and hand it over — code, data, credentials, documentation. An optional service retainer keeps it tuned; it never keeps you hostage.</p>
+      </div>
+    </div>
+    <p class="ownership"><b>Ownership is the point.</b> Every installation ends with you holding the keys. No black boxes, no platform you're renting from me, no dependency dressed up as a service.</p>
+  </div>
+</section>
+
+<!-- ============ §05 CONTACT ============ -->
+<section id="contact" style="border-bottom:none">
+  <div class="wrap">
+    <div class="seclabel">§05 — Request an installation</div>
+    <div class="contact">
+      <div>
+        <h2>Tell me which system. I'll tell you what it takes.</h2>
+        <p class="sub">A short call to look at your operation, then a fixed written scope with the price on it. If a system isn't worth installing in your business, I'll say so on the call.</p>
+        <p class="terms">
+          FIXED SCOPE, WRITTEN FIRST · ADVANCE-BILLED, 50% ON SIGNATURE<br>
+          BUILT IN DUBAI · REPLY WITHIN ONE WORKING DAY
+        </p>
+      </div>
+      <form id="leadForm" novalidate>
+        <div class="field">
+          <label for="f-name">Name</label>
+          <input id="f-name" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="f-email">Work email</label>
+          <input id="f-email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="f-company">Company</label>
+          <input id="f-company" name="company" type="text" autocomplete="organization">
+        </div>
+        <div class="field">
+          <label for="f-system">System of interest</label>
+          <select id="f-system" name="system">
+            <option value="">— Select from catalog —</option>
+            <option>MR-01 · Margin Recovery</option>
+            <option>RI-02 · Review Intelligence</option>
+            <option>RC-03 · Reconciliation Pipeline</option>
+            <option>OA-04 · Ops Analytics</option>
+            <option>CF-05 · Constraint Finder</option>
+            <option>FD-06 · Fair Deal Canvas</option>
+            <option>BT-07 · Backlog Triage Loop</option>
+            <option>SL-08 · Skill Loop</option>
+            <option>TD-09 · TeamDrive</option>
+            <option>Not sure — help me pick</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-msg">What's breaking, roughly</label>
+          <textarea id="f-msg" name="message" placeholder="Two sentences is plenty."></textarea>
+        </div>
+        <button class="btn" type="submit">Send the request</button>
+        <p class="formnote">GOES DIRECTLY TO ASHER · NO NEWSLETTER, NO SEQUENCE</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <span>ASH ANJUM · SYSTEMS CATALOG No. 01</span>
+    <span>DUBAI · 2026 · ALL SYSTEMS OWNED BY THEIR BUYERS</span>
+  </div>
+</footer>
+
+<script>
+  // Theme toggle: default follows OS; explicit choice pinned on <html data-theme>
+  (function(){
+    var btn = document.getElementById('themeBtn');
+    btn.addEventListener('click', function(){
+      var root = document.documentElement;
+      var current = root.getAttribute('data-theme');
+      if(!current){
+        current = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      root.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+    });
+  })();
+
+  // Lead form stub: this exploration has no backend — hand off to mail client
+  (function(){
+    var form = document.getElementById('leadForm');
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var v = function(id){ return encodeURIComponent(document.getElementById(id).value || ''); };
+      var subject = encodeURIComponent('Installation request: ' + (document.getElementById('f-system').value || 'from the catalog'));
+      var body = 'Name: ' + v('f-name') + '%0AEmail: ' + v('f-email') + '%0ACompany: ' + v('f-company') + '%0A%0A' + v('f-msg');
+      window.location.href = 'mailto:as.asher.anjum@gmail.com?subject=' + subject + '&body=' + body;
+    });
+  })();
+</script>
+</body>
+</html>

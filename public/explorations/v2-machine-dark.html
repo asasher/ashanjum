@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ash Anjum — I build the machine. You run it.</title>
+<style>
+  :root{
+    --bg:#0e0e12; --bg2:#131318; --panel:#16161c; --panel2:#1a1a21;
+    --line:#26262e; --line2:#31313b;
+    --fg:#e9e9ee; --fg2:#a7a7b3; --fg3:#70707c;
+    --acc:#4da3ff; --acc-deep:#1c5ea8; --acc2:#8f6bff; --spark:#ffb054;
+    --radius:10px;
+    --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:
+      radial-gradient(1200px 700px at 68% 12%, #17171e 0%, transparent 60%),
+      var(--bg);
+    color:var(--fg); font-family:var(--sans);
+    font-size:16px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  .mono{font-family:var(--mono)}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .brand{font-family:var(--mono);font-size:14px;letter-spacing:.04em;color:var(--fg)}
+  .brand b{color:var(--acc);font-weight:600}
+  .nav-links{display:flex;gap:28px;font-size:14px;color:var(--fg2)}
+  .nav-links a:hover{color:var(--fg)}
+  .nav-cta{
+    font-size:13.5px;padding:8px 16px;border:1px solid var(--line2);
+    border-radius:8px;color:var(--fg);transition:border-color .2s,background .2s;
+  }
+  .nav-cta:hover{border-color:var(--acc);background:color-mix(in srgb, var(--acc) 10%, transparent)}
+
+  /* ---------- hero ---------- */
+  .hero{padding:84px 0 72px;display:grid;grid-template-columns:1.02fr 1fr;gap:48px;align-items:center}
+  .eyebrow{
+    font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+    color:var(--fg3);text-transform:uppercase;margin-bottom:22px;
+  }
+  .eyebrow em{color:var(--acc);font-style:normal}
+  h1{
+    font-size:clamp(38px,5vw,58px);line-height:1.05;letter-spacing:-.02em;
+    font-weight:650;
+  }
+  h1 .run{color:var(--fg3)}
+  .hero p.sub{margin:26px 0 34px;font-size:18px;color:var(--fg2);max-width:46ch}
+  .hero p.sub strong{color:var(--fg);font-weight:550}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+  .btn{
+    display:inline-block;padding:13px 24px;border-radius:9px;font-size:15px;font-weight:550;
+    transition:transform .15s, box-shadow .2s, background .2s, border-color .2s;
+  }
+  .btn:active{transform:translateY(1px)}
+  .btn-primary{
+    background:var(--acc);color:#06101c;
+    box-shadow:0 0 0 0 transparent;
+  }
+  .btn-primary:hover{background:#6db4ff;box-shadow:0 6px 28px -8px color-mix(in srgb, var(--acc) 60%, transparent)}
+  .btn-ghost{border:1px solid var(--line2);color:var(--fg2)}
+  .btn-ghost:hover{border-color:var(--fg3);color:var(--fg)}
+
+  .stage{
+    position:relative;border:1px solid var(--line);border-radius:14px;
+    background:
+      radial-gradient(600px 380px at 50% 30%, #1a1a22 0%, transparent 70%),
+      var(--bg2);
+    overflow:hidden;
+    aspect-ratio:10/9;
+    min-height:360px;
+  }
+  .stage canvas{display:block;width:100%;height:100%}
+  .fig{
+    position:absolute;left:14px;bottom:11px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--fg3);
+    user-select:none;
+  }
+  .fig i{font-style:normal;color:var(--acc)}
+
+  /* ---------- sections ---------- */
+  section{padding:88px 0;border-top:1px solid var(--line)}
+  .sec-head{margin-bottom:44px;max-width:60ch}
+  .sec-eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg3);margin-bottom:14px}
+  h2{font-size:clamp(26px,3.2vw,36px);letter-spacing:-.015em;font-weight:640;line-height:1.15}
+  .sec-head p{margin-top:14px;color:var(--fg2);font-size:16.5px}
+
+  /* modes */
+  .modes{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .mode{
+    border:1px solid var(--line);border-radius:var(--radius);
+    background:var(--panel);padding:32px 30px;
+    transition:border-color .2s, transform .2s;
+  }
+  .mode:hover{border-color:var(--line2);transform:translateY(-2px)}
+  .mode .tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;color:var(--acc);text-transform:uppercase}
+  .mode.alt .tag{color:var(--acc2)}
+  .mode h3{font-size:21px;margin:12px 0 12px;font-weight:600}
+  .mode p{color:var(--fg2);font-size:15.5px}
+  .terms{
+    margin-top:20px;padding:18px 22px;border:1px solid var(--line);border-radius:var(--radius);
+    background:color-mix(in srgb, var(--panel) 60%, transparent);
+    color:var(--fg2);font-size:15px;
+  }
+  .terms b{color:var(--fg);font-weight:560}
+
+  /* systems */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .card{
+    border:1px solid var(--line);border-radius:var(--radius);
+    background:var(--panel);padding:26px 24px;
+    display:flex;flex-direction:column;gap:10px;
+    transition:border-color .2s, transform .2s;
+  }
+  .card:hover{border-color:var(--acc-deep);transform:translateY(-2px)}
+  .card .dot{width:9px;height:9px;border-radius:2px;margin-bottom:6px}
+  .card h3{font-size:17.5px;font-weight:600;letter-spacing:-.01em}
+  .card p{color:var(--fg2);font-size:14.5px;flex:1}
+  .card .for{font-family:var(--mono);font-size:11.5px;color:var(--fg3);letter-spacing:.04em}
+  .card .for b{color:var(--fg2);font-weight:500}
+
+  /* how */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;counter-reset:step}
+  .step{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);padding:28px 26px}
+  .step .n{font-family:var(--mono);font-size:12px;color:var(--acc);letter-spacing:.12em;margin-bottom:14px}
+  .step h3{font-size:18px;font-weight:600;margin-bottom:10px}
+  .step p{color:var(--fg2);font-size:15px}
+
+  /* contact */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+  form{display:grid;gap:14px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  label{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;color:var(--fg3);text-transform:uppercase;display:block;margin-bottom:7px}
+  input,select,textarea{
+    width:100%;background:var(--bg2);border:1px solid var(--line2);border-radius:8px;
+    color:var(--fg);padding:12px 14px;font-size:15px;font-family:var(--sans);
+    transition:border-color .2s;
+  }
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--acc)}
+  textarea{min-height:120px;resize:vertical}
+  .form-note{font-family:var(--mono);font-size:12px;color:var(--fg3);margin-top:6px}
+
+  footer{border-top:1px solid var(--line);padding:36px 0;color:var(--fg3);font-size:13.5px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  footer .mono{font-size:12px}
+
+  @media (max-width:920px){
+    .hero{grid-template-columns:1fr;padding-top:52px}
+    .stage{min-height:320px}
+    .modes,.grid,.steps,.contact-grid{grid-template-columns:1fr}
+    .row2{grid-template-columns:1fr}
+    .nav-links{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#">ash<b>anjum</b><span style="color:var(--fg3)">.com</span></a>
+    <nav class="nav-links">
+      <a href="#systems">Systems</a>
+      <a href="#how">How it goes</a>
+      <a href="#modes">Engagement</a>
+    </nav>
+    <a class="nav-cta" href="#contact">Start a conversation</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div>
+      <div class="eyebrow">Ash Anjum <em>·</em> Systems engineer <em>·</em> Dubai</div>
+      <h1>I build the machine.<br><span class="run">You run it.</span></h1>
+      <p class="sub">
+        AI systems for operators who want the work done and the keys handed over.
+        Built with precision. <strong>Owned by you</strong> — code, data, and all.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#contact">Start a conversation</a>
+        <a class="btn btn-ghost" href="#systems">See the systems</a>
+      </div>
+    </div>
+    <div class="stage">
+      <canvas id="machine" aria-label="An isometric machine continuously refining raw blocks and assembling them into a finished wall" role="img"></canvas>
+      <div class="fig mono">fig. 01 — <i>a system, running</i></div>
+    </div>
+  </div>
+
+  <!-- MODES -->
+  <section id="modes">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Engagement</div>
+      <h2>Two ways to engage.</h2>
+      <p>Both end the same way: a running system that belongs to you. No black boxes, no hostage retainers.</p>
+    </div>
+    <div class="modes">
+      <div class="mode">
+        <div class="tag">Built with you</div>
+        <h3>Your team learns by building it.</h3>
+        <p>
+          We build the system together — in your business, on your accounts, with your data.
+          Your people watch it come together, so when I leave, nothing leaves with me.
+          You end with a running system and the ability to change it.
+        </p>
+      </div>
+      <div class="mode alt">
+        <div class="tag">Built &amp; handed over</div>
+        <h3>Delivered running. Keys included.</h3>
+        <p>
+          I build it, you receive it: source code, data, documentation, training.
+          Dependency is a design flaw — I don't ship it.
+          A retainer exists for improvement, never for access.
+        </p>
+      </div>
+    </div>
+    <div class="terms">
+      <b>Terms are simple:</b> every engagement is paid in advance — 50% to begin, the balance on delivery.
+      Fixed scope, fixed price, fixed window. If that doesn't fit, we're not a fit.
+    </div>
+  </section>
+
+  <!-- SYSTEMS -->
+  <section id="systems">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Portfolio</div>
+      <h2>Machines already running.</h2>
+      <p>Built for real businesses in the region. Names withheld; results aren't.</p>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div class="dot" style="background:#4da3ff"></div>
+        <h3>Delivery Margin Recovery</h3>
+        <p>Finds the money delivery platforms quietly keep — missed refunds, wrong commissions, unreconciled orders — and claws it back, week after week.</p>
+        <div class="for">FOR — <b>F&amp;B operators on delivery platforms</b></div>
+      </div>
+      <div class="card">
+        <div class="dot" style="background:#8f6bff"></div>
+        <h3>Review Intelligence</h3>
+        <p>Reads every customer review across every brand and location, triages what actually matters, and routes it to the person who can fix it.</p>
+        <div class="for">FOR — <b>multi-brand, multi-location operators</b></div>
+      </div>
+      <div class="card">
+        <div class="dot" style="background:#08c0ef"></div>
+        <h3>Constraint Finder</h3>
+        <p>Finds the one bottleneck actually limiting your throughput — then works it, measurably, until it moves. Everything else is noise.</p>
+        <div class="for">FOR — <b>founders and COOs</b></div>
+      </div>
+      <div class="card">
+        <div class="dot" style="background:#fc2b73"></div>
+        <h3>Partnership Structurer</h3>
+        <p>Turns a handshake deal into a fair, explicit structure both sides can live with — before ambiguity costs a friendship.</p>
+        <div class="for">FOR — <b>co-founders and business partners</b></div>
+      </div>
+      <div class="card">
+        <div class="dot" style="background:#ffb054"></div>
+        <h3>Backlog-to-PR Loop</h3>
+        <p>Grooms your issue backlog, hands ready work to coding agents, and returns reviewed pull requests. Your engineers review; the machine grinds.</p>
+        <div class="for">FOR — <b>software teams</b></div>
+      </div>
+      <div class="card">
+        <div class="dot" style="background:#0dbe4e"></div>
+        <h3>Workspace Agents</h3>
+        <p>Puts agents to work inside Google Workspace — documents, sheets, and drives that keep themselves current instead of waiting for someone to remember.</p>
+        <div class="for">FOR — <b>operations teams</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW -->
+  <section id="how">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Process</div>
+      <h2>How it goes.</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="n">01 — DIAGNOSE</div>
+        <h3>Find the leak.</h3>
+        <p>A short, paid engagement. We find where the money leaks or the hours go. You get a written scope and a fixed number.</p>
+      </div>
+      <div class="step">
+        <div class="n">02 — BUILD</div>
+        <h3>Build the machine.</h3>
+        <p>Fixed scope, fixed window. You see it working on your real data every week — not a demo at the end.</p>
+      </div>
+      <div class="step">
+        <div class="n">03 — HAND OVER</div>
+        <h3>Take the keys.</h3>
+        <p>Source, data, documentation, training. It's yours. The optional retainer buys improvement, not access.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-grid">
+      <div class="sec-head" style="margin-bottom:0">
+        <div class="sec-eyebrow">Contact</div>
+        <h2>Tell me what should be running by itself.</h2>
+        <p>
+          One conversation, no obligation. If I can't help, I'll say so in the first call —
+          your time is the one thing I can't hand back.
+        </p>
+      </div>
+      <form onsubmit="event.preventDefault()">
+        <div class="row2">
+          <div><label for="f-name">Name</label><input id="f-name" name="name" autocomplete="name"></div>
+          <div><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email"></div>
+        </div>
+        <div><label for="f-company">Company</label><input id="f-company" name="company" autocomplete="organization"></div>
+        <div>
+          <label for="f-system">Which system caught your eye?</label>
+          <select id="f-system" name="system">
+            <option>Delivery Margin Recovery</option>
+            <option>Review Intelligence</option>
+            <option>Constraint Finder</option>
+            <option>Partnership Structurer</option>
+            <option>Backlog-to-PR Loop</option>
+            <option>Workspace Agents</option>
+            <option>Something else</option>
+          </select>
+        </div>
+        <div><label for="f-msg">What's eating your week?</label><textarea id="f-msg" name="message"></textarea></div>
+        <div><button class="btn btn-primary" type="submit" style="border:none;cursor:pointer;font-family:var(--sans)">Send</button></div>
+        <div class="form-note">// replies within one working day</div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;width:100%">
+    <div>© 2026 Ash Anjum — Dubai</div>
+    <div class="mono">systems engineer · the machine is yours</div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   THE MACHINE — isometric canvas 2.5D, zero dependencies.
+   Raw blocks ride a conveyor into a press; the press stamps
+   them into refined blocks; refined blocks are placed into a
+   3x3 wall. When the wall completes, it is delivered (sinks)
+   and the machine starts the next one. Fully deterministic in
+   absolute time: the loop has no seams and no state to lose.
+   ============================================================ */
+(() => {
+  const canvas = document.getElementById('machine');
+  const ctx = canvas.getContext('2d');
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+  let W = 0, H = 0, DPR = 1, S = 30, CX = 0, CY = 0;
+
+  const CYCLE = 3.6;            // seconds per block
+  const GROUP = 9;              // blocks per wall
+  const BELT_TOP = 0.55;        // conveyor surface height
+  const CUBE = 0.52;            // half-size of cubes
+  const CUBE_H = 1.0;           // cube height
+  const WALL_X = 6.9;
+  const SLOT_Y = [-1.35, 0, 1.35];
+
+  /* ---------- projection ---------- */
+  const px = (x, y) => (x - y) * 0.8660254 * S + CX;
+  const py = (x, y, z) => (x + y) * 0.5 * S - z * S + CY;
+
+  /* ---------- easing ---------- */
+  const clamp01 = v => v < 0 ? 0 : v > 1 ? 1 : v;
+  const easeIO = u => { u = clamp01(u); return u * u * (3 - 2 * u); };
+  const easeOut = u => { u = clamp01(u); return 1 - (1 - u) * (1 - u); };
+  const easeIn = u => { u = clamp01(u); return u * u * u; };
+
+  /* deterministic hash for per-cycle variety */
+  const hash = n => { const s = Math.sin(n * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); };
+
+  /* ---------- palette ---------- */
+  const RAW = { t: '#3d3d46', l: '#30303a', r: '#27272f', e: 'rgba(190,200,230,0.10)' };
+  const FIN = { t: '#6db8ff', l: '#2f7fd6', r: '#1c5ea8', e: 'rgba(160,210,255,0.35)' };
+  const FIN2 = { t: '#a98cff', l: '#6a48d6', r: '#4a2fa8', e: 'rgba(190,170,255,0.35)' };
+  const STEEL = { t: '#4a4a56', l: '#35353f', r: '#2b2b33', e: 'rgba(190,200,235,0.14)' };
+  const STEEL_D = { t: '#3a3a44', l: '#2b2b33', r: '#232329', e: 'rgba(190,200,235,0.10)' };
+
+  /* ---------- box primitive (painter's algorithm) ---------- */
+  const boxes = [];
+  function pushBox(x, y, z, hx, hy, h, pal, alpha, glow) {
+    boxes.push({ x, y, z, hx, hy, h, pal, alpha: alpha == null ? 1 : alpha, glow: glow || 0, depth: (x + y) * 100 + z });
+  }
+  function drawBox(b) {
+    const { x, y, hx, hy } = b;
+    const zb = b.z, zt = b.z + b.h;
+    const A = [px(x - hx, y - hy), py(x - hx, y - hy, zt)];
+    const B = [px(x + hx, y - hy), py(x + hx, y - hy, zt)];
+    const C = [px(x + hx, y + hy), py(x + hx, y + hy, zt)];
+    const D = [px(x - hx, y + hy), py(x - hx, y + hy, zt)];
+    const E = [px(x + hx, y - hy), py(x + hx, y - hy, zb)];
+    const F = [px(x + hx, y + hy), py(x + hx, y + hy, zb)];
+    const G = [px(x - hx, y + hy), py(x - hx, y + hy, zb)];
+    ctx.globalAlpha = b.alpha;
+    if (b.glow > 0) { ctx.shadowColor = 'rgba(77,163,255,' + (0.55 * b.glow) + ')'; ctx.shadowBlur = 26 * b.glow; }
+    /* right face (+x) — darkest */
+    ctx.fillStyle = b.pal.r;
+    ctx.beginPath(); ctx.moveTo(B[0], B[1]); ctx.lineTo(E[0], E[1]); ctx.lineTo(F[0], F[1]); ctx.lineTo(C[0], C[1]); ctx.closePath(); ctx.fill();
+    /* front face (+y) — mid */
+    ctx.fillStyle = b.pal.l;
+    ctx.beginPath(); ctx.moveTo(D[0], D[1]); ctx.lineTo(C[0], C[1]); ctx.lineTo(F[0], F[1]); ctx.lineTo(G[0], G[1]); ctx.closePath(); ctx.fill();
+    /* top face — lightest */
+    ctx.fillStyle = b.pal.t;
+    ctx.beginPath(); ctx.moveTo(A[0], A[1]); ctx.lineTo(B[0], B[1]); ctx.lineTo(C[0], C[1]); ctx.lineTo(D[0], D[1]); ctx.closePath(); ctx.fill();
+    ctx.shadowBlur = 0;
+    /* top edge highlight */
+    ctx.strokeStyle = b.pal.e; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(A[0], A[1]); ctx.lineTo(B[0], B[1]); ctx.lineTo(C[0], C[1]); ctx.lineTo(D[0], D[1]); ctx.closePath(); ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+
+  function shadow(x, y, rx, alpha) {
+    ctx.fillStyle = 'rgba(0,0,0,' + alpha + ')';
+    ctx.beginPath();
+    ctx.ellipse(px(x, y), py(x, y, 0), rx * S, rx * S * 0.5, 0, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  /* ---------- floor ---------- */
+  function drawFloor() {
+    ctx.strokeStyle = 'rgba(150,160,200,0.06)'; ctx.lineWidth = 1;
+    for (let i = -10; i <= 10; i += 2) {
+      ctx.beginPath(); ctx.moveTo(px(i, -6), py(i, -6, 0)); ctx.lineTo(px(i, 6), py(i, 6, 0)); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(px(-10, i * 0.6), py(-10, i * 0.6, 0)); ctx.lineTo(px(10, i * 0.6), py(10, i * 0.6, 0)); ctx.stroke();
+    }
+  }
+
+  /* ---------- conveyor ---------- */
+  function drawConveyor(t) {
+    pushBox(-1.6, 0, 0, 7.6, 1.05, BELT_TOP - 0.14, STEEL_D);      /* bed  */
+    pushBox(-1.6, 0, BELT_TOP - 0.14, 7.55, 0.95, 0.14, { t: '#2a2a33', l: '#222229', r: '#1d1d23', e: 'rgba(190,200,235,0.07)' });
+  }
+  function drawBeltTicks(t, cubeXs) {
+    /* moving tick marks sell the belt; skip ticks hidden by a cube */
+    const speed = 1.15, spacing = 1.1;
+    ctx.strokeStyle = 'rgba(150,165,205,0.16)'; ctx.lineWidth = 1;
+    const off = (t * speed) % spacing;
+    for (let i = 0; i < 14; i++) {
+      const x = -9.05 + off + i * spacing;
+      if (x > 5.85) continue;
+      if (cubeXs.some(cx => Math.abs(cx - x) < 0.8)) continue;
+      ctx.beginPath();
+      ctx.moveTo(px(x, -0.85), py(x, -0.85, BELT_TOP + 0.005));
+      ctx.lineTo(px(x, 0.85), py(x, 0.85, BELT_TOP + 0.005));
+      ctx.stroke();
+    }
+  }
+
+  /* ---------- press / gantry ---------- */
+  function drawGantry(t, pressZ, stampGlow) {
+    const bob = Math.sin(t * 1.7) * 0.03;
+    /* pillars */
+    pushBox(0, -1.55, 0, 0.42, 0.34, 3.4, STEEL);
+    pushBox(0, 1.55, 0, 0.42, 0.34, 3.4, STEEL);
+    /* crossbeam */
+    pushBox(0, 0, 3.4 + bob, 0.62, 2.05, 0.5, STEEL);
+    /* piston head */
+    pushBox(0, 0, pressZ, 0.62, 0.62, 0.42, STEEL, 1, stampGlow * 0.5);
+    /* energy block on beam */
+    pushBox(0, 0, 3.9 + bob, 0.3, 0.3, 0.3, stampGlow > 0.1 ? FIN : STEEL_D, 1, stampGlow);
+  }
+  function drawPistonRods(t, pressZ) {
+    const bob = Math.sin(t * 1.7) * 0.03;
+    ctx.strokeStyle = 'rgba(160,175,215,0.35)'; ctx.lineWidth = Math.max(1.5, S * 0.055);
+    for (const dy of [-0.3, 0.3]) {
+      ctx.beginPath();
+      ctx.moveTo(px(0, dy), py(0, dy, 3.4 + bob));
+      ctx.lineTo(px(0, dy), py(0, dy, pressZ + 0.42));
+      ctx.stroke();
+    }
+  }
+
+  /* ---------- flywheel on the far pillar ---------- */
+  function drawFlywheel(t) {
+    const cx3 = [0.44, -1.55, 2.0];  /* on +x face of back pillar */
+    const r = 0.62, om = t * 1.35;
+    const P = (a) => [px(cx3[0], cx3[1] + r * Math.cos(a)), py(cx3[0], cx3[1] + r * Math.cos(a), cx3[2] + r * Math.sin(a))];
+    ctx.strokeStyle = 'rgba(170,185,225,0.4)'; ctx.lineWidth = Math.max(1.5, S * 0.06);
+    ctx.beginPath();
+    for (let i = 0; i <= 36; i++) { const p = P(i / 36 * Math.PI * 2); i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }
+    ctx.stroke();
+    /* spokes */
+    ctx.strokeStyle = 'rgba(120,190,255,0.5)';
+    for (let k = 0; k < 3; k++) {
+      const a = om + k * Math.PI * 2 / 3;
+      const p1 = P(a), p2 = P(a + Math.PI);
+      ctx.beginPath(); ctx.moveTo(p1[0], p1[1]); ctx.lineTo(p2[0], p2[1]); ctx.stroke();
+    }
+    /* hub */
+    const h = [px(cx3[0], cx3[1]), py(cx3[0], cx3[1], cx3[2])];
+    ctx.fillStyle = '#8ab8f0';
+    ctx.beginPath(); ctx.arc(h[0], h[1], Math.max(2, S * 0.07), 0, Math.PI * 2); ctx.fill();
+  }
+
+  /* ---------- sparks at the stamp moment ---------- */
+  function drawSparks(n, u) {
+    /* u in [0,1] of spark life */
+    const life = easeOut(u);
+    ctx.fillStyle = 'rgba(255,176,84,' + (0.9 * (1 - u)) + ')';
+    for (let i = 0; i < 10; i++) {
+      const a = hash(n * 10 + i) * Math.PI * 2;
+      const sp = 0.8 + hash(n * 31 + i) * 1.4;
+      const x = Math.cos(a) * sp * life;
+      const y = Math.sin(a) * sp * life * 0.6;
+      const z = BELT_TOP + CUBE_H + 0.25 + (1.1 * life - 1.4 * life * life) * (0.6 + hash(n * 7 + i));
+      const q = [px(x, y), py(x, y, z)];
+      const r = Math.max(1, S * 0.035 * (1 - u));
+      ctx.fillRect(q[0] - r, q[1] - r, r * 2, r * 2);
+    }
+  }
+
+  /* ---------- the journey of cube m at global time t ---------- */
+  function cubeState(m, t) {
+    const u = (t - m * CYCLE) / CYCLE;               /* local phase */
+    if (u >= 1 || u < -0.6) return null;
+    const k = ((m % GROUP) + GROUP) % GROUP;
+    const col = k % 3, layer = Math.floor(k / 3);
+    const ty = SLOT_Y[col], tz = layer * (CUBE_H + 0.06);
+    const st = { x: 0, y: 0, z: BELT_TOP, refined: false, pal: RAW, glow: 0, alpha: 1, shadowOn: false };
+    const finPal = (Math.floor(m / 1) % 4 === 3) ? FIN2 : FIN;   /* every 4th indigo */
+
+    if (u < 0) {                                      /* approaching, off-screen feed */
+      st.x = -12.4 + (u + 0.6) / 0.6 * 3.4;
+    } else if (u < 0.34) {                            /* ride in */
+      st.x = -9 + easeIO(u / 0.34) * 9;
+    } else if (u < 0.56) {                            /* under the press */
+      st.x = 0;
+      if (u >= 0.475) { st.refined = true; st.pal = finPal; st.glow = easeOut((u - 0.475) / 0.085) * 0.9; }
+    } else if (u < 0.80) {                            /* ride out + drift to column */
+      const v = easeIO((u - 0.56) / 0.24);
+      st.x = 0 + v * (WALL_X - 1.5);
+      st.y = v * ty;
+      st.pal = finPal; st.refined = true; st.glow = 0.35;
+    } else {                                          /* hop into the wall */
+      const v = easeIO((u - 0.80) / 0.20);
+      st.x = (WALL_X - 1.5) + v * 1.5;
+      st.y = ty;
+      const hop = Math.sin(v * Math.PI) * 0.9;
+      st.z = BELT_TOP + (tz - BELT_TOP) * v + hop;
+      st.pal = finPal; st.refined = true; st.glow = 0.35 * (1 - v) + 0.15;
+      st.shadowOn = true;
+    }
+    return st;
+  }
+
+  /* ---------- wall blocks standing / sinking ---------- */
+  function pushWall(t) {
+    const mNow = Math.floor(t / CYCLE);               /* active cube index */
+    const g = Math.floor(mNow / GROUP);               /* current group */
+    /* standing blocks of the current group: placed = finished journeys */
+    for (let m = g * GROUP; m < mNow; m++) {
+      const k = m % GROUP, col = k % 3, layer = Math.floor(k / 3);
+      const pal = (m % 4 === 3) ? FIN2 : FIN;
+      pushBox(WALL_X, SLOT_Y[col], layer * (CUBE_H + 0.06), CUBE, CUBE, CUBE_H, pal, 1, 0.12);
+    }
+    /* previous group sinking in place (delivery) */
+    if (g > 0) {
+      const sinkStart = g * GROUP * CYCLE;            /* the moment its 9th finished */
+      const su = (t - sinkStart) / 1.6;
+      if (su >= 0 && su < 1) {
+        const dz = easeIn(su) * 3.6, fade = 1 - easeIn(su);
+        for (let k = 0; k < GROUP; k++) {
+          const col = k % 3, layer = Math.floor(k / 3);
+          const m = (g - 1) * GROUP + k;
+          const pal = (m % 4 === 3) ? FIN2 : FIN;
+          pushBox(WALL_X, SLOT_Y[col], layer * (CUBE_H + 0.06) - dz, CUBE, CUBE, CUBE_H, pal, fade, 0);
+        }
+      }
+    }
+    /* dock plate under the wall */
+    pushBox(WALL_X, 0, 0, 1.05, 2.2, 0.12, STEEL_D);
+  }
+
+  /* ---------- ambient floaters ---------- */
+  function pushAmbient(t) {
+    const spots = [[-5.5, -3.4], [3.4, -3.8]];
+    spots.forEach((s, i) => {
+      const z = 2.6 + Math.sin(t * 0.5 + i * 2.4) * 0.35;
+      pushBox(s[0], s[1], z, 0.16, 0.16, 0.32, STEEL_D, 0.35);
+    });
+  }
+
+  /* ---------- press choreography ---------- */
+  function pressState(t) {
+    const m = Math.floor(t / CYCLE);
+    const u = (t / CYCLE) - m;
+    const top = BELT_TOP + CUBE_H + 0.06;             /* rest on cube */
+    const rest = 2.55;
+    let z = rest, glow = 0, sparkU = -1;
+    if (u >= 0.36 && u < 0.475) z = rest - easeIn((u - 0.36) / 0.115) * (rest - top);
+    else if (u >= 0.475 && u < 0.53) { z = top; glow = 1; }
+    else if (u >= 0.53 && u < 0.62) z = top + easeOut((u - 0.53) / 0.09) * (rest - top);
+    if (u >= 0.475 && u < 0.75) sparkU = (u - 0.475) / 0.275;
+    return { z, glow, sparkU, m };
+  }
+
+  /* ---------- frame ---------- */
+  function frame(t) {
+    ctx.clearRect(0, 0, W, H);
+    drawFloor();
+
+    boxes.length = 0;
+    drawConveyor(t);
+    const pr = pressState(t);
+    drawGantry(t, pr.z, pr.glow);
+    pushWall(t);
+    pushAmbient(t);
+
+    /* live cubes: active + follower */
+    const mNow = Math.floor(t / CYCLE);
+    const live = [];
+    for (const m of [mNow - 1, mNow, mNow + 1]) {
+      const st = cubeState(m, t);
+      if (st) { live.push([m, st]); }
+    }
+    for (const [m, st] of live) {
+      if (st.z > BELT_TOP + 0.01 || st.shadowOn) shadow(st.x, st.y, 0.55, 0.28 * clamp01(1 - (st.z - BELT_TOP) / 3));
+      pushBox(st.x, st.y, st.z, CUBE, CUBE, CUBE_H, st.pal, st.alpha, st.glow);
+    }
+
+    /* paint everything back-to-front */
+    boxes.sort((a, b) => a.depth - b.depth);
+    for (const b of boxes) drawBox(b);
+
+    /* overlays drawn in screen space */
+    drawBeltTicks(t, live.filter(([, s]) => Math.abs(s.y) < 0.9 && s.z <= BELT_TOP + 0.05).map(([, s]) => s.x));
+    drawPistonRods(t, pr.z);
+    drawFlywheel(t);
+    if (pr.sparkU >= 0) drawSparks(pr.m, pr.sparkU);
+  }
+
+  /* ---------- boot ---------- */
+  function resize() {
+    const r = canvas.parentElement.getBoundingClientRect();
+    DPR = Math.min(2, window.devicePixelRatio || 1);
+    W = r.width; H = r.height;
+    canvas.width = W * DPR; canvas.height = H * DPR;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    S = Math.min(W / 17.2, H / 11.6);
+    CX = W * 0.515;
+    CY = H * 0.60;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const T0 = 40.7;  /* start mid-flow so the scene opens alive: wall partly built */
+  let raf = null;
+  const start = performance.now();
+  function loop(now) {
+    frame(T0 + (now - start) / 1000);
+    raf = requestAnimationFrame(loop);
+  }
+  function still() { frame(T0 + 1.65); }   /* press mid-descent, wall partly built */
+
+  function arm() {
+    if (raf) { cancelAnimationFrame(raf); raf = null; }
+    if (reduceMotion.matches) still();
+    else raf = requestAnimationFrame(loop);
+  }
+  reduceMotion.addEventListener ? reduceMotion.addEventListener('change', arm) : reduceMotion.addListener(arm);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && raf) { cancelAnimationFrame(raf); raf = null; }
+    else arm();
+  });
+  arm();
+})();
+</script>
+</body>
+</html>
