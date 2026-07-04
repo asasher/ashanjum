@@ -1,0 +1,856 @@
+<!doctype html>
+<html lang="en" data-exploration="v6-base">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Asher Anjum — External CTO · Swarm</title>
+<style>
+  /* ============ v6 base — Gallery Light structure × Machine Dark night world ============
+     One semantic token system, two designed expressions.
+     Light: code.storage light mode — white ground, hairline rules, editorial blue.
+     Dark:  Machine Dark's warm near-black (#0e0e12 world, never pure black),
+            re-expressed through the same editorial structure.                      */
+  :root{
+    --gray:#8e8e95;
+    --bg:#ffffff;
+    --bg-lift:none;
+    --bg0:color-mix(in srgb, white 95%, var(--gray));
+    --bg1:color-mix(in srgb, white 93%, var(--gray));
+    --panel:#ffffff;
+    --fg:color-mix(in srgb, black 95%, var(--gray));   /* ~#070708 */
+    --fg1:color-mix(in srgb, black 45%, var(--gray));
+    --fg2:color-mix(in srgb, black 30%, var(--gray));
+    --fg3:var(--gray);
+    --fg4:color-mix(in srgb, white 20%, var(--gray));
+    --hairline:color-mix(in srgb, var(--fg) 10%, transparent);
+    --hairline-soft:color-mix(in srgb, var(--fg) 6%, transparent);
+    --accent:#008df4;
+    --accent-text:color-mix(in srgb, black 22%, #008df4);
+    --accent-wash:color-mix(in srgb, white 92%, #008df4);
+    --sans:"Helvetica Neue", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    --mono:ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    --serif:Georgia, "Times New Roman", serif;
+    --measure:34em;
+    --pad:clamp(20px, 4vw, 48px);
+  }
+  /* Dark expression — Machine Dark's warm near-black world.
+     Applied when the user toggles dark, or by system preference untoggled. */
+  :root[data-theme="dark"]{
+    --bg:#0e0e12;
+    --bg-lift:radial-gradient(1100px 700px at 72% -12%, #16161d, transparent);
+    --bg0:#131318;
+    --bg1:#16161c;
+    --panel:#121218;
+    --fg:#e9e9ee;
+    --fg1:#a7a7b3;
+    --fg2:#8d8d99;
+    --fg3:#70707c;
+    --fg4:#4c4c56;
+    --hairline:color-mix(in srgb, var(--fg) 14%, transparent);
+    --hairline-soft:color-mix(in srgb, var(--fg) 8%, transparent);
+    --accent:#4da3ff;
+    --accent-text:#7cbcff;
+    --accent-wash:color-mix(in srgb, #4da3ff 22%, transparent);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0e0e12;
+      --bg-lift:radial-gradient(1100px 700px at 72% -12%, #16161d, transparent);
+      --bg0:#131318;
+      --bg1:#16161c;
+      --panel:#121218;
+      --fg:#e9e9ee;
+      --fg1:#a7a7b3;
+      --fg2:#8d8d99;
+      --fg3:#70707c;
+      --fg4:#4c4c56;
+      --hairline:color-mix(in srgb, var(--fg) 14%, transparent);
+      --hairline-soft:color-mix(in srgb, var(--fg) 8%, transparent);
+      --accent:#4da3ff;
+      --accent-text:#7cbcff;
+      --accent-wash:color-mix(in srgb, #4da3ff 22%, transparent);
+    }
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--fg);
+    background-image:var(--bg-lift);
+    background-repeat:no-repeat;
+    font-family:var(--sans); font-size:16px; line-height:1.6;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    transition:background-color .25s ease, color .25s ease;
+  }
+  a{color:inherit; text-decoration:none}
+  ::selection{background:var(--accent-wash); color:var(--accent-text)}
+
+  .frame{max-width:1180px; margin:0 auto; padding-left:var(--pad); padding-right:var(--pad)}
+
+  .label{
+    font-family:var(--mono); font-size:11px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--fg3); font-weight:400;
+  }
+  .label--dark{color:var(--fg1)}
+  .label .tick{color:var(--accent-text)}
+
+  /* ============ header ============ */
+  header{
+    position:sticky; top:0; z-index:10;
+    background:color-mix(in srgb, var(--bg) 86%, transparent);
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--hairline-soft);
+  }
+  .hd{display:flex; align-items:center; justify-content:space-between; gap:20px; padding-top:16px; padding-bottom:16px}
+  .wordmark{font-weight:500; letter-spacing:-.01em; font-size:15px}
+  .wordmark em{font-style:normal; color:var(--fg3)}
+  nav{display:flex; gap:24px; align-items:center}
+  nav a{font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--fg2); transition:color .18s ease}
+  nav a:hover{color:var(--fg)}
+  .hd-right{display:flex; align-items:center; gap:20px}
+  .hd-meta{display:none}
+  @media(min-width:900px){ .hd-meta{display:block} }
+  .mode-toggle{
+    font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+    background:transparent; color:var(--fg2); border:1px solid var(--hairline);
+    padding:7px 12px; cursor:pointer; transition:color .18s ease, border-color .18s ease;
+  }
+  .mode-toggle:hover{color:var(--fg); border-color:var(--fg3)}
+  .mode-toggle .dot{color:var(--accent-text)}
+
+  /* ============ hero ============ */
+  .hero{padding-top:clamp(64px,10vh,130px); padding-bottom:clamp(56px,9vh,120px)}
+  .hero-grid{display:grid; grid-template-columns:1fr; gap:48px; align-items:center}
+  @media(min-width:900px){ .hero-grid{grid-template-columns:7fr 5fr; gap:64px} }
+  h1{
+    font-size:clamp(38px, 5.4vw, 64px); line-height:1.04; font-weight:500;
+    letter-spacing:-.032em; max-width:11.5em;
+  }
+  h1 .quiet{color:var(--fg4)}
+  .hero-sub{
+    margin-top:28px; color:var(--fg1); font-size:clamp(16px,1.5vw,19px);
+    line-height:1.65; max-width:var(--measure);
+  }
+  .hero-cta{margin-top:40px; display:flex; gap:14px; flex-wrap:wrap; align-items:center}
+  .btn{
+    display:inline-block; font-family:var(--mono); font-size:12px; letter-spacing:.1em; text-transform:uppercase;
+    padding:13px 22px; border:1px solid var(--fg); transition:background .18s ease, color .18s ease;
+  }
+  .btn--solid{background:var(--fg); color:var(--bg)}
+  .btn--solid:hover{background:transparent; color:var(--fg)}
+  .btn--ghost{border-color:var(--hairline); color:var(--fg1)}
+  .btn--ghost:hover{border-color:var(--fg); color:var(--fg)}
+
+  /* the motion object */
+  .obj{
+    position:relative; aspect-ratio:4/5; max-height:520px; width:100%;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .obj canvas{width:100%; height:100%; display:block}
+  .obj-caption{
+    position:absolute; left:0; bottom:-6px;
+    display:flex; gap:10px; align-items:baseline;
+  }
+  .obj-caption .rule{width:28px; height:1px; background:var(--fg); transform:translateY(-4px)}
+
+  /* ============ section scaffolding ============ */
+  section{border-top:1px solid var(--hairline-soft); padding-top:56px; padding-bottom:clamp(64px,9vh,120px)}
+  .sec-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:clamp(40px,6vh,72px)}
+  h2{font-size:clamp(26px,3vw,36px); font-weight:500; letter-spacing:-.025em; line-height:1.15}
+  .sec-note{display:none; color:var(--fg3); font-size:14px; max-width:22em; text-align:right}
+  @media(min-width:900px){ .sec-note{display:block} }
+
+  /* ============ the role (CTO pillars) ============ */
+  .pillars{display:grid; grid-template-columns:1fr; gap:0}
+  @media(min-width:820px){ .pillars{grid-template-columns:1fr 1fr 1fr; gap:48px} }
+  .pillar{border-top:1px solid var(--hairline); padding:26px 0 8px}
+  .pillar .label{display:block; margin-bottom:16px}
+  .pillar h3{font-size:19px; font-weight:500; letter-spacing:-.015em; margin-bottom:12px}
+  .pillar p{color:var(--fg1); font-size:15px; line-height:1.65; max-width:26em}
+
+  /* ============ systems index ============ */
+  .sys{border-top:1px solid var(--hairline)}
+  .sys-row{
+    display:grid; grid-template-columns:1fr; gap:8px;
+    padding:26px 0; border-bottom:1px solid var(--hairline);
+    transition:background .18s ease;
+  }
+  @media(min-width:820px){
+    .sys-row{grid-template-columns:70px 3fr 4fr 160px; gap:24px; align-items:baseline; padding:30px 0}
+  }
+  .sys-row:hover{background:var(--bg0)}
+  .sys-num{font-family:var(--mono); font-size:12px; color:var(--fg4)}
+  .sys-name{font-size:19px; font-weight:500; letter-spacing:-.015em}
+  .sys-desc{color:var(--fg1); font-size:15px; line-height:1.6; max-width:36em}
+  .sys-for{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--fg3)}
+  @media(min-width:820px){ .sys-for{text-align:right} }
+
+  /* ============ engagements ============ */
+  .modes{display:grid; grid-template-columns:1fr; gap:1px; background:var(--hairline); border:1px solid var(--hairline)}
+  @media(min-width:820px){ .modes{grid-template-columns:1fr 1fr} }
+  .mode{background:var(--panel); padding:clamp(28px,4vw,48px)}
+  .mode .label{display:block; margin-bottom:22px}
+  .mode h3{font-size:clamp(21px,2.2vw,26px); font-weight:500; letter-spacing:-.02em; margin-bottom:14px}
+  .mode p{color:var(--fg1); font-size:15px; max-width:30em}
+  .mode ul{list-style:none; margin-top:24px}
+  .mode li{
+    padding:10px 0; border-top:1px solid var(--hairline-soft);
+    font-size:14px; color:var(--fg2); display:flex; gap:12px;
+  }
+  .mode li::before{content:"—"; color:var(--fg4)}
+  .terms{
+    margin-top:56px; display:flex; gap:12px; align-items:baseline; flex-wrap:wrap;
+  }
+  .terms p{font-family:var(--serif); font-style:italic; font-size:clamp(17px,1.8vw,21px); color:var(--fg1)}
+  .terms .rule{width:36px; height:1px; background:var(--fg); transform:translateY(-6px)}
+
+  /* ============ contact ============ */
+  .contact-grid{display:grid; grid-template-columns:1fr; gap:56px}
+  @media(min-width:900px){ .contact-grid{grid-template-columns:5fr 7fr; gap:80px} }
+  .contact-lede{font-size:clamp(20px,2.4vw,28px); font-weight:500; letter-spacing:-.02em; line-height:1.3; max-width:16em}
+  .contact-meta{margin-top:28px; display:grid; gap:8px}
+  .contact-meta div{display:flex; gap:16px; font-size:14px; color:var(--fg1)}
+  .contact-meta .label{width:88px; flex:none; transform:translateY(2px)}
+  form{display:grid; gap:0}
+  .field{border-top:1px solid var(--hairline); padding:18px 0 20px}
+  .field:last-of-type{border-bottom:1px solid var(--hairline)}
+  .field label{display:block; margin-bottom:10px}
+  .field input,.field select,.field textarea{
+    width:100%; border:0; background:transparent; font-family:var(--sans);
+    font-size:17px; color:var(--fg); outline:none; padding:2px 0;
+  }
+  .field textarea{resize:vertical; min-height:72px; line-height:1.55}
+  .field input::placeholder,.field textarea::placeholder{color:var(--fg4)}
+  .field select{color:var(--fg1); appearance:none; -webkit-appearance:none; cursor:pointer}
+  .field select option{color:#131316; background:#ffffff}
+  form .btn{margin-top:28px; justify-self:start; cursor:pointer; background:var(--fg); color:var(--bg); border:1px solid var(--fg); font-family:var(--mono)}
+  form .btn:hover{background:transparent; color:var(--fg)}
+  .form-note{margin-top:16px; font-size:13px; color:var(--fg3)}
+
+  /* ============ footer ============ */
+  footer{border-top:1px solid var(--hairline-soft); padding:32px 0 44px}
+  .ft{display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap}
+  .ft span{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--fg3)}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none !important}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="frame hd">
+    <a class="wordmark" href="#">Asher Anjum <em>— External CTO</em></a>
+    <nav>
+      <a href="#role">The role</a>
+      <a href="#systems">Systems</a>
+      <a href="#engagements">Engagements</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="hd-right">
+      <span class="label hd-meta">Dubai&nbsp;·&nbsp;GST+4</span>
+      <button class="mode-toggle" id="mode-toggle" type="button" aria-label="Toggle color mode">
+        <span class="dot">◐</span>&nbsp;<span id="mode-label">Dark</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <div class="frame hero">
+    <div class="hero-grid">
+      <div>
+        <span class="label"><span class="tick">●</span>&nbsp; External CTO — independent, hands-on</span>
+        <h1 style="margin-top:26px">Technical direction you can rent. <span class="quiet">Systems you get to keep.</span></h1>
+        <p class="hero-sub">
+          I work as the external CTO for businesses that run on operations, not software teams —
+          owning the technical direction and building the systems the margin depends on.
+          You own everything I hand over: the code, the data, the keys.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn--solid" href="#contact">Start a conversation</a>
+          <a class="btn btn--ghost" href="#systems">See the systems</a>
+        </div>
+      </div>
+      <div class="obj" aria-hidden="true">
+        <canvas id="hero-motion"></canvas>
+        <div class="obj-caption">
+          <span class="rule"></span>
+          <span class="label">Fig. 01 — Signal, from noise</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ THE ROLE ============ -->
+  <section id="role">
+    <div class="frame">
+      <div class="sec-head">
+        <h2>The role</h2>
+        <p class="sec-note">A CTO’s job, taken fractionally: the direction, the delivery, and the handover.</p>
+      </div>
+      <div class="pillars">
+        <div class="pillar">
+          <span class="label">01 · Direction</span>
+          <h3>A roadmap that answers to your P&amp;L</h3>
+          <p>Not a vendor’s pipeline. I sit on your side of the table, decide what deserves to be built, and say no to the rest.</p>
+        </div>
+        <div class="pillar">
+          <span class="label">02 · Build</span>
+          <h3>Built by the person you hired</h3>
+          <p>The systems get built by me and the agents I supervise — not handed down to a bench you’ve never met.</p>
+        </div>
+        <div class="pillar">
+          <span class="label">03 · Handover</span>
+          <h3>Keys included, always</h3>
+          <p>Code, data, and accounts in your name from day one. If I disappear tomorrow, everything keeps running — and it’s yours.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SYSTEMS ============ -->
+  <section id="systems">
+    <div class="frame">
+      <div class="sec-head">
+        <h2>Start with a system</h2>
+        <p class="sec-note">Most engagements begin with one of these. The direction comes with it. Built from delivered work, not decks — named clients on request, under NDA where required.</p>
+      </div>
+      <div class="sys">
+        <div class="sys-row">
+          <span class="sys-num">01</span>
+          <span class="sys-name">Delivery-margin recovery</span>
+          <span class="sys-desc">Reconciles every delivery-platform order against what actually reached the bank, and finds the commissions, refunds, and missing payouts eating the margin. Built for a multi-brand cloud kitchen group.</span>
+          <span class="sys-for">F&amp;B · Delivery</span>
+        </div>
+        <div class="sys-row">
+          <span class="sys-num">02</span>
+          <span class="sys-name">Review intelligence</span>
+          <span class="sys-desc">Turns thousands of customer reviews across brands and platforms into a triaged, owner-ready queue: what broke, where, and what to fix first.</span>
+          <span class="sys-for">F&amp;B · Ops</span>
+        </div>
+        <div class="sys-row">
+          <span class="sys-num">03</span>
+          <span class="sys-name">Constraint finding</span>
+          <span class="sys-desc">A structured hunt for the one thing limiting your growth — mapped, tested, and worked with Theory-of-Constraints discipline, on a living page your team can see.</span>
+          <span class="sys-for">Founders · COOs</span>
+        </div>
+        <div class="sys-row">
+          <span class="sys-num">04</span>
+          <span class="sys-name">Partnership structuring</span>
+          <span class="sys-desc">Two founders, two agents, one canvas. A mediated process that gets contributions, splits, and roles agreed on paper before resentment does it for you.</span>
+          <span class="sys-for">Co-founders</span>
+        </div>
+        <div class="sys-row">
+          <span class="sys-num">05</span>
+          <span class="sys-name">Backlog-to-PR loops</span>
+          <span class="sys-desc">Your issue tracker groomed, scoped, and worked by supervised agents — from raw backlog to reviewed pull requests, with a human gate where it matters.</span>
+          <span class="sys-for">Software teams</span>
+        </div>
+        <div class="sys-row">
+          <span class="sys-num">06</span>
+          <span class="sys-name">Agents in the workspace</span>
+          <span class="sys-desc">Agents that read, write, and file inside Google Workspace — documents, sheets, and drives kept current without a person doing the keeping.</span>
+          <span class="sys-for">Operations</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ENGAGEMENTS ============ -->
+  <section id="engagements">
+    <div class="frame">
+      <div class="sec-head">
+        <h2>Two ways to engage</h2>
+        <p class="sec-note">Both end the same way: you, owning a system that works.</p>
+      </div>
+      <div class="modes">
+        <div class="mode">
+          <span class="label label--dark">Mode A</span>
+          <h3>Built with you</h3>
+          <p>We build the system together, in your business, with your people. Your team learns to run and extend it because they helped make it.</p>
+          <ul>
+            <li>Weekly working sessions, real deliverables</li>
+            <li>Your team ships alongside me</li>
+            <li>Capability stays when I leave</li>
+          </ul>
+        </div>
+        <div class="mode">
+          <span class="label label--dark">Mode B</span>
+          <h3>Built and handed over</h3>
+          <p>I build it, prove it on your real data, and hand it over completely. No black box, no hostage retainer — a retainer exists only if you want the system to keep getting better.</p>
+          <ul>
+            <li>Fixed scope, fixed price, real deadline</li>
+            <li>Code, data, and accounts in your name</li>
+            <li>Optional retainer for continuous improvement</li>
+          </ul>
+        </div>
+      </div>
+      <div class="terms">
+        <span class="rule"></span>
+        <p>Serious work, paid in advance. Half on signature — that part isn’t negotiable.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact">
+    <div class="frame">
+      <div class="contact-grid">
+        <div>
+          <p class="contact-lede">Tell me what’s leaking — money, time, or attention. I’ll tell you if a system can stop it.</p>
+          <div class="contact-meta">
+            <div><span class="label">Reply</span><span>Within one working day</span></div>
+            <div><span class="label">Base</span><span>Dubai, United Arab Emirates</span></div>
+            <div><span class="label">Works</span><span>English · اردو</span></div>
+          </div>
+        </div>
+        <form onsubmit="return false" aria-label="Contact form (preview)">
+          <div class="field">
+            <label class="label" for="f-name">Name</label>
+            <input id="f-name" type="text" placeholder="Your name" autocomplete="name">
+          </div>
+          <div class="field">
+            <label class="label" for="f-email">Email</label>
+            <input id="f-email" type="email" placeholder="you@company.com" autocomplete="email">
+          </div>
+          <div class="field">
+            <label class="label" for="f-sys">Where to start</label>
+            <select id="f-sys">
+              <option>Not sure yet — that’s fine</option>
+              <option>Delivery-margin recovery</option>
+              <option>Review intelligence</option>
+              <option>Constraint finding</option>
+              <option>Partnership structuring</option>
+              <option>Backlog-to-PR loops</option>
+              <option>Agents in the workspace</option>
+              <option>The CTO conversation</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="label" for="f-msg">The situation</label>
+            <textarea id="f-msg" placeholder="Two or three sentences is plenty."></textarea>
+          </div>
+          <button class="btn" type="submit">Send</button>
+          <p class="form-note">Preview only — submission is wired to the production form.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="frame ft">
+    <span>© 2026 Asher Anjum</span>
+    <span>ashanjum.com</span>
+    <span>Dubai · GST+4</span>
+  </div>
+</footer>
+
+<script>
+/* ============ theme toggle + MotionHost ============
+   MotionHost is the contract between this page and the swappable motion
+   module below. Variant agents: replace ONLY the code between
+   MOTION-MODULE-START and MOTION-MODULE-END. Everything you need:
+
+     MotionHost.canvas        — the hero <canvas> (unsized; use fit()).
+     MotionHost.fit()         — sizes canvas buffer to element × DPR (max 2),
+                                returns {w, h, dpr} in CSS pixels; call once
+                                at start; host calls your onResize after
+                                window resizes (already re-fitted).
+     MotionHost.palette()     — {mode:'light'|'dark', bg, ink, faint, accent,
+                                accent2} resolved from the live theme. Call
+                                inside your draw loop or cache and refresh in
+                                onThemeChange.
+     MotionHost.start(fn)     — host-managed rAF loop. fn(tSeconds, api) runs
+                                every frame. Host pauses on hidden tabs and
+                                under prefers-reduced-motion (where it calls
+                                fn once with t = MotionHost.STATIC_T so you
+                                render a considered still). Never run your
+                                own rAF.
+     MotionHost.onThemeChange(cb) — theme flipped; cb(palette). A static
+                                (reduced-motion) frame is re-rendered for you.
+     MotionHost.onResize(cb)  — canvas re-fitted; cb({w,h,dpr}).
+
+   Module obligations: draw with 2d context (get it yourself from
+   MotionHost.canvas); pure function of t where possible (seamless loops,
+   survives tab switches); read colors from palette() so both themes look
+   designed; no external assets; no libraries.                              */
+(function(){
+  var root = document.documentElement;
+  var KEY = 'ashanjum-theme';
+  var toggle = document.getElementById('mode-toggle');
+  var labelEl = document.getElementById('mode-label');
+  var media = window.matchMedia('(prefers-color-scheme: dark)');
+
+  function currentMode(){
+    var forced = root.getAttribute('data-theme');
+    if (forced === 'dark' || forced === 'light') return forced;
+    return media.matches ? 'dark' : 'light';
+  }
+  function reflect(){
+    labelEl.textContent = currentMode() === 'dark' ? 'Light' : 'Dark';
+    themeListeners.forEach(function(cb){ cb(MotionHost.palette()); });
+  }
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'dark' || saved === 'light') root.setAttribute('data-theme', saved);
+  } catch(e){}
+  toggle.addEventListener('click', function(){
+    var next = currentMode() === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem(KEY, next); } catch(e){}
+    reflect();
+  });
+  media.addEventListener ? media.addEventListener('change', reflect) : media.addListener(reflect);
+
+  var themeListeners = [];
+  var resizeListeners = [];
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var canvas = document.getElementById('hero-motion');
+  var size = { w: 0, h: 0, dpr: 1 };
+
+  var PALETTES = {
+    light: { mode:'light', bg:'#ffffff', ink:'#131316', faint:'#8e8e95', accent:'#008df4', accent2:'#5856d6' },
+    dark:  { mode:'dark',  bg:'#0e0e12', ink:'#e9e9ee', faint:'#70707c', accent:'#4da3ff', accent2:'#8f6bff' }
+  };
+
+  window.MotionHost = {
+    canvas: canvas,
+    STATIC_T: 0.35,
+    palette: function(){ return PALETTES[currentMode()]; },
+    fit: function(){
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var r = canvas.getBoundingClientRect();
+      size = { w: r.width, h: r.height, dpr: dpr };
+      canvas.width = Math.round(r.width * dpr);
+      canvas.height = Math.round(r.height * dpr);
+      return size;
+    },
+    size: function(){ return size; },
+    onThemeChange: function(cb){ themeListeners.push(cb); },
+    onResize: function(cb){ resizeListeners.push(cb); },
+    start: function(fn){
+      var raf = null, start = null;
+      function frame(ts){
+        if (start === null) start = ts;
+        fn((ts - start) / 1000, window.MotionHost);
+        raf = requestAnimationFrame(frame);
+      }
+      function still(){ fn(window.MotionHost.STATIC_T, window.MotionHost); }
+      function arm(){
+        if (reduced.matches){
+          if (raf){ cancelAnimationFrame(raf); raf = null; }
+          still();
+        } else if (!raf && !document.hidden){
+          start = null;
+          raf = requestAnimationFrame(frame);
+        }
+      }
+      reduced.addEventListener ? reduced.addEventListener('change', arm) : reduced.addListener(arm);
+      document.addEventListener('visibilitychange', function(){
+        if (document.hidden){ if (raf){ cancelAnimationFrame(raf); raf = null; } }
+        else arm();
+      });
+      themeListeners.push(function(){ if (reduced.matches) still(); });
+      window.addEventListener('resize', function(){
+        window.MotionHost.fit();
+        resizeListeners.forEach(function(cb){ cb(size); });
+        if (reduced.matches) still();
+      });
+      arm();
+    }
+  };
+  reflect();
+})();
+</script>
+
+<script id="motion-module">
+/* MOTION-MODULE-START */
+/* Fig. 01 — "Signal, from noise": a structured swarm. ~3–5k ink particles
+   drift in a curl-noise field and periodically resolve into one of three
+   ordered figures — an isometric lattice, an instrument dial, a halftone
+   grid — hold it breathing, then release. Deterministic seed; the loop
+   phase is a pure function of t. Reduced motion lands on the resolved
+   lattice (particles are initialized composed). */
+(function(){
+  var host = window.MotionHost;
+  if (!host || !host.canvas) return;
+  var ctx = host.canvas.getContext('2d');
+  var s = host.fit();
+
+  var SEG = 12;               /* seconds per formation segment  */
+  var NFORMS = 3;
+  var HOLD_END = 4.5, REL_END = 7.0, FREE_END = 10.0; /* phase edges in a segment */
+  var FLOW_SPEED = 58;        /* px/s cruise speed in the field */
+  var DT = 1 / 60;            /* fixed physics step             */
+
+  var seed = 0;
+  function srand(v){ seed = v >>> 0; }
+  function rnd(){ seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; }
+
+  var N = 0;
+  var px, py, vx, vy, jx, jy, rad, bucket, accent, bphase;
+  var tx, ty;                 /* live targets */
+  var forms = [];             /* [{x,y,kx,ky}] */
+  var curForm = -1;
+  var lastT = -1;
+
+  /* ---------- formation generators (return arrays of [x,y,isKey]) ---------- */
+
+  function genLattice(){
+    var pts = [], n = 6, step = 1 / 3;
+    function P(x, y, z, key){
+      pts.push([(x - z) * 0.866, (x + z) * 0.5 - y, key ? 1 : 0]);
+    }
+    function line(x0,y0,z0, x1,y1,z1, key){
+      var L = Math.max(Math.abs(x1-x0), Math.abs(y1-y0), Math.abs(z1-z0)) / step;
+      for (var i = 0; i <= L; i++){
+        var f = i / L;
+        P(x0+(x1-x0)*f, y0+(y1-y0)*f, z0+(z1-z0)*f, key);
+      }
+    }
+    var g;
+    for (g = 0; g <= n; g++){
+      var edge = (g === 0 || g === n);
+      /* top face y=n */
+      line(g, n, 0,  g, n, n, edge);
+      line(0, n, g,  n, n, g, edge);
+      /* face z=n (front-right, near) */
+      line(g, 0, n,  g, n, n, edge);
+      line(0, g, n,  n, g, n, g === 0);
+      /* face x=n (front-left, near) */
+      line(n, g, 0,  n, g, n, g === 0);
+      line(n, 0, g,  n, n, g, edge);
+    }
+    return pts;
+  }
+
+  function genDial(){
+    var pts = [], R = 1, i, a, r;
+    var rings = [0.2, 0.38, 0.56, 0.74, 1.0];
+    for (var ri = 0; ri < rings.length; ri++){
+      r = rings[ri] * R;
+      var m = Math.round(110 * r);
+      for (i = 0; i < m; i++){
+        a = i / m * Math.PI * 2;
+        pts.push([Math.cos(a) * r, Math.sin(a) * r, ri === rings.length - 1 ? 1 : 0]);
+      }
+    }
+    /* 4 cardinal spokes (key) */
+    for (i = 0; i < 4; i++){
+      a = i * Math.PI / 2;
+      for (var d = 0.2; d <= 1.0; d += 0.02)
+        pts.push([Math.cos(a) * d, Math.sin(a) * d, 1]);
+    }
+    /* 60 outer ticks */
+    for (i = 0; i < 60; i++){
+      a = i / 60 * Math.PI * 2;
+      for (var q = 0; q < 3; q++){
+        r = 1.0 + 0.035 * q;
+        pts.push([Math.cos(a) * r, Math.sin(a) * r, i % 15 === 0 ? 1 : 0]);
+      }
+    }
+    return pts;
+  }
+
+  function genGrid(){
+    var pts = [], n = 44, i, j;
+    srand(97531);
+    for (i = 0; i < n; i++){
+      for (j = 0; j < n; j++){
+        var x = (i / (n - 1) - 0.5) * 2;
+        var y = (j / (n - 1) - 0.5) * 2;
+        var key = (i === (n >> 1) || j === (n >> 1));
+        pts.push([x + (rnd() - 0.5) * 0.012, y + (rnd() - 0.5) * 0.012, key ? 1 : 0]);
+      }
+    }
+    return pts;
+  }
+
+  function fitForm(raw){
+    var minX = 1e9, maxX = -1e9, minY = 1e9, maxY = -1e9, i;
+    for (i = 0; i < raw.length; i++){
+      var p = raw[i];
+      if (p[0] < minX) minX = p[0]; if (p[0] > maxX) maxX = p[0];
+      if (p[1] < minY) minY = p[1]; if (p[1] > maxY) maxY = p[1];
+    }
+    var box = Math.min(s.w, s.h) * 0.72;
+    var sc = box / Math.max(maxX - minX, maxY - minY);
+    var ox = s.w / 2 - (minX + maxX) / 2 * sc;
+    var oy = s.h / 2 - (minY + maxY) / 2 * sc;
+    var xs = [], ys = [], kxs = [], kys = [];
+    for (i = 0; i < raw.length; i++){
+      var X = raw[i][0] * sc + ox, Y = raw[i][1] * sc + oy;
+      xs.push(X); ys.push(Y);
+      if (raw[i][2]){ kxs.push(X); kys.push(Y); }
+    }
+    return { x: xs, y: ys, kx: kxs, ky: kys };
+  }
+
+  /* ---------- build world ---------- */
+
+  function build(){
+    N = Math.max(2600, Math.min(5000, Math.round(s.w * s.h / 200)));
+    px = new Float32Array(N); py = new Float32Array(N);
+    vx = new Float32Array(N); vy = new Float32Array(N);
+    jx = new Float32Array(N); jy = new Float32Array(N);
+    tx = new Float32Array(N); ty = new Float32Array(N);
+    rad = new Float32Array(N); bphase = new Float32Array(N);
+    bucket = new Uint8Array(N); accent = new Uint8Array(N);
+
+    forms = [fitForm(genLattice()), fitForm(genDial()), fitForm(genGrid())];
+
+    srand(20260704);
+    for (var i = 0; i < N; i++){
+      rad[i] = 0.55 + rnd() * 0.65;
+      var a = rnd();
+      bucket[i] = a < 0.34 ? 0 : (a < 0.72 ? 1 : 2);
+      accent[i] = rnd() < 0.05 ? 1 : 0;
+      jx[i] = (rnd() - 0.5) * 2.4;
+      jy[i] = (rnd() - 0.5) * 2.4;
+      bphase[i] = rnd() * Math.PI * 2;
+    }
+    curForm = -1;
+    retarget(0);
+    /* start composed on the lattice: reduced-motion still is a resolved form */
+    for (i = 0; i < N; i++){
+      px[i] = tx[i] + (rnd() - 0.5) * 3;
+      py[i] = ty[i] + (rnd() - 0.5) * 3;
+      vx[i] = 0; vy[i] = 0;
+    }
+    lastT = -1;
+  }
+
+  function retarget(f){
+    if (f === curForm) return;
+    curForm = f;
+    var F = forms[f], nP = F.x.length, nK = F.kx.length, i;
+    for (i = 0; i < N; i++){
+      if (accent[i] && nK){
+        var k = (i * 31) % nK;
+        tx[i] = F.kx[k] + jx[i] * 0.4;
+        ty[i] = F.ky[k] + jy[i] * 0.4;
+      } else {
+        var j = (i * 7 + ((i * 2654435761) >>> 20)) % nP;
+        tx[i] = F.x[j] + jx[i];
+        ty[i] = F.y[j] + jy[i];
+      }
+    }
+  }
+
+  function smooth(a){ return a <= 0 ? 0 : a >= 1 ? 1 : a * a * (3 - 2 * a); }
+
+  /* ---------- physics ---------- */
+
+  function step(t, dt){
+    var seg = Math.floor(t / SEG) % NFORMS;
+    var p = t % SEG;
+    var springK, dampC, curlS, breathe = 0, formIdx = seg;
+
+    if (p < HOLD_END){                       /* hold, breathing */
+      springK = 30; dampC = 6.0; curlS = 0.05; breathe = 1;
+    } else if (p < REL_END){                 /* release */
+      var r = smooth((p - HOLD_END) / (REL_END - HOLD_END));
+      springK = 30 * (1 - r) * (1 - r) * (r > 0.35 ? 0 : 1);
+      dampC = 6.0 - 4.8 * r; curlS = r;
+    } else if (p < FREE_END){                /* free flow */
+      springK = 0; dampC = 1.0; curlS = 1;
+    } else {                                 /* resolve toward next form */
+      var q = smooth((p - FREE_END) / (SEG - FREE_END));
+      formIdx = (seg + 1) % NFORMS;
+      springK = 34 * q * q; dampC = 1.2 + 5.2 * q; curlS = 1 - q;
+    }
+    retarget(formIdx);
+
+    var cx = s.w / 2, cy = s.h / 2;
+    var br = breathe ? 0.011 : 0;
+    var ft = t * 0.33;
+    for (var i = 0; i < N; i++){
+      var TX = tx[i], TY = ty[i];
+      if (br){
+        var b = br * Math.sin(t * 0.9 + bphase[i]);
+        TX += (TX - cx) * b; TY += (TY - cy) * b;
+      }
+      if (springK > 0){
+        vx[i] += (TX - px[i]) * springK * dt;
+        vy[i] += (TY - py[i]) * springK * dt;
+      }
+      if (curlS > 0.002){
+        var nx = px[i] * 0.0072, ny = py[i] * 0.0072;
+        var th = 1.9 * Math.sin(nx * 1.6 + ft) + 1.7 * Math.cos(ny * 2.1 - ft * 0.8)
+               + 0.9 * Math.sin((nx + ny) * 2.6 + ft * 0.6);
+        var m = curlS * 3.2 * dt;
+        vx[i] += (Math.cos(th) * FLOW_SPEED - vx[i]) * m;
+        vy[i] += (Math.sin(th) * FLOW_SPEED - vy[i]) * m;
+      }
+      var dp = 1 / (1 + dampC * dt);
+      vx[i] *= dp; vy[i] *= dp;
+      px[i] += vx[i] * dt;
+      py[i] += vy[i] * dt;
+      /* soft wrap when free */
+      if (springK === 0){
+        if (px[i] < -24) px[i] += s.w + 48; else if (px[i] > s.w + 24) px[i] -= s.w + 48;
+        if (py[i] < -24) py[i] += s.h + 48; else if (py[i] > s.h + 24) py[i] -= s.h + 48;
+      }
+    }
+  }
+
+  /* ---------- draw ---------- */
+
+  var ALPHAS_L = [0.30, 0.52, 0.74];
+  var ALPHAS_D = [0.34, 0.58, 0.82];
+
+  function draw(pal){
+    ctx.setTransform(s.dpr, 0, 0, s.dpr, 0, 0);
+    ctx.clearRect(0, 0, s.w, s.h);
+    var alphas = pal.mode === 'dark' ? ALPHAS_D : ALPHAS_L;
+    for (var b = 0; b < 3; b++){
+      ctx.beginPath();
+      for (var i = 0; i < N; i++){
+        if (accent[i] || bucket[i] !== b) continue;
+        ctx.rect(px[i], py[i], rad[i], rad[i]);
+      }
+      ctx.globalAlpha = alphas[b];
+      ctx.fillStyle = pal.ink;
+      ctx.fill();
+    }
+    ctx.beginPath();
+    for (var k = 0; k < N; k++){
+      if (!accent[k]) continue;
+      ctx.rect(px[k] - 0.2, py[k] - 0.2, rad[k] + 0.5, rad[k] + 0.5);
+    }
+    ctx.globalAlpha = 0.9;
+    ctx.fillStyle = pal.accent;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+
+  host.onResize(function(ns){ s = ns; build(); });
+  build();
+
+  /* QA: #t=8 in the URL pre-rolls the sim to that loop time on load */
+  var PREROLL = parseFloat((location.hash.match(/t=([\d.]+)/) || [])[1] || 0);
+  if (PREROLL > 0){
+    for (var q = 0; q < PREROLL; q += DT) step(q, DT);
+  }
+
+  host.start(function(t){
+    if (t < lastT) lastT = t;         /* rAF loop restarted (tab switch) */
+    if (lastT < 0) lastT = t;
+    var span = Math.min(t - lastT, 0.1);
+    for (var a = 0; a < span; a += DT) step(PREROLL + t - span + a, DT);
+    lastT = t;
+    draw(host.palette());
+  });
+})();
+/* MOTION-MODULE-END */
+</script>
+
+</body>
+</html>
