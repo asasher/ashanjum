@@ -13,12 +13,12 @@ const submitLead = anyApi.leads!.submit!;
 const FALLBACK_EMAIL = "as.asher.anjum@gmail.com";
 
 export const SYSTEM_OPTIONS = [
-  "Margin recovery",
+  "True cost per order",
+  "P&L, month over month",
   "Review intelligence",
-  "Reconciliation & ops analytics",
+  "Brand-DNA image generation",
   "Ask your legacy system",
   "WhatsApp sales dashboard",
-  "Team knowledgebase",
   "Not sure yet — start with the call",
 ] as const;
 

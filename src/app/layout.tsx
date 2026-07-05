@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     template: "%s — Asher Anjum",
   },
   description:
-    "I build AI systems that run your operations — reconciliation, review intelligence, sales follow-up — for Dubai businesses. Fixed price, paid in advance. You own everything I hand over.",
+    "I build AI systems that run your operations — true cost per order, review intelligence, sales follow-up — for Dubai businesses. Fixed price, paid in advance. You own everything I hand over.",
   icons: [
     {
       rel: "icon",

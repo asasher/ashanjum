@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import { ContactForm } from "~/components/ContactForm";
 import { DubaiTime } from "~/components/DubaiTime";
-import { FindTheLeak } from "~/components/FindTheLeak";
+import { OrderAnatomy } from "~/components/OrderAnatomy";
 import { ThemeToggle } from "~/components/ThemeToggle";
 
 /* v7 — the AI lane (ai.ashanjum.com; served at root until subdomains map).
@@ -83,28 +83,27 @@ function CtaLink() {
 const SYSTEMS = [
   {
     n: "01",
-    name: "Margin recovery",
-    header: "Delivery platforms owe you money. This finds it.",
-    body: "Every order line reconciled against your contracted rates — commission, refunds, cancellations, promo charges. Disputes filed inside the platform's window, every month.",
-    who: "F&B groups selling on delivery platforms",
-    status: "field-proven",
+    name: "True cost per order",
+    header: "What did that order actually make you? Finally, a number.",
+    body: "Vendor invoices reconciled into data you can query, matched against every order, and weighed against your campaigns, discounts, and fees — so pricing decisions stop being folklore.",
+    who: "Kitchen and restaurant groups buying from many vendors",
+    status: "new — founding client open",
   },
   {
     n: "02",
+    name: "P&L, month over month",
+    header: "Order economics and bank reality, on one running page.",
+    body: "What the orders earned, what the bank actually received, and which cash movements remain unexplained — with outages, cancellations, and item availability in the same ledger.",
+    who: "Owners who want one honest page on performance",
+    status: "field-proven",
+  },
+  {
+    n: "03",
     name: "Review intelligence",
     header:
       "Every 1–3★ review triaged, tagged, and answered — across all brands.",
     body: "Reviews land tagged by issue, dish, and branch, with a drafted reply. Your ops meeting starts from a ranked list, not a scroll through the apps.",
     who: "Multi-brand and multi-branch operators",
-    status: "field-proven",
-  },
-  {
-    n: "03",
-    name: "Reconciliation & ops analytics",
-    header:
-      "One ledger of what actually happened — outages, cancellations, availability.",
-    body: "Platform downtime, item availability, and cancellation reasons in one place, so the numbers your team argues about are the same numbers.",
-    who: "Operations leads who live in six dashboards",
     status: "field-proven",
   },
   {
@@ -175,7 +174,7 @@ export default function HomePage() {
               operations — and you own everything I hand over.
             </h1>
             <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-ink-2">
-              Reconciliation, review intelligence, sales follow-up,
+              True cost per order, review intelligence, sales follow-up,
               plain-English answers from legacy software. For businesses that
               run on operations, not software teams. Fixed price. Paid in
               advance. Keys included.
@@ -205,9 +204,9 @@ export default function HomePage() {
         <section className="border-y border-rule py-10">
           <div className="grid gap-8 sm:grid-cols-3">
             {[
-              ["40,803", "orders reconciled across 3 delivery platforms"],
-              ["88,408", "order lines checked, line by line"],
-              ["31", "brands running on one pipeline"],
+              ["40,803", "orders — one full year, modeled order by order"],
+              ["88,408", "order lines analyzed, down to the fils"],
+              ["31", "brands in one financial model"],
             ].map(([num, cap]) => (
               <div key={num}>
                 <p className="text-4xl font-medium tracking-[-0.02em] tabular-nums">
@@ -220,7 +219,7 @@ export default function HomePage() {
             ))}
           </div>
           <p className="mt-8 font-mono text-[11px] tracking-[0.08em] text-ink-3">
-            Delivered for a Dubai cloud-kitchen group. Their name stays
+            Modeled for a Dubai cloud-kitchen group. Their name stays
             private. The numbers don&apos;t.
           </p>
         </section>
@@ -229,14 +228,14 @@ export default function HomePage() {
         <section className="py-16 md:py-20">
           <Eyebrow>02 — The argument</Eyebrow>
           <h2 className="mt-4 max-w-2xl text-3xl font-medium tracking-[-0.02em]">
-            Watch it find money.
+            Where does an order&apos;s money actually go?
           </h2>
           <p className="mt-3 max-w-xl text-[15px] text-ink-2">
-            The smallest possible version of the first system on the menu.
-            Press the button.
+            One order, taken apart the way my P&amp;L model does it. Press the
+            button.
           </p>
           <div className="mt-8">
-            <FindTheLeak />
+            <OrderAnatomy />
           </div>
           <div className="mt-6">
             <CtaLink />
@@ -305,7 +304,9 @@ export default function HomePage() {
                     className={`inline-block border px-2.5 py-1 font-mono text-[10px] tracking-[0.12em] uppercase ${
                       s.status === "field-proven"
                         ? "border-azure/40 text-azure-text"
-                        : "border-rule text-ink-3"
+                        : s.status.startsWith("new")
+                          ? "border-azure bg-azure text-white"
+                          : "border-rule text-ink-3"
                     }`}
                   >
                     {s.status}
@@ -336,14 +337,15 @@ export default function HomePage() {
               <div className="mt-5 max-w-[62ch] space-y-4 text-[16px] leading-relaxed text-ink-2">
                 <p>
                   The platforms take 20–35% and almost nobody checks the
-                  arithmetic. On the payouts I&apos;ve reconciled, one to two
-                  percent was silently disputable — refunds on orders that
-                  were delivered, commission on orders that were cancelled.
-                  Reviews pile up unanswered while the kitchen argues about a
-                  rating nobody actually reads. Sales die politely in WhatsApp
-                  threads because the first reply came four hours late. And
-                  half the answers already sit inside a legacy system nobody
-                  can query.
+                  arithmetic — in the year of payout data I modeled, the fee
+                  lines nobody reads were exactly where the surprises lived.
+                  Almost nobody can say what a single order actually made
+                  them, because the vendor invoices never meet the order
+                  data. Reviews pile up unanswered while the kitchen argues
+                  about a rating nobody actually reads. Sales die politely in
+                  WhatsApp threads because the first reply came four hours
+                  late. And half the answers already sit inside a legacy
+                  system nobody can query.
                 </p>
                 <p>
                   None of this needs more staff. It needs systems that check,
@@ -414,8 +416,8 @@ export default function HomePage() {
               <div className="mt-5 max-w-[58ch] space-y-4 text-[16px] leading-relaxed text-ink-2">
                 <p>
                   I&apos;ve spent a decade building software for operations
-                  businesses — most recently the reconciliation and review
-                  systems above, for a group running 31 brands on delivery
+                  businesses — most recently the P&amp;L and review systems
+                  above, for a group running 31 brands on delivery
                   platforms.
                 </p>
                 <p>
