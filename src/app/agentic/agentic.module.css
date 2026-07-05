@@ -815,6 +815,42 @@
   border-top: 1px solid var(--ag-hairline);
 }
 
+.armRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 20px 0;
+  transition: opacity 0.8s ease;
+}
+
+.armDone {
+  opacity: 0.45;
+}
+
+.armLabel {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--ag-dim);
+  white-space: nowrap;
+}
+
+.armTrack {
+  flex: 1;
+  height: 1px;
+  background: var(--ag-hairline);
+  position: relative;
+  overflow: hidden;
+}
+
+.armFill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  height: 100%;
+  background: var(--ag-accent-text);
+  transition: width 0.2s linear;
+}
+
 .demoBtn,
 .demoBtnQuiet {
   font-family: var(--font-geist-mono), ui-monospace, monospace;

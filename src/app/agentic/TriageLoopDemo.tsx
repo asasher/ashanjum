@@ -117,6 +117,7 @@ function subscribeMotion(onChange: () => void) {
 export function TriageLoopDemo() {
   const [rawStage, setStage] = useState(0);
   const [mode, setMode] = useState<"static" | "running" | "done">("static");
+  const [armRatio, setArmRatio] = useState(0);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
   const boardRef = useRef<HTMLDivElement>(null);
   const startedRef = useRef(false);
@@ -150,19 +151,27 @@ export function TriageLoopDemo() {
     }, TICK_MS);
   }, [motionOK]);
 
-  // Start once when the board scrolls into view (motion allowed only).
+  // Arm as the board enters the viewport; start once when it is fully
+  // visible — or ~60% visible when the board is taller than the viewport
+  // realistically allows. Dense thresholds drive the arming bar's fill.
   useEffect(() => {
     if (!motionOK) return;
     const board = boardRef.current;
     if (!board) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry?.isIntersecting && !startedRef.current) {
+        if (!entry) return;
+        const ratio = entry.intersectionRatio;
+        setArmRatio(ratio);
+        if (startedRef.current) return;
+        const viewportH = entry.rootBounds?.height ?? window.innerHeight;
+        const tallBoard = entry.boundingClientRect.height > viewportH * 0.8;
+        if (ratio >= (tallBoard ? 0.6 : 0.95)) {
           startedRef.current = true;
           run();
         }
       },
-      { threshold: 0.35 },
+      { threshold: Array.from({ length: 21 }, (_, i) => i * 0.05) },
     );
     observer.observe(board);
     return () => observer.disconnect();
@@ -198,6 +207,29 @@ export function TriageLoopDemo() {
           A toy repo. The real loop runs on three production systems.
         </span>
       </div>
+
+      {motionOK && (
+        <div
+          className={`${styles.armRow} ${mode === "done" ? styles.armDone : ""}`}
+          aria-hidden="true"
+        >
+          <span className={styles.armLabel}>
+            {mode === "static"
+              ? "the loop — arming…"
+              : mode === "running"
+                ? "the loop — running…"
+                : "the loop — complete"}
+          </span>
+          <span className={styles.armTrack}>
+            <span
+              className={styles.armFill}
+              style={{
+                width: `${mode === "static" ? Math.round(armRatio * 100) : 100}%`,
+              }}
+            />
+          </span>
+        </div>
+      )}
 
       <div className={styles.phaseStrip} aria-hidden="true">
         {["groom", "run", "review", "merge"].map((p, i) => (
