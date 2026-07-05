@@ -92,6 +92,100 @@
   }
 }
 
+/* ==================================================================== */
+/* v7 tokens — Gallery Light (code.storage light mode) × warm near-black */
+/* dark world. One semantic set, two designed expressions. The toggle    */
+/* (data-theme) always beats system preference.                          */
+/* ==================================================================== */
+:root {
+  --v7-gray: #8e8e95;
+  --v7-bg: #ffffff;
+  --v7-bg-lift: none;
+  --v7-bg2: color-mix(in srgb, white 95%, var(--v7-gray));
+  --v7-card: #ffffff;
+  --v7-ink: color-mix(in srgb, black 95%, var(--v7-gray));
+  --v7-ink2: color-mix(in srgb, black 45%, var(--v7-gray));
+  --v7-ink3: var(--v7-gray);
+  --v7-ink4: color-mix(in srgb, white 25%, var(--v7-gray));
+  --v7-rule: color-mix(in srgb, var(--v7-ink) 12%, transparent);
+  --v7-rule-soft: color-mix(in srgb, var(--v7-ink) 6%, transparent);
+  --v7-azure: #008df4;
+  --v7-azure-text: color-mix(in srgb, black 22%, #008df4);
+  --v7-azure-wash: color-mix(in srgb, white 92%, #008df4);
+  --v7-flag: #bd3f3f;
+  --v7-flag-wash: color-mix(in srgb, white 93%, #bd3f3f);
+}
+:root[data-theme="dark"] {
+  --v7-bg: #0e0e12;
+  --v7-bg-lift: radial-gradient(1100px 700px at 72% -12%, #16161d, transparent);
+  --v7-bg2: #16161c;
+  --v7-card: #121218;
+  --v7-ink: #e9e9ee;
+  --v7-ink2: #a7a7b3;
+  --v7-ink3: #70707c;
+  --v7-ink4: #4c4c56;
+  --v7-rule: color-mix(in srgb, var(--v7-ink) 14%, transparent);
+  --v7-rule-soft: color-mix(in srgb, var(--v7-ink) 8%, transparent);
+  --v7-azure: #4da3ff;
+  --v7-azure-text: #7cbcff;
+  --v7-azure-wash: color-mix(in srgb, #4da3ff 20%, transparent);
+  --v7-flag: #ff7a7a;
+  --v7-flag-wash: color-mix(in srgb, #ff7a7a 14%, transparent);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --v7-bg: #0e0e12;
+    --v7-bg-lift: radial-gradient(
+      1100px 700px at 72% -12%,
+      #16161d,
+      transparent
+    );
+    --v7-bg2: #16161c;
+    --v7-card: #121218;
+    --v7-ink: #e9e9ee;
+    --v7-ink2: #a7a7b3;
+    --v7-ink3: #70707c;
+    --v7-ink4: #4c4c56;
+    --v7-rule: color-mix(in srgb, var(--v7-ink) 14%, transparent);
+    --v7-rule-soft: color-mix(in srgb, var(--v7-ink) 8%, transparent);
+    --v7-azure: #4da3ff;
+    --v7-azure-text: #7cbcff;
+    --v7-azure-wash: color-mix(in srgb, #4da3ff 20%, transparent);
+    --v7-flag: #ff7a7a;
+    --v7-flag-wash: color-mix(in srgb, #ff7a7a 14%, transparent);
+  }
+}
+
+/* Utilities resolve at use-time, so the same class renders both themes. */
+@theme inline {
+  --color-page: var(--v7-bg);
+  --color-page-2: var(--v7-bg2);
+  --color-card: var(--v7-card);
+  --color-ink: var(--v7-ink);
+  --color-ink-2: var(--v7-ink2);
+  --color-ink-3: var(--v7-ink3);
+  --color-ink-4: var(--v7-ink4);
+  --color-rule: var(--v7-rule);
+  --color-rule-soft: var(--v7-rule-soft);
+  --color-azure: var(--v7-azure);
+  --color-azure-text: var(--v7-azure-text);
+  --color-azure-wash: var(--v7-azure-wash);
+  --color-flag: var(--v7-flag);
+  --color-flag-wash: var(--v7-flag-wash);
+}
+
+/* Page-level wrapper for the v7 lane: carries the warm radial lift in
+   dark mode and smooths theme flips. */
+.v7 {
+  background-color: var(--v7-bg);
+  background-image: var(--v7-bg-lift);
+  background-repeat: no-repeat;
+  color: var(--v7-ink);
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
 /* Per-lane accent overrides. Tailwind v4 utilities resolve these vars at
    use-time, so a wrapper class rethemes a whole page. */
 .lane-blue {

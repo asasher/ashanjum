@@ -1,404 +1,521 @@
-import Link from "next/link";
-import { type CSSProperties } from "react";
+import { existsSync } from "fs";
+import path from "path";
+import Image from "next/image";
 
-import { LeadForm } from "~/components/LeadForm";
+import { ContactForm } from "~/components/ContactForm";
+import { DubaiTime } from "~/components/DubaiTime";
+import { FindTheLeak } from "~/components/FindTheLeak";
+import { ThemeToggle } from "~/components/ThemeToggle";
 
-const ray = (color: string) =>
-  ({ "--color-accent": `var(--color-ray-${color})` }) as CSSProperties;
+/* v7 — the AI lane (ai.ashanjum.com; served at root until subdomains map).
+   Design: Gallery Light editorial system, warm near-black dark mode.
+   Spine: hero → proof → demo → process → systems → insight → pricing →
+   person → FAQ → contact. One CTA, repeated verbatim. First person only. */
 
-const PACKETS = [
+const CTA = "Book 20 minutes — I'll show you where your margin leaks";
+
+/* Real photos: drop files into public/photos/ as portrait.jpg (hero,
+   3:4-ish), workshop.jpg (wide table shot), listening.jpg. Frames render
+   a placeholder until the file exists (checked at build time). */
+function hasPhoto(name: string) {
+  return existsSync(path.join(process.cwd(), "public", "photos", name));
+}
+
+function PhotoFrame({
+  file,
+  alt,
+  caption,
+  aspect = "aspect-[3/4]",
+}: {
+  file: string;
+  alt: string;
+  caption: string;
+  aspect?: string;
+}) {
+  const exists = hasPhoto(file);
+  return (
+    <figure>
+      <div
+        className={`relative ${aspect} w-full overflow-hidden border border-rule bg-page-2`}
+      >
+        {exists ? (
+          <Image
+            src={`/photos/${file}`}
+            alt={alt}
+            fill
+            sizes="(min-width: 900px) 40vw, 90vw"
+            className="object-cover"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="font-mono text-[11px] tracking-[0.14em] text-ink-4 uppercase">
+              Photo — {alt}
+            </span>
+          </div>
+        )}
+      </div>
+      <figcaption className="mt-2 font-mono text-[11px] tracking-[0.08em] text-ink-3">
+        {caption}
+      </figcaption>
+    </figure>
+  );
+}
+
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="font-mono text-[11px] tracking-[0.14em] text-ink-3 uppercase">
+      {children}
+    </p>
+  );
+}
+
+function CtaLink() {
+  return (
+    <a
+      href="#contact"
+      className="font-mono text-[13px] tracking-[0.04em] text-azure-text underline decoration-rule underline-offset-8 transition-colors hover:decoration-azure"
+    >
+      {CTA} →
+    </a>
+  );
+}
+
+const SYSTEMS = [
   {
-    slug: "constraints",
-    color: "orange",
-    name: "Constraint Finder",
-    what: "Theory-of-Constraints facilitation that hunts down the one bottleneck throttling your whole operation — then runs the experiments to break it.",
-    who: "FOUNDERS · COO · OPS LEADS",
+    n: "01",
+    name: "Margin recovery",
+    header: "Delivery platforms owe you money. This finds it.",
+    body: "Every order line reconciled against your contracted rates — commission, refunds, cancellations, promo charges. Disputes filed inside the platform's window, every month.",
+    who: "F&B groups selling on delivery platforms",
+    status: "field-proven",
   },
   {
-    slug: "fair-deal",
-    color: "pink",
-    name: "Fair Deal Canvas",
-    what: "Two founders, two agents, one canvas. A mediated negotiation that lands a partnership both sides would sign again a year later.",
-    who: "CO-FOUNDERS · PARTNERSHIPS · JVS",
+    n: "02",
+    name: "Review intelligence",
+    header:
+      "Every 1–3★ review triaged, tagged, and answered — across all brands.",
+    body: "Reviews land tagged by issue, dish, and branch, with a drafted reply. Your ops meeting starts from a ranked list, not a scroll through the apps.",
+    who: "Multi-brand and multi-branch operators",
+    status: "field-proven",
   },
   {
-    slug: "triage",
-    color: "blue",
-    name: "Backlog Triage Loop",
-    what: "Your issue backlog groomed, scoped, and run through agents into reviewed pull requests. The queue stops being a graveyard.",
-    who: "PRODUCT & ENGINEERING LEADS",
+    n: "03",
+    name: "Reconciliation & ops analytics",
+    header:
+      "One ledger of what actually happened — outages, cancellations, availability.",
+    body: "Platform downtime, item availability, and cancellation reasons in one place, so the numbers your team argues about are the same numbers.",
+    who: "Operations leads who live in six dashboards",
+    status: "field-proven",
   },
   {
-    slug: "skill-loop",
-    color: "indigo",
-    name: "Skill Loop",
-    what: "Eval-driven improvement for your AI workflows: measure, edit, re-run, until there is no evaluation-backed change left to make.",
-    who: "TEAMS ALREADY RUNNING AGENTS",
+    n: "04",
+    name: "Ask your legacy system",
+    header: "Plain-English questions against software with no API. No migration.",
+    body: "A setup phase maps how your old system holds its data and how to get it out. Then anyone on the team asks in plain English and gets the number.",
+    who: "Businesses running on aging ERP or inventory software",
+    status: "in service",
   },
   {
-    slug: "teamdrive",
-    color: "mint",
-    name: "TeamDrive",
-    what: "Agents operating directly inside Google Workspace — Drive, Docs, Sheets, Slides — with revision history and managed versions intact.",
-    who: "OPS · ADMIN-HEAVY TEAMS",
+    n: "05",
+    name: "WhatsApp sales dashboard",
+    header: "Every lead answered in minutes. Every deal visible.",
+    body: "Sales here happen in WhatsApp — and die there politely when the first reply comes hours late. This puts the pipeline on one screen and the first response on a clock.",
+    who: "Owners whose sales live in chat threads",
+    status: "in service",
+  },
+  {
+    n: "06",
+    name: "Team knowledgebase",
+    header: "What your team knows, kept where the team can ask it.",
+    body: "The answers that live in three people's heads, written down once and queryable by everyone — onboarding, SOPs, the questions that repeat every week.",
+    who: "Teams past ten people, growing",
+    status: "in service",
   },
 ] as const;
 
-export default function UmbrellaPage() {
+export default function HomePage() {
   return (
-    <div className="min-h-screen bg-ink-deep font-sans text-bone">
-      {/* Fixed perspective grid floor — the page's depth layer */}
-      <div className="fx-grid" aria-hidden="true" />
-
-      <div className="relative z-10">
-        {/* Ticker strip */}
-        <div className="overflow-hidden border-b border-line bg-panel py-2 whitespace-nowrap">
-          <div className="animate-ticker inline-block will-change-transform">
-            {[0, 1].map((i) => (
-              <span
-                key={i}
-                aria-hidden={i === 1}
-                className="font-mono text-xs tracking-wider text-bone-dim"
+    <div className="v7 min-h-screen">
+      {/* ---------- header ---------- */}
+      <header className="sticky top-0 z-10 border-b border-rule-soft bg-page/85 backdrop-blur">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-4">
+          <p className="text-[15px] font-medium tracking-[-0.01em]">
+            Asher Anjum <span className="text-ink-3">— AI systems</span>
+          </p>
+          <nav className="hidden items-center gap-6 md:flex">
+            {[
+              ["Systems", "#systems"],
+              ["How it works", "#process"],
+              ["Pricing", "#pricing"],
+              ["Contact", "#contact"],
+            ].map(([label, href]) => (
+              <a
+                key={href}
+                href={href}
+                className="font-mono text-[11px] tracking-[0.12em] text-ink-2 uppercase transition-colors hover:text-ink"
               >
-                ~ AI SYSTEMS FOR DUBAI OPERATORS · BUILT IN 30 DAYS · HANDED
-                OVER · YOU OWN IT ~ THE KNOWLEDGE IS FREE · THE IMPLEMENTATION
-                IS THE PRODUCT ·{" "}
-              </span>
+                {label}
+              </a>
+            ))}
+          </nav>
+          <ThemeToggle />
+        </div>
+      </header>
+
+      <main className="mx-auto max-w-6xl px-6">
+        {/* ---------- hero ---------- */}
+        <section className="grid gap-12 py-16 md:grid-cols-12 md:py-24">
+          <div className="md:col-span-7">
+            <Eyebrow>
+              <span className="text-azure-text">●</span> AI systems for
+              operations — Dubai
+            </Eyebrow>
+            <h1 className="mt-6 text-4xl leading-[1.08] font-medium tracking-[-0.02em] text-balance md:text-5xl">
+              I&apos;m Asher Anjum. I build AI systems that run your
+              operations — and you own everything I hand over.
+            </h1>
+            <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-ink-2">
+              Reconciliation, review intelligence, sales follow-up,
+              plain-English answers from legacy software. For businesses that
+              run on operations, not software teams. Fixed price. Paid in
+              advance. Keys included.
+            </p>
+            <div className="mt-9 flex flex-wrap items-center gap-5">
+              <a
+                href="#contact"
+                className="bg-azure px-7 py-3.5 font-mono text-[13px] tracking-[0.06em] text-white uppercase transition-transform hover:-translate-y-0.5"
+              >
+                {CTA}
+              </a>
+            </div>
+            <p className="mt-4 font-mono text-[11px] text-ink-4">
+              20 minutes. Your numbers. No deck.
+            </p>
+          </div>
+          <div className="md:col-span-4 md:col-start-9">
+            <PhotoFrame
+              file="portrait.jpg"
+              alt="Asher, mid-session"
+              caption="AI 101 workshop · Dubai · May 2026"
+            />
+          </div>
+        </section>
+
+        {/* ---------- proof strip ---------- */}
+        <section className="border-y border-rule py-10">
+          <div className="grid gap-8 sm:grid-cols-3">
+            {[
+              ["40,803", "orders reconciled across 3 delivery platforms"],
+              ["88,408", "order lines checked, line by line"],
+              ["31", "brands running on one pipeline"],
+            ].map(([num, cap]) => (
+              <div key={num}>
+                <p className="text-4xl font-medium tracking-[-0.02em] tabular-nums">
+                  {num}
+                </p>
+                <p className="mt-2 max-w-[26ch] text-[14px] text-ink-2">
+                  {cap}
+                </p>
+              </div>
             ))}
           </div>
-        </div>
-
-        <header className="mx-auto flex max-w-5xl items-baseline justify-between px-6 pt-10">
-          <p className="font-mono text-sm font-semibold tracking-tight">
-            ash anjum<span className="animate-caret text-accent">▊</span>
+          <p className="mt-8 font-mono text-[11px] tracking-[0.08em] text-ink-3">
+            Delivered for a Dubai cloud-kitchen group. Their name stays
+            private. The numbers don&apos;t.
           </p>
-          <nav className="flex flex-wrap gap-5 font-mono text-xs text-bone-dim">
-            <a href="#systems" className="transition-colors hover:text-accent">
-              [ SYSTEMS ]
-            </a>
-            <Link
-              href="/delivery-margin-recovery"
-              className="transition-colors hover:text-ray-blue"
-            >
-              [ MARGIN RECOVERY ]
-            </Link>
-            <Link
-              href="/review-insights"
-              className="transition-colors hover:text-ray-indigo"
-            >
-              [ REVIEW INSIGHTS ]
-            </Link>
-            <a href="#contact" className="transition-colors hover:text-accent">
-              [ CONTACT ]
-            </a>
-          </nav>
-        </header>
+        </section>
 
-        <main className="mx-auto max-w-5xl px-6">
-          {/* Hero — tilts back into depth as you scroll past */}
-          <div className="fx-stage">
-            <section data-scene="exit" className="fx-hero pt-24 pb-24 sm:pt-36">
-              <p
-                className="mb-6 font-mono text-xs tracking-widest text-accent-2 uppercase"
-                style={{ animation: "var(--animate-rise)" }}
-              >
-                ex-Talabat / Delivery Hero · Head of Product
-              </p>
-              <h1
-                className="font-mono max-w-4xl text-4xl leading-[1.08] font-bold tracking-tight sm:text-6xl"
-                style={{
-                  animation: "var(--animate-rise)",
-                  animationDelay: "80ms",
-                }}
-              >
-                I build AI systems
-                <br />
-                your team <span className="bg-accent px-2 text-accent-ink">
-                  owns
-                </span>
-                .
-              </h1>
-              <p
-                className="mt-8 max-w-2xl text-lg leading-relaxed text-bone-dim"
-                style={{
-                  animation: "var(--animate-rise)",
-                  animationDelay: "160ms",
-                }}
-              >
-                Not decks. Not certificates. Working systems, built on your
-                real numbers, handed over with the keys. There&apos;s a gold
-                rush on and everyone is selling shovels — I teach you to dig,
-                or I dig and hand you the hole.
-              </p>
+        {/* ---------- signature demo ---------- */}
+        <section className="py-16 md:py-20">
+          <Eyebrow>02 — The argument</Eyebrow>
+          <h2 className="mt-4 max-w-2xl text-3xl font-medium tracking-[-0.02em]">
+            Watch it find money.
+          </h2>
+          <p className="mt-3 max-w-xl text-[15px] text-ink-2">
+            The smallest possible version of the first system on the menu.
+            Press the button.
+          </p>
+          <div className="mt-8">
+            <FindTheLeak />
+          </div>
+          <div className="mt-6">
+            <CtaLink />
+          </div>
+        </section>
+
+        {/* ---------- how it works ---------- */}
+        <section id="process" className="border-t border-rule py-16 md:py-20">
+          <Eyebrow>03 — How it works</Eyebrow>
+          <div className="mt-8 grid gap-px overflow-hidden border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              [
+                "1 · The call",
+                "Twenty minutes on where your operation leaks. If there's nothing defensible, I say so and we stop there.",
+              ],
+              [
+                "2 · Setup, paid",
+                "Systems that need discovery — legacy software, knowledgebases — start with a paid setup phase: AED 6,000, credited against the build. You get a fixed-price proposal either way.",
+              ],
+              [
+                "3 · The build",
+                "Weeks, not quarters. A weekly update you can read in one minute, and nothing billed by the hour.",
+              ],
+              [
+                "4 · Handover",
+                "Code, data, keys — yours. Your team runs it. I stay on call if you want me to.",
+              ],
+            ].map(([head, body]) => (
+              <div key={head} className="bg-card p-6">
+                <p className="font-mono text-[12px] tracking-[0.08em] text-azure-text uppercase">
+                  {head}
+                </p>
+                <p className="mt-3 text-[14px] leading-relaxed text-ink-2">
+                  {body}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ---------- systems menu ---------- */}
+        <section id="systems" className="border-t border-rule py-16 md:py-20">
+          <Eyebrow>04 — Start with a system</Eyebrow>
+          <p className="mt-4 max-w-xl text-[15px] text-ink-2">
+            Most engagements begin with one of these.
+          </p>
+          <div className="mt-8 border-t border-rule">
+            {SYSTEMS.map((s) => (
               <div
-                className="mt-10 flex flex-wrap gap-4"
-                style={{
-                  animation: "var(--animate-rise)",
-                  animationDelay: "240ms",
-                }}
+                key={s.n}
+                className="group grid gap-3 border-b border-rule py-6 transition-colors hover:bg-page-2 md:grid-cols-12 md:gap-6"
               >
-                <a
-                  href="#systems"
-                  className="bg-accent px-7 py-3.5 font-mono text-sm font-bold text-accent-ink transition-transform duration-200 hover:-translate-y-0.5"
-                >
-                  BROWSE THE SYSTEMS →
-                </a>
-                <a
-                  href="#work-with-me"
-                  className="border border-line px-7 py-3.5 font-mono text-sm text-bone-dim transition-colors hover:border-accent hover:text-bone"
-                >
-                  [ HOW IT WORKS ]
-                </a>
-              </div>
-            </section>
-          </div>
-
-          {/* Pinned manifesto — highlight sweeps line by line with scroll */}
-          <section data-scene="pin" className="relative h-[240vh]">
-            <div className="sticky top-0 flex h-screen flex-col items-start justify-center">
-              <p className="mb-8 font-mono text-xs tracking-widest text-bone-dim">
-                {"// THE OPERATING MODEL"}
-              </p>
-              {[
-                "The knowledge is free.",
-                "The implementation is for sale.",
-                "You own what I build.",
-              ].map((line, i) => (
-                <p
-                  key={line}
-                  className="fx-line font-mono text-3xl leading-tight font-bold sm:text-5xl"
-                  style={{ "--i": i } as CSSProperties}
-                >
-                  {line}
+                <p className="font-mono text-[12px] text-ink-4 md:col-span-1">
+                  {s.n}
                 </p>
-              ))}
-            </div>
-          </section>
-
-          {/* Two tiers */}
-          <section id="work-with-me" className="py-20">
-            <h2 data-scene="enter" className="fx-card font-mono text-3xl font-bold sm:text-4xl">
-              Two ways to work with me
-            </h2>
-            <div className="mt-12 grid gap-px border border-line bg-line sm:grid-cols-2">
-              <div data-scene="enter" className="fx-card bg-panel p-8">
-                <p className="font-mono text-xs tracking-widest text-accent-2">
-                  01 / DONE WITH YOU
-                </p>
-                <h3 className="mt-4 font-mono text-2xl font-bold">
-                  You learn by building
-                </h3>
-                <p className="mt-4 leading-relaxed text-bone-dim">
-                  We build a real AI system for your own business, together.
-                  Your team learns the tools on a problem that pays for the
-                  learning. No sandbox exercises, no certificate mill.
-                </p>
-              </div>
-              <div data-scene="enter" className="fx-card bg-panel p-8">
-                <p className="font-mono text-xs tracking-widest text-accent-2">
-                  02 / DONE FOR YOU
-                </p>
-                <h3 className="mt-4 font-mono text-2xl font-bold">
-                  I build it, you keep it
-                </h3>
-                <p className="mt-4 leading-relaxed text-bone-dim">
-                  I audit the workflow, build the system on your data, train
-                  your team, and hand it over. You own it outright — the
-                  optional retainer covers optimization, not hostage-keeping.
-                </p>
-              </div>
-            </div>
-            <p className="mt-6 font-mono text-xs text-bone-dim">
-              {"// The difference from an agency: no black box, no lock-in. The system is yours after I leave."}
-            </p>
-          </section>
-
-          <div className="font-mono text-xs text-line select-none">
-            ────────────────────────────────────────────────────────────
-          </div>
-
-          {/* Flagship offers */}
-          <section className="py-20">
-            <h2 data-scene="enter" className="fx-card font-mono text-3xl font-bold sm:text-4xl">
-              On the bench right now
-            </h2>
-            <div className="mt-12 grid gap-6">
-              <Link
-                href="/delivery-margin-recovery"
-                data-scene="enter"
-                style={ray("blue")}
-                className="fx-card group block border border-line bg-panel-2 p-8 transition-colors hover:border-accent"
-              >
-                <div className="flex flex-wrap items-baseline justify-between gap-3">
-                  <h3 className="font-mono text-2xl font-bold">
-                    Delivery Margin Recovery Sprint
+                <div className="md:col-span-7">
+                  <h3 className="text-[17px] font-medium tracking-[-0.01em]">
+                    {s.header}
                   </h3>
-                  <span className="font-mono text-xs text-accent">
-                    F&amp;B · 30 DAYS · AED 20,000
-                  </span>
-                </div>
-                <p className="mt-3 max-w-2xl leading-relaxed text-bone-dim">
-                  A live payout-vs-POS reconciliation system for Dubai
-                  restaurant groups losing AED 15k+/month to aggregator leakage
-                  they can&apos;t see. Built in 30 days, then it&apos;s yours.
-                </p>
-                <p className="mt-5 font-mono text-sm text-accent transition-transform duration-200 group-hover:translate-x-1">
-                  → Book a Profit Audit
-                </p>
-              </Link>
-              <Link
-                href="/review-insights"
-                data-scene="enter"
-                style={ray("indigo")}
-                className="fx-card group block border border-line bg-panel-2 p-8 transition-colors hover:border-accent"
-              >
-                <div className="flex flex-wrap items-baseline justify-between gap-3">
-                  <h3 className="font-mono text-2xl font-bold">
-                    Review Insights Triage
-                  </h3>
-                  <span className="font-mono text-xs text-accent">
-                    MULTI-BRAND F&amp;B · 30 DAYS
-                  </span>
-                </div>
-                <p className="mt-3 max-w-2xl leading-relaxed text-bone-dim">
-                  Your reviews already say which brand is bleeding and why —
-                  nobody has time to read hundreds of them. A triage system
-                  that ranks the damage and hands your ops team the fix.
-                </p>
-                <p className="mt-5 font-mono text-sm text-accent transition-transform duration-200 group-hover:translate-x-1">
-                  → See how it works
-                </p>
-              </Link>
-            </div>
-          </section>
-
-          <div className="font-mono text-xs text-line select-none">
-            ────────────────────────────────────────────────────────────
-          </div>
-
-          {/* Systems library — the packets */}
-          <section id="systems" className="py-20">
-            <div data-scene="enter" className="fx-card max-w-3xl">
-              <p className="font-mono text-xs tracking-widest text-accent">
-                {"// SYSTEMS LIBRARY"}
-              </p>
-              <h2 className="mt-4 font-mono text-3xl font-bold sm:text-4xl">
-                The playbook is free.
-                <br />
-                The implementation is the product.
-              </h2>
-              <p className="mt-6 leading-relaxed text-bone-dim">
-                Every system below runs in my own work today. Each one ships
-                as a knowledge packet — the full method, written down, free —
-                because knowing how it works and having it running on your
-                data are different products. When you want it running, that
-                part is for sale.
-              </p>
-            </div>
-
-            <div className="mt-14 grid gap-6 sm:grid-cols-2">
-              {PACKETS.map((p, i) => (
-                <div
-                  key={p.slug}
-                  data-scene="enter"
-                  style={ray(p.color)}
-                  className="fx-card flex flex-col border border-line bg-panel-2 p-8 transition-colors hover:border-accent"
-                >
-                  <div className="flex items-baseline justify-between gap-3">
-                    <p className="font-mono text-xs tracking-widest text-accent">
-                      {String(i + 1).padStart(2, "0")} / {p.slug.toUpperCase()}
-                    </p>
-                    <span className="border border-accent px-2 py-0.5 font-mono text-[10px] tracking-wider text-accent">
-                      PACKET: FREE
-                    </span>
-                  </div>
-                  <h3 className="mt-4 font-mono text-xl font-bold">{p.name}</h3>
-                  <p className="mt-3 grow leading-relaxed text-bone-dim">
-                    {p.what}
+                  <p className="mt-2 max-w-prose text-[14px] leading-relaxed text-ink-2">
+                    {s.body}
                   </p>
-                  <p className="mt-5 font-mono text-[11px] tracking-wider text-bone-dim">
-                    FOR: {p.who}
-                  </p>
-                  <a
-                    href="#contact"
-                    className="mt-4 font-mono text-sm text-accent transition-transform duration-200 hover:translate-x-1"
+                </div>
+                <div className="md:col-span-4 md:text-right">
+                  <p
+                    className={`inline-block border px-2.5 py-1 font-mono text-[10px] tracking-[0.12em] uppercase ${
+                      s.status === "field-proven"
+                        ? "border-azure/40 text-azure-text"
+                        : "border-rule text-ink-3"
+                    }`}
                   >
-                    → Get the implementation
-                  </a>
+                    {s.status}
+                  </p>
+                  <p className="mt-3 font-mono text-[11px] text-ink-3">
+                    For: {s.who}
+                  </p>
                 </div>
-              ))}
-              <div
-                data-scene="enter"
-                className="fx-card flex flex-col items-start justify-center border border-dashed border-line p-8"
-              >
-                <p className="font-mono text-xs tracking-widest text-bone-dim">
-                  ++ / MORE IN THE DRAWER
+              </div>
+            ))}
+          </div>
+          <p className="mt-6 font-mono text-[11px] tracking-[0.06em] text-ink-4">
+            In the lab: agentic development workflows, video-editing agents,
+            and the tools I use to build all of the above.
+          </p>
+        </section>
+
+        {/* ---------- written insight ---------- */}
+        <section className="border-t border-rule py-16 md:py-20">
+          <div className="grid gap-10 md:grid-cols-12">
+            <div className="md:col-span-3">
+              <Eyebrow>05 — Field notes</Eyebrow>
+            </div>
+            <div className="md:col-span-8">
+              <h2 className="text-2xl font-medium tracking-[-0.01em]">
+                What I keep seeing inside Dubai operations
+              </h2>
+              <div className="mt-5 max-w-[62ch] space-y-4 text-[16px] leading-relaxed text-ink-2">
+                <p>
+                  The platforms take 20–35% and almost nobody checks the
+                  arithmetic. On the payouts I&apos;ve reconciled, one to two
+                  percent was silently disputable — refunds on orders that
+                  were delivered, commission on orders that were cancelled.
+                  Reviews pile up unanswered while the kitchen argues about a
+                  rating nobody actually reads. Sales die politely in WhatsApp
+                  threads because the first reply came four hours late. And
+                  half the answers already sit inside a legacy system nobody
+                  can query.
                 </p>
-                <p className="mt-4 leading-relaxed text-bone-dim">
-                  Reconciliation pipelines, ops analytics, agent-run
-                  onboarding flows — packets drop as they&apos;re written up.
-                  Tell me your bottleneck and I&apos;ll tell you which system
-                  fits.
+                <p>
+                  None of this needs more staff. It needs systems that check,
+                  answer, and escalate on their own — and an owner who can see
+                  all of it on one page.
                 </p>
-                <a
-                  href="#contact"
-                  className="mt-5 font-mono text-sm text-accent transition-transform duration-200 hover:translate-x-1"
-                >
-                  → Describe your bottleneck
-                </a>
               </div>
             </div>
-          </section>
-
-          <div className="font-mono text-xs text-line select-none">
-            ────────────────────────────────────────────────────────────
           </div>
+        </section>
 
-          {/* Credential */}
-          <section className="py-20">
-            <blockquote data-scene="enter" className="fx-card max-w-3xl">
-              <p className="font-mono text-2xl leading-snug font-bold sm:text-3xl">
-                &ldquo;I sat on the side that builds aggregator payouts. I know
-                exactly where the economics leak, because I helped design the
-                systems that produce the gap.&rdquo;
+        {/* ---------- pricing ---------- */}
+        <section id="pricing" className="border-t border-rule py-16 md:py-20">
+          <Eyebrow>06 — Pricing</Eyebrow>
+          <div className="mt-8 grid gap-px overflow-hidden border border-rule bg-rule md:grid-cols-2">
+            <div className="bg-card p-8">
+              <p className="font-mono text-[11px] tracking-[0.12em] text-ink-3 uppercase">
+                Built with your team
               </p>
-              <footer className="mt-6 font-mono text-sm text-bone-dim">
-                — Asher Anjum · ex-Talabat / Delivery Hero, Head of Product ·
-                Dubai
-              </footer>
-            </blockquote>
-          </section>
+              <p className="mt-3 text-3xl font-medium tracking-[-0.02em]">
+                from AED 15,000{" "}
+                <span className="text-base text-ink-3">per system</span>
+              </p>
+              <p className="mt-4 max-w-prose text-[14px] leading-relaxed text-ink-2">
+                Up to four of your people in the room. We build it together —
+                they learn to run it, and to extend it after I&apos;m gone.
+              </p>
+            </div>
+            <div className="bg-card p-8">
+              <p className="font-mono text-[11px] tracking-[0.12em] text-ink-3 uppercase">
+                Delivered running
+              </p>
+              <p className="mt-3 text-3xl font-medium tracking-[-0.02em]">
+                from AED 20,000{" "}
+                <span className="text-base text-ink-3">per system</span>
+              </p>
+              <p className="mt-4 max-w-prose text-[14px] leading-relaxed text-ink-2">
+                I build it, hand it over running, and train the person who
+                owns it. Most engagements land between AED 20,000–40,000.
+              </p>
+            </div>
+          </div>
+          <div className="mt-6 space-y-2 text-[15px] text-ink-2">
+            <p>
+              Ongoing optimization from AED 3,500/month, quarterly in advance.
+            </p>
+            <p className="font-medium text-ink">
+              Paid in advance — half on signature. You own everything: code,
+              data, keys.
+            </p>
+            <p className="font-mono text-[11px] text-ink-4">
+              For scale: a system costs less than one waiter costs you in a
+              year.
+            </p>
+          </div>
+          <div className="mt-8">
+            <CtaLink />
+          </div>
+        </section>
 
-          {/* Contact */}
-          <section id="contact" className="pb-24">
-            <div data-scene="enter" className="fx-card border border-line bg-panel p-8 sm:p-12">
-              <LeadForm
-                lane="umbrella"
-                heading="Tell me what's leaking"
-                subheading="Name the system you want running — or just describe the bottleneck. I reply within one working day. Paid engagements start with 50% upfront; that part is non-negotiable."
-                packets={[
-                  "Delivery Margin Recovery",
-                  "Review Insights Triage",
-                  ...PACKETS.map((p) => p.name),
-                  "Not sure — here's my bottleneck",
-                ]}
+        {/* ---------- person ---------- */}
+        <section className="border-t border-rule py-16 md:py-20">
+          <div className="grid gap-10 md:grid-cols-12">
+            <div className="md:col-span-6">
+              <Eyebrow>07 — The person</Eyebrow>
+              {/* NOTE for Asher: voice-check this story; the facts are drawn
+                  from delivered work + the May 2026 workshop only. */}
+              <div className="mt-5 max-w-[58ch] space-y-4 text-[16px] leading-relaxed text-ink-2">
+                <p>
+                  I&apos;ve spent a decade building software for operations
+                  businesses — most recently the reconciliation and review
+                  systems above, for a group running 31 brands on delivery
+                  platforms.
+                </p>
+                <p>
+                  In May I ran AI 101 in Dubai for a room of business owners:
+                  service education, F&amp;B, pricing, financial consulting.
+                  Different industries, same four leaks.
+                </p>
+                <p>
+                  I work alone, on purpose — you get the person who made the
+                  promise. My name is on the domain because you should know
+                  exactly who to call when something breaks.
+                </p>
+              </div>
+            </div>
+            <div className="grid gap-6 md:col-span-5 md:col-start-8">
+              <PhotoFrame
+                file="workshop.jpg"
+                alt="the AI 101 room"
+                caption="AI 101 for Dubai business owners & solopreneurs · May 2026"
+                aspect="aspect-[4/3]"
+              />
+              <PhotoFrame
+                file="listening.jpg"
+                alt="listening first"
+                caption="The first step is always listening."
+                aspect="aspect-[4/3]"
               />
             </div>
-          </section>
-        </main>
+          </div>
+        </section>
 
-        <footer className="border-t border-line bg-panel">
-          <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-6 py-10 font-mono text-xs text-bone-dim">
-            <p>~*~ ashanjum.com · Dubai, UAE ~*~</p>
+        {/* ---------- FAQ ---------- */}
+        <section className="border-t border-rule py-16 md:py-20">
+          <Eyebrow>08 — Three questions</Eyebrow>
+          <div className="mt-8 grid gap-px overflow-hidden border border-rule bg-rule md:grid-cols-3">
+            {[
+              [
+                "Do I need a tech team?",
+                "No. These systems are built to be run by the people you already have. If your team can use WhatsApp and a spreadsheet, they can run what I hand over.",
+              ],
+              [
+                "Our data is a mess. Is that a problem?",
+                "It's the norm. Messy exports, three formats, no API — that's exactly what the setup phase is for. The systems above were built on that kind of data.",
+              ],
+              [
+                "Why paid in advance?",
+                "It keeps both of us honest. You get a fixed price and a named person accountable for it; I spend my attention building, not invoicing. Half on signature is standard practice here — and it's non-negotiable.",
+              ],
+            ].map(([q, a]) => (
+              <div key={q} className="bg-card p-7">
+                <h3 className="text-[16px] font-medium">{q}</h3>
+                <p className="mt-3 text-[14px] leading-relaxed text-ink-2">
+                  {a}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ---------- contact ---------- */}
+        <section id="contact" className="border-t border-rule py-16 md:py-24">
+          <div className="grid gap-10 md:grid-cols-12">
+            <div className="md:col-span-5">
+              <Eyebrow>09 — The ask</Eyebrow>
+              <h2 className="mt-4 text-3xl font-medium tracking-[-0.02em] text-balance">
+                {CTA}.
+              </h2>
+              <p className="mt-4 max-w-prose text-[15px] text-ink-2">
+                Bring whatever numbers you have — platform statements, a
+                ratings screenshot, nothing at all. If there&apos;s no
+                defensible leak, I&apos;ll tell you on the call.
+              </p>
+            </div>
+            <div className="md:col-span-6 md:col-start-7">
+              <ContactForm />
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* ---------- footer ---------- */}
+      <footer className="border-t border-rule">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-8 font-mono text-[11px] tracking-[0.08em] text-ink-3">
+          <p>
+            Asher Anjum —{" "}
             <a
               href="mailto:as.asher.anjum@gmail.com"
-              className="transition-colors hover:text-accent"
+              className="underline decoration-rule underline-offset-4 hover:text-ink"
             >
-              [ EMAIL ME ]
+              as.asher.anjum@gmail.com
             </a>
-          </div>
-        </footer>
-      </div>
+          </p>
+          <p>
+            <DubaiTime />
+          </p>
+          <p className="text-ink-4">
+            Built by me, on the systems I sell. © {new Date().getFullYear()}
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
