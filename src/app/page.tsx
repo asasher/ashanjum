@@ -2,6 +2,7 @@ import { existsSync } from "fs";
 import path from "path";
 import Image from "next/image";
 
+import { AmbientLoop } from "~/components/AmbientLoop";
 import { ContactForm } from "~/components/ContactForm";
 import { DubaiTime } from "~/components/DubaiTime";
 import { OrderAnatomy } from "~/components/OrderAnatomy";
@@ -443,6 +444,12 @@ export default function HomePage() {
                 file="listening.jpg"
                 alt="listening first"
                 caption="The first step is always listening."
+                aspect="aspect-[4/3]"
+              />
+              <AmbientLoop
+                src="/photos/room-loop.mp4"
+                poster="/photos/room-loop-poster.jpg"
+                caption="Mid-session · sound off"
                 aspect="aspect-[4/3]"
               />
             </div>
