@@ -109,6 +109,14 @@ const SYSTEMS = [
   },
   {
     n: "04",
+    name: "Brand-DNA image generation",
+    header: "Menu images in your brand's colors and DNA — at catalog scale.",
+    body: "A spreadsheet in, finished imagery out: every item rendered on-brand — palette, plating, mood — without a shoot for each new dish or each new brand.",
+    who: "F&B brands feeding menus to apps and aggregators",
+    status: "field-proven",
+  },
+  {
+    n: "05",
     name: "Ask your legacy system",
     header: "Plain-English questions against software with no API. No migration.",
     body: "A setup phase maps how your old system holds its data and how to get it out. Then anyone on the team asks in plain English and gets the number.",
@@ -116,19 +124,11 @@ const SYSTEMS = [
     status: "in service",
   },
   {
-    n: "05",
+    n: "06",
     name: "WhatsApp sales dashboard",
     header: "Every lead answered in minutes. Every deal visible.",
     body: "Sales here happen in WhatsApp — and die there politely when the first reply comes hours late. This puts the pipeline on one screen and the first response on a clock.",
     who: "Owners whose sales live in chat threads",
-    status: "in service",
-  },
-  {
-    n: "06",
-    name: "Team knowledgebase",
-    header: "What your team knows, kept where the team can ask it.",
-    body: "The answers that live in three people's heads, written down once and queryable by everyone — onboarding, SOPs, the questions that repeat every week.",
-    who: "Teams past ten people, growing",
     status: "in service",
   },
 ] as const;
@@ -318,8 +318,8 @@ export default function HomePage() {
             ))}
           </div>
           <p className="mt-6 font-mono text-[11px] tracking-[0.06em] text-ink-4">
-            In the lab: agentic development workflows, video-editing agents,
-            and the tools I use to build all of the above.
+            In the lab: team knowledgebases, agentic development workflows,
+            video-editing agents, and the tools I use to build all of the above.
           </p>
         </section>
 
