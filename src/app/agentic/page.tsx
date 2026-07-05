@@ -4,6 +4,7 @@ import Link from "next/link";
 import styles from "./agentic.module.css";
 import { AgenticContact } from "./AgenticContact";
 import { DubaiTime } from "./DubaiTime";
+import { TriageLoopDemo } from "./TriageLoopDemo";
 
 export const metadata: Metadata = {
   title: "Your external CTO in the age of AI",
@@ -158,6 +159,7 @@ export default function AgenticPage() {
                 </div>
               ))}
             </div>
+            <TriageLoopDemo />
             <div className={styles.cmdStrip}>
               11 subcommands, each with its own contract: <b>groom</b> ·{" "}
               <b>setup</b> · <b>run</b> · <b>diagnose</b> · <b>plan</b> ·{" "}
