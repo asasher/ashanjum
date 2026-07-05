@@ -257,11 +257,14 @@ export default function AgenticPage() {
             <p className={styles.proof}>
               I&apos;m not selling a methodology I read about.{" "}
               <strong>
-                I run this loop every working day on production systems
+                This loop runs today on three production systems I build and
+                operate
               </strong>{" "}
-              — studio software serving paying clients, multi-brand F&amp;B data
-              platforms reconciling tens of thousands of orders. The workflow on
-              this page is the one I use, published as-is.{" "}
+              — an ETL platform for automotive spare-parts distribution, a
+              project-lifecycle management system for IMS onboardings, and a
+              legal case-management system for law firms. Three codebases,
+              three domains, one workflow. The one on this page is the one I
+              use, published as-is.{" "}
               <a href={SKILL_URL} target="_blank" rel="noreferrer">
                 Read the source
               </a>{" "}
