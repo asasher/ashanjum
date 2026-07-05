@@ -50,7 +50,7 @@ export default function HomePage() {
         <section className="grid gap-10 py-16 md:grid-cols-12 md:py-24">
           <div className="md:col-span-8">
             <p className="font-mono text-[11px] tracking-[0.14em] text-ink-3 uppercase">
-              <span className="text-azure-text">●</span> Dubai · <DubaiTime />
+              <span className="text-azure-text">●</span> <DubaiTime />
             </p>
             <h1 className="mt-6 text-4xl leading-[1.1] font-medium tracking-[-0.02em] md:text-5xl">
               I build software and AI systems.
