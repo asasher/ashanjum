@@ -321,7 +321,8 @@ export default function HomePage() {
           </div>
           <p className="mt-6 font-mono text-[11px] tracking-[0.06em] text-ink-4">
             In the lab: team knowledgebases, agentic development workflows,
-            video-editing agents, and the tools I use to build all of the above.
+            media curation and video-editing agents, and the tools I use to
+            build all of the above.
           </p>
         </section>
 
