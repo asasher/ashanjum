@@ -1,8 +1,9 @@
-import { existsSync } from "fs";
+import { existsSync, readdirSync } from "fs";
 import path from "path";
 import Image from "next/image";
 
 import { AmbientLoop } from "~/components/AmbientLoop";
+import { CandidateSlider } from "~/components/CandidateSlider";
 import { ContactForm } from "~/components/ContactForm";
 import { DubaiTime } from "~/components/DubaiTime";
 import { OrderAnatomy } from "~/components/OrderAnatomy";
@@ -20,6 +21,17 @@ const CTA = "Book 20 minutes — I'll show you where your margin leaks";
    a placeholder until the file exists (checked at build time). */
 function hasPhoto(name: string) {
   return existsSync(path.join(process.cwd(), "public", "photos", name));
+}
+
+/* PROTOTYPE: hero-candidate browser feeds from public/photos/candidates/.
+   Empty the folder (or leave one file) to fall back to portrait.jpg. */
+function heroCandidates() {
+  const dir = path.join(process.cwd(), "public", "photos", "candidates");
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir)
+    .filter((f) => /\.(jpe?g|png|webp)$/i.test(f))
+    .sort()
+    .map((f) => ({ src: `/photos/candidates/${f}`, label: f }));
 }
 
 function PhotoFrame({
@@ -193,11 +205,19 @@ export default function HomePage() {
             </p>
           </div>
           <div className="md:col-span-4 md:col-start-9">
-            <PhotoFrame
-              file="portrait.jpg"
-              alt="Asher, mid-session"
-              caption="AI 101 workshop · Dubai · May 2026"
-            />
+            {heroCandidates().length > 1 ? (
+              /* PROTOTYPE: candidate browser until Asher picks the hero */
+              <CandidateSlider
+                images={heroCandidates()}
+                caption="AI 101 workshop · Dubai · May 2026"
+              />
+            ) : (
+              <PhotoFrame
+                file="portrait.jpg"
+                alt="Asher, mid-session"
+                caption="AI 101 workshop · Dubai · May 2026"
+              />
+            )}
           </div>
         </section>
 
