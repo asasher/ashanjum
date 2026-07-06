@@ -1,7 +1,4 @@
-import { existsSync } from "fs";
-import path from "path";
 import { type Metadata } from "next";
-import Image from "next/image";
 
 import { DubaiTime } from "~/components/DubaiTime";
 import { ThemeToggle } from "~/components/ThemeToggle";
@@ -32,9 +29,6 @@ const LANES = [
 ] as const;
 
 export default function HomePage() {
-  const hasPortrait = existsSync(
-    path.join(process.cwd(), "public", "photos", "portrait.jpg"),
-  );
   return (
     <div className="v7 flex min-h-screen flex-col">
       <header className="border-b border-rule-soft">
@@ -62,19 +56,7 @@ export default function HomePage() {
               when I&apos;m done. Two kinds of people hire me:
             </p>
           </div>
-          {hasPortrait && (
-            <div className="md:col-span-3 md:col-start-10">
-              <div className="relative aspect-[3/4] w-full max-w-[220px] overflow-hidden border border-rule bg-page-2">
-                <Image
-                  src="/photos/portrait.jpg"
-                  alt="Asher Anjum"
-                  fill
-                  sizes="(min-width: 900px) 20vw, 50vw"
-                  className="object-cover"
-                />
-              </div>
-            </div>
-          )}
+          {/* Portrait removed for now — Asher is picking a new one. */}
         </section>
 
         <section className="border-t border-rule">
@@ -82,7 +64,7 @@ export default function HomePage() {
             <a
               key={lane.href}
               href={lane.href}
-              className="group grid gap-3 border-b border-rule py-8 transition-colors hover:bg-page-2 md:grid-cols-12 md:gap-6"
+              className="group grid gap-3 border-b border-rule px-5 py-8 transition-colors hover:bg-page-2 md:grid-cols-12 md:gap-6 md:px-6"
             >
               <p className="font-mono text-[11px] tracking-[0.08em] text-ink-4 md:col-span-3">
                 {lane.domain}
