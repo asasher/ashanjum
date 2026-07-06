@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "watch-video": {
+      "source": "/Users/asher/Projects/asher-skills",
+      "sourceType": "local",
+      "computedHash": "2fbddd62707b3c1395cd08e48d0c6d8d5af6714508f703e6ddf1f5e61e7d985e"
+    }
+  }
+}
