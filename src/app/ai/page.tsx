@@ -1,10 +1,8 @@
-import { existsSync, readdirSync } from "fs";
+import { existsSync } from "fs";
 import path from "path";
 import { type Metadata } from "next";
 import Image from "next/image";
 
-import { AmbientLoop } from "~/components/AmbientLoop";
-import { CandidateSlider } from "~/components/CandidateSlider";
 import { ContactForm } from "~/components/ContactForm";
 import { DubaiTime } from "~/components/DubaiTime";
 import { OrderAnatomy } from "~/components/OrderAnatomy";
@@ -24,22 +22,11 @@ export const metadata: Metadata = {
 
 const CTA = "Book 20 minutes — I'll show you where your margin leaks";
 
-/* Real photos: drop files into public/photos/ as portrait.jpg (hero,
-   3:4-ish), workshop.jpg (wide table shot), listening.jpg. Frames render
-   a placeholder until the file exists (checked at build time). */
+/* Real photos: drop files into public/photos/ as workshop.jpg (wide
+   table shot) and listening.jpg. Frames render a placeholder until the
+   file exists (checked at build time). */
 function hasPhoto(name: string) {
   return existsSync(path.join(process.cwd(), "public", "photos", name));
-}
-
-/* PROTOTYPE: hero-candidate browser feeds from public/photos/candidates/.
-   Empty the folder (or leave one file) to fall back to portrait.jpg. */
-function heroCandidates() {
-  const dir = path.join(process.cwd(), "public", "photos", "candidates");
-  if (!existsSync(dir)) return [];
-  return readdirSync(dir)
-    .filter((f) => /\.(jpe?g|png|webp)$/i.test(f))
-    .sort()
-    .map((f) => ({ src: `/photos/candidates/${f}`, label: f }));
 }
 
 function PhotoFrame({
@@ -212,21 +199,7 @@ export default function HomePage() {
               20 minutes. Your numbers. No deck.
             </p>
           </div>
-          <div className="md:col-span-4 md:col-start-9">
-            {heroCandidates().length > 1 ? (
-              /* PROTOTYPE: candidate browser until Asher picks the hero */
-              <CandidateSlider
-                images={heroCandidates()}
-                caption="AI 101 workshop · Dubai · May 2026"
-              />
-            ) : (
-              <PhotoFrame
-                file="portrait.jpg"
-                alt="Asher, mid-session"
-                caption="AI 101 workshop · Dubai · May 2026"
-              />
-            )}
-          </div>
+          {/* Hero image removed for now — Asher is picking a new one. */}
         </section>
 
         {/* ---------- proof strip ---------- */}
@@ -473,12 +446,6 @@ export default function HomePage() {
                 file="listening.jpg"
                 alt="listening first"
                 caption="The first step is always listening."
-                aspect="aspect-[4/3]"
-              />
-              <AmbientLoop
-                src="/photos/room-loop.mp4"
-                poster="/photos/room-loop-poster.jpg"
-                caption="Mid-session · sound off"
                 aspect="aspect-[4/3]"
               />
             </div>
