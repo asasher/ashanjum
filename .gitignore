@@ -44,3 +44,5 @@ yarn-error.log*
 
 # idea files
 .idea
+# workshop source media (15GB, never commit)
+/media/
