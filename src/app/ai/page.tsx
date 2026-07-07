@@ -288,7 +288,7 @@ export default function HomePage() {
             {SYSTEMS.map((s) => (
               <div
                 key={s.n}
-                className="group grid gap-3 border-b border-rule px-5 py-6 transition-colors hover:bg-page-2 md:grid-cols-12 md:gap-6 md:px-6"
+                className="group grid gap-3 border-b border-rule px-6 py-6 transition-colors hover:bg-page-2 md:grid-cols-12 md:gap-6 md:px-8"
               >
                 <p className="font-mono text-[12px] text-ink-4 md:col-span-1">
                   {s.n}
