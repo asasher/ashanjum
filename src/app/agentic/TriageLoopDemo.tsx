@@ -118,6 +118,10 @@ export function TriageLoopDemo() {
   const [rawStage, setStage] = useState(0);
   const [mode, setMode] = useState<"static" | "running" | "done">("static");
   const [armRatio, setArmRatio] = useState(0);
+  // Reserve the tallest height the board ever reaches so it never collapses
+  // between ticks — cards mount/unmount and logs append every 800ms, and
+  // without this the whole board (and everything below it) jumps each frame.
+  const [reservedH, setReservedH] = useState(0);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
   const boardRef = useRef<HTMLDivElement>(null);
   const startedRef = useRef(false);
@@ -184,6 +188,24 @@ export function TriageLoopDemo() {
     [],
   );
 
+  // Grow the reserved height to match the board's natural content height at
+  // each stage; minHeight (a floor) lets a taller stage push it up but keeps
+  // shorter stages from shrinking it back, so it only ever settles at the peak.
+  useEffect(() => {
+    const board = boardRef.current;
+    if (!board) return;
+    const h = board.offsetHeight;
+    setReservedH((prev) => (h > prev ? h : prev));
+  }, [rawStage, mode, motionOK]);
+
+  // A width change (e.g. crossing the single-column breakpoint) invalidates the
+  // reserved peak — drop it so the next render re-measures at the new layout.
+  useEffect(() => {
+    const onResize = () => setReservedH(0);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
   const phase = phaseOf(stage);
   const dupeFound = stage >= 1;
   const dupeClosed = stage >= 2;
@@ -244,7 +266,11 @@ export function TriageLoopDemo() {
         ))}
       </div>
 
-      <div className={styles.board} ref={boardRef}>
+      <div
+        className={styles.board}
+        ref={boardRef}
+        style={reservedH ? { minHeight: reservedH } : undefined}
+      >
         {/* ---- backlog lane ---- */}
         <div className={styles.lane}>
           <p className={styles.laneTitle}>
