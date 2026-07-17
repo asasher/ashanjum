@@ -13,13 +13,14 @@ const submitLead = anyApi.leads!.submit!;
 const FALLBACK_EMAIL = "as.asher.anjum@gmail.com";
 
 export const SYSTEM_OPTIONS = [
-  "True cost per order",
-  "P&L, month over month",
-  "Review intelligence",
-  "Brand-DNA image generation",
+  "The working session — I'll bring my bottleneck",
+  "True unit economics",
+  "Owner's P&L",
+  "Customer-feedback triage",
+  "On-brand imagery at scale",
   "Ask your legacy system",
-  "WhatsApp sales dashboard",
-  "Not sure yet — start with the call",
+  "WhatsApp sales pipeline",
+  "Not sure yet — start with the free call",
 ] as const;
 
 type Payload = {
@@ -32,16 +33,30 @@ type Payload = {
 };
 
 /** Exactly three fields. Every extra field is measured loss. */
-export function ContactForm({ id }: { id?: string }) {
-  if (env.NEXT_PUBLIC_CONVEX_URL) return <ConvexContactForm id={id} />;
-  return <ContactFormShell id={id} send={null} />;
+export function ContactForm({
+  id,
+  defaultPacket,
+}: {
+  id?: string;
+  defaultPacket?: (typeof SYSTEM_OPTIONS)[number];
+}) {
+  if (env.NEXT_PUBLIC_CONVEX_URL)
+    return <ConvexContactForm id={id} defaultPacket={defaultPacket} />;
+  return <ContactFormShell id={id} defaultPacket={defaultPacket} send={null} />;
 }
 
-function ConvexContactForm({ id }: { id?: string }) {
+function ConvexContactForm({
+  id,
+  defaultPacket,
+}: {
+  id?: string;
+  defaultPacket?: (typeof SYSTEM_OPTIONS)[number];
+}) {
   const submit = useMutation(submitLead);
   return (
     <ContactFormShell
       id={id}
+      defaultPacket={defaultPacket}
       send={async (p) => void (await submit(p))}
     />
   );
@@ -49,9 +64,11 @@ function ConvexContactForm({ id }: { id?: string }) {
 
 function ContactFormShell({
   id,
+  defaultPacket,
   send,
 }: {
   id?: string;
+  defaultPacket?: (typeof SYSTEM_OPTIONS)[number];
   send: ((p: Payload) => Promise<void>) | null;
 }) {
   const [state, setState] = useState<"idle" | "sending" | "done" | "error">(
@@ -76,7 +93,7 @@ function ContactFormShell({
         `name: ${payload.name}\nemail: ${payload.email}\nsystem: ${payload.packet ?? "—"}`,
       );
       window.location.href = `mailto:${FALLBACK_EMAIL}?subject=${encodeURIComponent(
-        `20 minutes — ${payload.name}`,
+        `Fit call — ${payload.name}`,
       )}&body=${body}`;
       return;
     }
@@ -93,13 +110,13 @@ function ContactFormShell({
 
   if (state === "done") {
     return (
-      <div id={id} className="border border-rule bg-card p-8">
-        <p className="text-xl font-medium text-ink">
+      <div id={id} className="border-rule bg-card border p-8">
+        <p className="text-ink text-xl font-medium">
           Got it. I reply within one working day, with times.
         </p>
-        <p className="mt-2 max-w-prose text-[15px] text-ink-2">
-          If your numbers don&apos;t show a defensible leak, I&apos;ll say so
-          on the call and we&apos;re done in twenty minutes.
+        <p className="text-ink-2 mt-2 max-w-prose text-[15px]">
+          If your numbers don&apos;t show a defensible leak, I&apos;ll say so on
+          the call and we&apos;re done in twenty minutes.
         </p>
       </div>
     );
@@ -147,7 +164,7 @@ function ContactFormShell({
           id="cf-system"
           name="system"
           required
-          defaultValue=""
+          defaultValue={defaultPacket ?? ""}
           className={`${inputCls} appearance-none`}
         >
           <option value="" disabled>
@@ -163,18 +180,18 @@ function ContactFormShell({
         <button
           type="submit"
           disabled={state === "sending"}
-          className="bg-azure px-7 py-3.5 font-mono text-[13px] tracking-[0.06em] text-white uppercase transition-transform hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-azure focus-visible:ring-offset-2 disabled:opacity-60"
+          className="bg-azure focus-visible:ring-azure px-7 py-3.5 font-mono text-[13px] tracking-[0.06em] text-white uppercase transition-transform hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-60"
         >
           {state === "sending"
             ? "Sending…"
-            : "Book 20 minutes — I'll show you where your margin leaks"}
+            : "Bring me your worst bottleneck — watch me build the fix live"}
         </button>
       </div>
-      <p className="font-mono text-[11px] text-ink-4">
+      <p className="text-ink-4 font-mono text-[11px]">
         No deck. Your numbers, if you have them.
       </p>
       {state === "error" && (
-        <p className="text-[14px] text-flag">
+        <p className="text-flag text-[14px]">
           That didn&apos;t go through — email me instead at{" "}
           <a href={`mailto:${FALLBACK_EMAIL}`} className="underline">
             {FALLBACK_EMAIL}
