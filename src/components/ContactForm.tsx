@@ -1,14 +1,12 @@
 "use client";
 
 import { useMutation } from "convex/react";
-import { anyApi } from "convex/server";
+import { api } from "../../convex/_generated/api";
 import { useState, type FormEvent } from "react";
 
 import { env } from "~/env";
 
-// anyApi keeps the build green before `bunx convex dev` has generated
-// convex/_generated; swap for `api` from ../../convex/_generated/api after.
-const submitLead = anyApi.leads!.submit!;
+const submitLead = api.leads.submit;
 
 const FALLBACK_EMAIL = "as.asher.anjum@gmail.com";
 

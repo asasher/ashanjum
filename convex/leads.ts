@@ -1,7 +1,4 @@
-// Uses the generic builders so the app compiles before `bunx convex dev` has
-// generated ./_generated. After the first codegen run, switch to:
-//   import { mutation } from "./_generated/server";
-import { mutationGeneric as mutation } from "convex/server";
+import { mutation } from "./_generated/server";
 import { v } from "convex/values";
 
 export const submit = mutation({
