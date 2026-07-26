@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     template: "%s — Asher Anjum",
   },
   description:
-    "I build software and AI systems in Dubai — with agents owning the work between the two decisions that matter. External CTO for software teams, production AI systems for operations businesses, and hands-on teaching. Ten years at OLX, Careem, talabat and Delivery Hero.",
+    "I build software and AI systems in Dubai: end-to-end agentic development, AI integrated into business workflows, and in-person AI training. A decade shipping at OLX, Careem, talabat and Delivery Hero.",
   icons: [
     {
       rel: "icon",

@@ -9,17 +9,17 @@ const WORK = [
   {
     n: "01",
     k: "End-to-end AI systems",
-    v: "Agentic software development: AI systems built from first conversation to production, with agents owning the work in between. You get a running system and the keys — no dependency on me by design.",
+    v: "Agentic software development: I take an AI system from first conversation to production. You get a running system and the keys. No dependency on me, by design.",
   },
   {
     n: "02",
     k: "Workflow integration",
-    v: "AI put to work inside the workflows a business already runs on — quoting, reporting, case handling, operations. Integrated with the tools you have, not a platform you have to migrate to.",
+    v: "AI put to work inside the workflows a business already runs on: quoting, reporting, case handling, operations. It plugs into the tools you have. There is no platform to migrate to.",
   },
   {
     n: "03",
     k: "AI training",
-    v: "For business owners and their teams, in person. AI 101 through to hands-on agentic working sessions. Tools change monthly; judgment about them doesn't.",
+    v: "For business owners and their teams, in person. AI 101 through to hands-on agentic working sessions. The aim is judgment that outlasts whatever tool is hot this month.",
   },
 ] as const;
 
@@ -68,11 +68,10 @@ export default function HomePage() {
               and AI systems.
             </h1>
             <p className="mt-8 max-w-[48ch] text-[17px] leading-relaxed text-dusk">
-              End to end, with agents doing the work in between: people make
-              the two decisions that matter — what to build, and what ships.
-              I build systems that way, wire them into the workflows
-              businesses already run on, and teach the way of working in
-              person.
+              People make the two decisions that matter: what to build, and
+              what ships. Agents do the work in between. I build systems this
+              way, wire them into how businesses already operate, and teach
+              the method in person.
             </p>
           </div>
           <div className="relative w-56 md:w-full">
@@ -95,7 +94,7 @@ export default function HomePage() {
         {/* ---- What I do ---- */}
         <section className="pt-16 md:pt-24">
           <Eyebrow>What I do</Eyebrow>
-          <H2>Three lanes, one way of working.</H2>
+          <H2>Three lanes.</H2>
           <div className="mt-10">
             {WORK.map((w) => (
               <div
@@ -118,8 +117,8 @@ export default function HomePage() {
 
         {/* ---- In the room ---- */}
         <section className="pt-16 md:pt-24">
-          <Eyebrow>In the room</Eyebrow>
-          <H2>Some of this work happens on paper, not in repos.</H2>
+          <Eyebrow>In person</Eyebrow>
+          <H2>Some of this work happens in a room.</H2>
           <div className="mt-10 grid gap-8 sm:grid-cols-2">
             <figure>
               <Image
@@ -151,14 +150,12 @@ export default function HomePage() {
           <Eyebrow>Where I&apos;ve been</Eyebrow>
           <H2>I&apos;m not selling a methodology I read about.</H2>
           <p className="mt-5 max-w-[58ch] text-[16px] leading-relaxed text-ink-2">
-            I&apos;ve spent a decade building with great people at companies
-            like <span className="font-semibold text-ink">OLX</span>,{" "}
+            I spent a decade shipping production software for millions of
+            users, with great people, at companies like{" "}
+            <span className="font-semibold text-ink">OLX</span>,{" "}
             <span className="font-semibold text-careem">Careem</span>,{" "}
             <span className="font-semibold text-talabat">talabat</span> and{" "}
-            <span className="font-semibold text-ink">Delivery Hero</span> —
-            shipping production software for millions of users in this market.
-            The way of working I bring is the one I run my own systems on,
-            every day.
+            <span className="font-semibold text-ink">Delivery Hero</span>.
           </p>
         </section>
 
@@ -172,9 +169,10 @@ export default function HomePage() {
               The workflow I use is public.
             </h2>
             <p className="mt-5 max-w-[56ch] text-[15px] leading-relaxed text-dusk">
-              Playbooks, review loops, verification gates — the agentic
-              workflow behind my own production systems, published as-is.
-              I&apos;d rather you read the source than take my word for it.
+              The playbooks, review loops and verification gates behind the
+              systems I run in production today, for ETL, project lifecycle
+              and legal case management. Published as-is. I&apos;d rather you
+              read the source than take my word for it.
             </p>
             <a
               href="https://github.com/asasher/asher-skills"
