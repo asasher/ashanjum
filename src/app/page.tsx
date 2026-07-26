@@ -135,12 +135,12 @@ export default function HomePage() {
             <figure>
               <Image
                 src="/photos/listening.jpg"
-                alt="Asher listening across a workshop table"
+                alt="Asher standing at the table, mid-explanation, during a working session"
                 width={960}
                 height={720}
                 className="aspect-[4/3] w-full border border-line object-cover"
               />
-              <Caption>The first step is always listening</Caption>
+              <Caption>Hands-on agentic working session · Dubai</Caption>
             </figure>
           </div>
         </section>
