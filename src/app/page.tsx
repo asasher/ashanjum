@@ -8,18 +8,18 @@ import Image from "next/image";
 const WORK = [
   {
     n: "01",
-    k: "End-to-end AI systems",
-    v: "Agentic software development: I take an AI system from first conversation to production. You get a running system and the keys. No dependency on me, by design.",
+    k: "Agentic software development lifecycle",
+    v: "The whole lifecycle, from first conversation to production. I build AI systems end to end, or set the lifecycle up inside your team. Either way you get a running system and the keys. No dependency on me, by design.",
   },
   {
     n: "02",
-    k: "Workflow integration",
+    k: "Agentic business workflows",
     v: "AI put to work inside the workflows a business already runs on: quoting, reporting, case handling, operations. It plugs into the tools you have. There is no platform to migrate to.",
   },
   {
     n: "03",
-    k: "AI training",
-    v: "For business owners and their teams, in person. AI 101 through to hands-on agentic working sessions. The aim is judgment that outlasts whatever tool is hot this month.",
+    k: "What exactly is agentic?",
+    v: "Fair question, and the answer keeps moving. I teach it in person: AI 101 for business owners through to hands-on working sessions for teams. The aim is judgment that outlasts whatever tool is hot this month.",
   },
 ] as const;
 
@@ -99,7 +99,7 @@ export default function HomePage() {
             {WORK.map((w) => (
               <div
                 key={w.k}
-                className="grid grid-cols-[2.5rem_1fr] gap-2 border-t border-line py-6 last:border-b md:grid-cols-[2.5rem_14rem_1fr] md:gap-8"
+                className="grid grid-cols-[2.5rem_1fr] gap-2 border-t border-line py-6 last:border-b md:grid-cols-[2.5rem_16rem_1fr] md:gap-8"
               >
                 <p className="pt-0.5 font-mono text-[13px] tracking-[0.05em] text-cobalt">
                   {w.n}
