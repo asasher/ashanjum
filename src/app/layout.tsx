@@ -7,11 +7,11 @@ import { type Metadata } from "next";
 export const metadata: Metadata = {
   metadataBase: new URL("https://ashanjum.com"),
   title: {
-    default: "Asher Anjum — Agentic software development",
+    default: "Asher Anjum — I build software and AI systems",
     template: "%s — Asher Anjum",
   },
   description:
-    "External CTO in Dubai. I install the agentic delivery lifecycle inside software teams — two human decisions, spec and merge, with everything between them owned by agents. Ten years shipping production software at OLX, Careem, talabat and Delivery Hero.",
+    "I build software and AI systems in Dubai — with agents owning the work between the two decisions that matter. External CTO for software teams, production AI systems for operations businesses, and hands-on teaching. Ten years at OLX, Careem, talabat and Delivery Hero.",
   icons: [
     {
       rel: "icon",

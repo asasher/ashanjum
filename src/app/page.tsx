@@ -1,7 +1,9 @@
-/* ashanjum.com — a single credibility page in the language of the
-   Exalogic proposal deck. The deck points here; this page has one job:
-   confirm that the person behind the deck is real, specific, and has
-   the track record. Everything the site used to be lives in history. */
+import Image from "next/image";
+
+/* ashanjum.com — personal brand site. One page: who I am, what I do,
+   the track record, and the workflow published in the open. Same
+   design language as my proposal documents (ground/ink/cobalt, mono
+   eyebrows, hairline rules) — but this page stands on its own. */
 
 const TRACK = [
   { years: "2016–17", name: "OLX Group" },
@@ -29,46 +31,44 @@ const PROOF = [
   },
   {
     big: "3",
-    line: "Production systems running this loop today — ETL, project lifecycle, legal case management",
+    line: "Production systems running my agentic loop today — ETL, project lifecycle, legal case management",
   },
 ] as const;
 
 const WORK = [
   {
-    n: "01",
-    k: "Audit",
-    v: "Every repository read and scored against a fixed readiness rubric. A structured interview with every developer on the team.",
+    k: "Agentic delivery, installed",
+    v: "For software teams: repositories made agent-ready — playbooks, spec templates, verification gates, adversarial review — and the delivery loop taught until it runs without me in the room. I stay on call as an external CTO.",
   },
   {
-    n: "02",
-    k: "Talent",
-    v: "I sit on the technical panel as interviewer — grading the team you have, screening the people you hire next.",
+    k: "AI systems, built end to end",
+    v: "For operations businesses: the unglamorous systems the margin depends on. Built with agents, run in production, and handed over with the keys — no dependency on me by design.",
   },
   {
-    n: "03",
-    k: "Agentic readiness",
-    v: "Repositories rebuilt for agent work: playbooks, spec templates, verification gates, adversarial review.",
-  },
-  {
-    n: "04",
-    k: "Lifecycle install",
-    v: "The loop installed and taught, until your team runs it without me in the room.",
+    k: "People, taught in person",
+    v: "AI 101 for business owners and solopreneurs, hands-on agentic working sessions for engineering teams. Tools change monthly; judgment about them doesn't.",
   },
 ] as const;
 
-function Eyebrow({
-  children,
-  quiet,
-}: {
-  children: React.ReactNode;
-  quiet?: boolean;
-}) {
+function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <p
-      className={`font-mono text-[11px] font-medium tracking-[0.2em] uppercase ${
-        quiet ? "text-ink-3" : "text-cobalt"
-      }`}
-    >
+    <p className="font-mono text-[11px] font-medium tracking-[0.2em] text-ink-3 uppercase">
+      {children}
+    </p>
+  );
+}
+
+function H2({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="mt-4 text-[26px] leading-[1.1] font-semibold tracking-[-0.025em] md:text-4xl">
+      {children}
+    </h2>
+  );
+}
+
+function Caption({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="mt-3 font-mono text-[10px] tracking-[0.17em] text-ink-3 uppercase">
       {children}
     </p>
   );
@@ -79,44 +79,111 @@ export default function HomePage() {
     <div className="flex min-h-screen flex-col">
       {/* ---- Cover ---- */}
       <header className="bg-ink text-white">
-        <div className="mx-auto flex w-full max-w-3xl items-center justify-between px-6 pt-6 font-mono text-[11px] tracking-[0.17em] text-dusk-2 uppercase">
+        <div className="mx-auto flex w-full max-w-4xl items-center justify-between px-6 pt-6 font-mono text-[11px] tracking-[0.17em] text-dusk-2 uppercase">
           <p>Asher Anjum</p>
-          <p>External CTO · Dubai</p>
+          <p>Dubai · UTC+4</p>
         </div>
-        <div className="mx-auto w-full max-w-3xl px-6 pt-20 pb-16 md:pt-28 md:pb-24">
-          <p className="font-mono text-[11px] font-medium tracking-[0.2em] text-cobalt-bright uppercase">
-            Agentic software development
-          </p>
-          <div className="mt-8 h-0.5 w-10 bg-cobalt" />
-          <h1 className="mt-8 text-4xl leading-[1.05] font-semibold tracking-[-0.03em] md:text-6xl">
-            Two human decisions.
-            <br />
-            Nothing in between.
-          </h1>
-          <p className="mt-8 max-w-[46ch] text-[17px] leading-relaxed text-dusk">
-            You decide what gets built. You decide what ships. Everything
-            between those two decisions is owned by agents. I install that
-            lifecycle inside software teams — and it&apos;s the workflow I use
-            myself, published as-is.
-          </p>
+        <div className="mx-auto grid w-full max-w-4xl items-center gap-12 px-6 pt-16 pb-16 md:grid-cols-[1fr_16rem] md:pt-24 md:pb-24">
+          <div>
+            <p className="font-mono text-[11px] font-medium tracking-[0.2em] text-cobalt-bright uppercase">
+              Software · AI systems · Dubai
+            </p>
+            <div className="mt-8 h-0.5 w-10 bg-cobalt" />
+            <h1 className="mt-8 text-4xl leading-[1.05] font-semibold tracking-[-0.03em] md:text-6xl">
+              I build software
+              <br />
+              and AI systems.
+            </h1>
+            <p className="mt-8 max-w-[48ch] text-[17px] leading-relaxed text-dusk">
+              Ten years shipping production software in this market — OLX,
+              Careem, talabat, Delivery Hero. Today I build with agents: people
+              make the two decisions that matter, what to build and what
+              ships; agents own the work in between. I install that way of
+              working inside teams, teach it in rooms, and run my own systems
+              on it every day.
+            </p>
+          </div>
+          <div className="relative w-56 md:w-full">
+            <Image
+              src="/photos/hero.jpg"
+              alt="Asher Anjum working at a laptop in a Dubai cafe"
+              width={640}
+              height={853}
+              priority
+              className="aspect-[3/4] w-full object-cover grayscale contrast-105"
+            />
+            <p className="absolute bottom-0 left-0 bg-ink px-3 py-2 font-mono text-[10px] tracking-[0.15em] text-white uppercase">
+              Asher Anjum
+            </p>
+          </div>
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-3xl flex-1 px-6">
-        {/* ---- Who ---- */}
+      <main className="mx-auto w-full max-w-4xl flex-1 px-6">
+        {/* ---- What I do ---- */}
         <section className="pt-16 md:pt-24">
-          <Eyebrow quiet>Track record</Eyebrow>
-          <h2 className="mt-4 text-[26px] leading-[1.1] font-semibold tracking-[-0.025em] md:text-4xl">
-            I&apos;m not selling a methodology I read about.
-          </h2>
+          <Eyebrow>What I do</Eyebrow>
+          <H2>Three kinds of work, one way of working.</H2>
+          <div className="mt-10">
+            {WORK.map((w) => (
+              <div
+                key={w.k}
+                className="grid gap-2 border-t border-line py-6 last:border-b md:grid-cols-[16rem_1fr] md:gap-8"
+              >
+                <h3 className="text-[16px] font-semibold tracking-[-0.02em]">
+                  {w.k}
+                </h3>
+                <p className="max-w-[64ch] text-[14px] leading-relaxed text-ink-2">
+                  {w.v}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ---- In the room ---- */}
+        <section className="pt-16 md:pt-24">
+          <Eyebrow>In the room</Eyebrow>
+          <H2>Some of this work happens on paper, not in repos.</H2>
+          <div className="mt-10 grid gap-8 sm:grid-cols-2">
+            <figure>
+              <Image
+                src="/photos/workshop.jpg"
+                alt="The AI 101 workshop room in Dubai"
+                width={960}
+                height={720}
+                className="aspect-[4/3] w-full border border-line object-cover"
+              />
+              <Caption>
+                AI 101 · Dubai business owners &amp; solopreneurs · May 2026
+              </Caption>
+            </figure>
+            <figure>
+              <Image
+                src="/photos/listening.jpg"
+                alt="Asher listening across a workshop table"
+                width={960}
+                height={720}
+                className="aspect-[4/3] w-full border border-line object-cover"
+              />
+              <Caption>The first step is always listening</Caption>
+            </figure>
+          </div>
+        </section>
+
+        {/* ---- Track record ---- */}
+        <section className="pt-16 md:pt-24">
+          <Eyebrow>Track record</Eyebrow>
+          <H2>I&apos;m not selling a methodology I read about.</H2>
           <p className="mt-5 max-w-[58ch] text-[16px] leading-relaxed text-ink-2">
-            Ten years shipping production software in this market —{" "}
+            A decade inside the delivery lifecycle at{" "}
             <span className="font-semibold text-ink">OLX</span>,{" "}
             <span className="font-semibold text-careem">Careem</span>,{" "}
-            <span className="font-semibold text-talabat">talabat</span>,{" "}
-            <span className="font-semibold text-ink">Delivery Hero</span>. I
-            know where the delivery lifecycle fails because I&apos;ve spent my
-            whole career inside it.
+            <span className="font-semibold text-talabat">talabat</span> and{" "}
+            <span className="font-semibold text-ink">Delivery Hero</span> — as
+            the engineer being reviewed, the reviewer holding the queue, and
+            the interviewer on the hiring panel. I know where it fails because
+            I&apos;ve stood in every seat.
           </p>
 
           <div className="mt-10">
@@ -159,51 +226,19 @@ export default function HomePage() {
           ))}
         </section>
 
-        {/* ---- The work ---- */}
-        <section className="pt-16 md:pt-24">
-          <Eyebrow quiet>The work</Eyebrow>
-          <h2 className="mt-4 text-[26px] leading-[1.1] font-semibold tracking-[-0.025em] md:text-4xl">
-            Four workstreams, in this order.
-          </h2>
-          <div className="mt-10 flex flex-col gap-8">
-            {WORK.map((w) => (
-              <div key={w.n} className="grid grid-cols-[2.5rem_1fr] gap-4">
-                <p className="pt-0.5 font-mono text-[13px] tracking-[0.05em] text-cobalt">
-                  {w.n}
-                </p>
-                <div>
-                  <h3 className="text-[17px] font-semibold tracking-[-0.02em]">
-                    {w.k}
-                  </h3>
-                  <p className="mt-1.5 max-w-[62ch] text-[14px] leading-relaxed text-ink-2">
-                    {w.v}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <p className="mt-10 max-w-[70ch] text-[13px] leading-relaxed text-ink-3">
-            The order isn&apos;t arbitrary. Audit first, because I won&apos;t
-            prescribe before reading the code. Talent second, because the wrong
-            team makes the rest impossible. Anyone selling you step four
-            without one to three is selling a subscription.
-          </p>
-        </section>
-
-        {/* ---- The honest part ---- */}
+        {/* ---- In the open ---- */}
         <section className="pt-16 pb-16 md:pt-24 md:pb-24">
           <div className="bg-ink p-8 text-white md:p-10">
             <p className="font-mono text-[11px] tracking-[0.17em] text-dusk-2 uppercase">
-              The honest part
+              Working in the open
             </p>
             <h2 className="mt-4 text-[24px] leading-[1.15] font-semibold tracking-[-0.025em] md:text-[30px]">
-              The workflow is free. The setup is where it lives or dies.
+              The workflow I use is public.
             </h2>
             <p className="mt-5 max-w-[56ch] text-[15px] leading-relaxed text-dusk">
-              The skill was never the hard part. It encodes a workflow; it
-              cannot know your codebase, your conventions, or your people.
-              I&apos;d rather you read the source and arrive convinced than pay
-              me for a black box.
+              Playbooks, review loops, verification gates — the agentic
+              workflow behind my own production systems, published as-is.
+              I&apos;d rather you read the source than take my word for it.
             </p>
             <a
               href="https://github.com/asasher/asher-skills"
@@ -213,24 +248,27 @@ export default function HomePage() {
                 github.com/asasher/asher-skills
               </span>
               <span className="font-mono text-[11px] tracking-[0.17em] text-dusk-2 uppercase">
-                public · 60+ skills · take it today
+                public · 60+ skills · take it
               </span>
             </a>
           </div>
         </section>
       </main>
 
-      {/* ---- Next step ---- */}
+      {/* ---- Contact ---- */}
       <footer className="bg-ink text-white">
-        <div className="mx-auto w-full max-w-3xl px-6 py-16 md:py-20">
+        <div className="mx-auto w-full max-w-4xl px-6 py-16 md:py-20">
           <p className="font-mono text-[11px] font-medium tracking-[0.2em] text-cobalt-bright uppercase">
-            Next step
+            Contact
           </p>
           <div className="mt-8 h-0.5 w-10 bg-cobalt" />
-          <h2 className="mt-8 text-3xl leading-[1.05] font-semibold tracking-[-0.03em] md:text-5xl">
-            If your roadmap is capped by review capacity, write to me.
+          <h2 className="mt-8 max-w-[24ch] text-3xl leading-[1.05] font-semibold tracking-[-0.03em] md:text-5xl">
+            Building something? Write to me.
           </h2>
-          <p className="mt-10 font-mono text-[13px] leading-loose text-dusk-2">
+          <p className="mt-6 max-w-[48ch] text-[15px] leading-relaxed text-dusk">
+            I read everything myself and reply to most of it.
+          </p>
+          <p className="mt-8 font-mono text-[13px] leading-loose text-dusk-2">
             <a
               href="mailto:as.asher.anjum@gmail.com"
               className="text-white underline decoration-white/25 underline-offset-4 hover:decoration-white"
@@ -238,10 +276,7 @@ export default function HomePage() {
               as.asher.anjum@gmail.com
             </a>
             <br />
-            <a
-              href="https://github.com/asasher"
-              className="hover:text-dusk"
-            >
+            <a href="https://github.com/asasher" className="hover:text-dusk">
               github.com/asasher
             </a>
             &nbsp;&nbsp;·&nbsp;&nbsp;Dubai
