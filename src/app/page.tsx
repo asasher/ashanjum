@@ -170,9 +170,8 @@ export default function HomePage() {
             </h2>
             <p className="mt-5 max-w-[56ch] text-[15px] leading-relaxed text-dusk">
               The playbooks, review loops and verification gates behind the
-              systems I run in production today, for ETL, project lifecycle
-              and legal case management. Published as-is. I&apos;d rather you
-              read the source than take my word for it.
+              systems I run in production, for ETL, project lifecycle and
+              legal case management. Read the source.
             </p>
             <a
               href="https://github.com/asasher/asher-skills"
@@ -182,7 +181,7 @@ export default function HomePage() {
                 github.com/asasher/asher-skills
               </span>
               <span className="font-mono text-[11px] tracking-[0.17em] text-dusk-2 uppercase">
-                public · 60+ skills · take it
+                public
               </span>
             </a>
           </div>
