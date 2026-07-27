@@ -5,7 +5,7 @@ import { GeistMono } from "geist/font/mono";
 import { type Metadata } from "next";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ashanjum.com"),
+  metadataBase: new URL("https://asheranjum.com"),
   title: {
     default: "Asher Anjum — I build software and AI systems",
     template: "%s — Asher Anjum",
