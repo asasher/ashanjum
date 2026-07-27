@@ -68,10 +68,10 @@ export default function HomePage() {
               and AI systems.
             </h1>
             <p className="mt-8 max-w-[48ch] text-[17px] leading-relaxed text-dusk">
-              People make the two decisions that matter: what to build, and
-              what ships. Agents do the work in between. I build systems this
-              way, wire them into how businesses already operate, and teach
-              the method in person.
+              I spent ten years shipping software the old way. Now agents do
+              the heavy lifting and I keep the two calls that matter: what to
+              build, what ships. I build systems like this, integrate them
+              into businesses, and teach it.
             </p>
           </div>
           <div className="relative w-56 md:w-full">
