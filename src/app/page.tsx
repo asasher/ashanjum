@@ -203,10 +203,10 @@ export default function HomePage() {
           </p>
           <p className="mt-8 font-mono text-[13px] leading-loose text-dusk-2">
             <a
-              href="mailto:as.asher.anjum@gmail.com"
+              href="mailto:hello@asheranjum.com"
               className="text-white underline decoration-white/25 underline-offset-4 hover:decoration-white"
             >
-              as.asher.anjum@gmail.com
+              hello@asheranjum.com
             </a>
             <br />
             <a href="https://github.com/asasher" className="hover:text-dusk">
