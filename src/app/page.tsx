@@ -152,10 +152,13 @@ export default function HomePage() {
           <p className="mt-5 max-w-[58ch] text-[16px] leading-relaxed text-ink-2">
             I spent a decade shipping production software for millions of
             users, with great people, at companies like{" "}
-            <span className="font-semibold text-ink">OLX</span>,{" "}
+            <span className="font-semibold text-olx">OLX</span>,{" "}
             <span className="font-semibold text-careem">Careem</span>,{" "}
             <span className="font-semibold text-talabat">talabat</span> and{" "}
-            <span className="font-semibold text-ink">Delivery Hero</span>.
+            <span className="font-semibold text-delivery-hero">
+              Delivery Hero
+            </span>
+            .
           </p>
         </section>
 

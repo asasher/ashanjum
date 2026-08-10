@@ -15,10 +15,12 @@
   --color-rust: #b4472e;
 
   /* Former-employer marks: legible tones from each brand's own palette. */
+  --color-olx: #6e0ad6;
   --color-careem: #00493e;
   --color-careem-dot: #00e784;
   --color-talabat: #d94e00;
   --color-talabat-dot: #ff5a00;
+  --color-delivery-hero: #d91c2b;
 
   /* Ink-panel foreground tones (deck cover / panel-ink). */
   --color-dusk: #a3aab4;
