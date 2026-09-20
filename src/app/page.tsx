@@ -146,7 +146,7 @@ export default function HomePage() {
         </section>
 
         {/* ---- Where I've been ---- */}
-        <section className="pt-16 md:pt-24">
+        <section className="pt-16 pb-16 md:pt-24 md:pb-24">
           <Eyebrow>Where I&apos;ve been</Eyebrow>
           <H2>I&apos;m not selling a methodology I read about.</H2>
           <p className="mt-5 max-w-[58ch] text-[16px] leading-relaxed text-ink-2">
@@ -162,33 +162,6 @@ export default function HomePage() {
           </p>
         </section>
 
-        {/* ---- In the open ---- */}
-        <section className="pt-16 pb-16 md:pt-24 md:pb-24">
-          <div className="bg-ink p-8 text-white md:p-10">
-            <p className="font-mono text-[11px] tracking-[0.17em] text-dusk-2 uppercase">
-              Working in the open
-            </p>
-            <h2 className="mt-4 text-[24px] leading-[1.15] font-semibold tracking-[-0.025em] md:text-[30px]">
-              The workflow I use is public.
-            </h2>
-            <p className="mt-5 max-w-[56ch] text-[15px] leading-relaxed text-dusk">
-              The playbooks, review loops and verification gates behind the
-              systems I run in production, for ETL, project lifecycle and
-              legal case management. Read the source.
-            </p>
-            <a
-              href="https://github.com/asasher/asher-skills"
-              className="mt-8 flex flex-wrap items-center justify-between gap-3 border border-white/15 px-5 py-4 transition-colors hover:border-white/40"
-            >
-              <span className="font-mono text-[14px] tracking-[-0.01em]">
-                github.com/asasher/asher-skills
-              </span>
-              <span className="font-mono text-[11px] tracking-[0.17em] text-dusk-2 uppercase">
-                public
-              </span>
-            </a>
-          </div>
-        </section>
       </main>
 
       {/* ---- Contact ---- */}
