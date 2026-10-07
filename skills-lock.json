@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "humanizer": {
+      "source": "NulightJens/humanizer-stack",
+      "sourceType": "github",
+      "skillPath": "skills/humanizer/SKILL.md",
+      "computedHash": "e5e22a06e1ee697ad1ba087b99453e747ef8a900cad24a34bc680aa52c785bd4"
+    },
+    "structural-humanizer": {
+      "source": "NulightJens/humanizer-stack",
+      "sourceType": "github",
+      "skillPath": "skills/structural-humanizer/SKILL.md",
+      "computedHash": "5e91765cd79063e0a298af477acd6b660331b6da474f931e9649d1fea8debb5f"
+    }
+  }
+}
