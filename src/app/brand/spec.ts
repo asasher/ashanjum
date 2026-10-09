@@ -81,46 +81,47 @@ export const ASSET_GROUPS = [
   },
 ] as const;
 
+/* Light and dark values for each token. The site follows the visitor's
+   system setting; anything without a dark value is light-only. */
 export const PALETTE = [
-  { n: "ground", hex: "#F5F6F7", role: "Page background. Never pure white." },
-  { n: "surface", hex: "#FFFFFF", role: "Cards and specimen cells on ground." },
-  { n: "ink", hex: "#14171C", role: "Text, cover and footer panels, the tile." },
-  { n: "ink-2", hex: "#565E69", role: "Body copy." },
-  { n: "ink-3", hex: "#8F97A1", role: "Eyebrows, captions, labels." },
-  { n: "line", hex: "#DEE1E6", role: "1px hairlines and borders." },
-  { n: "line-2", hex: "#EAEDEF", role: "Fainter rule, inside panels." },
-  { n: "cobalt", hex: "#3E5BD9", role: "The one accent. Star, rules, numbers." },
-  { n: "cobalt-bright", hex: "#7A90EC", role: "Cobalt when it sits on ink." },
-  { n: "dusk", hex: "#A3AAB4", role: "Body copy on ink." },
-  { n: "dusk-2", hex: "#767E8A", role: "Labels and meta on ink." },
-  { n: "rust", hex: "#B4472E", role: "In the deck palette, unused on the site." },
+  { n: "ground", hex: "#F5F6F7", dark: "#0F1215", role: "Page background. Never pure white or pure black." },
+  { n: "surface", hex: "#FFFFFF", dark: "#161A1F", role: "Cards, specimen cells, the photo name tag." },
+  { n: "ink", hex: "#14171C", dark: "#E8EAED", role: "Headings and primary text." },
+  { n: "ink-2", hex: "#565E69", dark: "#A3AAB4", role: "Body copy." },
+  { n: "ink-3", hex: "#8F97A1", dark: "#767E8A", role: "Eyebrows, captions, labels." },
+  { n: "line", hex: "#DEE1E6", dark: "#262B32", role: "1px hairlines between rows." },
+  { n: "line-2", hex: "#EAEDEF", dark: "#1D2127", role: "Fainter rule." },
+  { n: "accent", hex: "#3B4048", dark: "#C3C8CF", role: "Graphite. The one accent: eyebrows, list numbers, the 40×2px rule." },
+  { n: "life", hex: "#D2D5DA", dark: "#2B2F35", role: "The footer Life cells. Close to ground on purpose." },
+  { n: "cobalt", hex: "#3E5BD9", role: "The mark's star only. Not used on pages anymore." },
 ] as const;
 
-/* Only ever applied to the company's own name in the track-record line. */
+/* Only ever applied to the company's own name in the track-record line.
+   The dark tones are each brand's brighter colour, for legibility on dark. */
 export const EMPLOYER_COLOURS = [
-  { n: "OLX", hex: "#6E0AD6" },
-  { n: "Careem", hex: "#00493E" },
-  { n: "talabat", hex: "#D94E00" },
-  { n: "Delivery Hero", hex: "#D91C2B" },
+  { n: "OLX", hex: "#6E0AD6", dark: "#A46CF5" },
+  { n: "Careem", hex: "#00493E", dark: "#00E784" },
+  { n: "talabat", hex: "#D94E00", dark: "#FF6A1A" },
+  { n: "Delivery Hero", hex: "#D91C2B", dark: "#FF4F5C" },
 ] as const;
 
 export const TYPE = [
   {
     n: "Display",
     spec: "Geist Sans 600, 36px / 60px at md, line-height 1.05, tracking -0.03em",
-    sample: "I build software and AI systems.",
+    sample: "I help businesses put AI to work.",
     cls: "text-4xl leading-[1.05] font-semibold tracking-[-0.03em] md:text-5xl",
   },
   {
     n: "Section",
     spec: "Geist Sans 600, 26px / 36px at md, line-height 1.1, tracking -0.025em",
-    sample: "Three lanes.",
+    sample: "Three ways I help.",
     cls: "text-[26px] leading-[1.1] font-semibold tracking-[-0.025em] md:text-4xl",
   },
   {
     n: "Item",
     spec: "Geist Sans 600, 16px, tracking -0.02em",
-    sample: "Agentic business workflows",
+    sample: "Put AI into the work you already do",
     cls: "text-[16px] font-semibold tracking-[-0.02em]",
   },
   {
@@ -132,7 +133,7 @@ export const TYPE = [
   {
     n: "Eyebrow",
     spec: "Geist Mono 500, 11px, uppercase, tracking 0.2em, ink-3",
-    sample: "What I do",
+    sample: "What I can do for you",
     cls: "font-mono text-[11px] font-medium tracking-[0.2em] text-ink-3 uppercase",
   },
   {
@@ -145,12 +146,20 @@ export const TYPE = [
 
 export const VISUAL_RULES = [
   [
-    "Light only.",
-    "Ground for the page, white surfaces for cards, ink panels as bookends: one cover at the top, one footer at the bottom. No dark mode.",
+    "Light, with a dark twin.",
+    "Ground for the page, white surfaces for cards. No ink blocks: the cover and the footer sit on ground like everything else. Dark mode follows the visitor's system setting and swaps the tokens, never the layout.",
   ],
   [
-    "Cobalt is the only accent.",
-    "It marks the star, the 40×2px rule under a cover eyebrow, list numbers and hover states. If two things on a screen are cobalt, one of them shouldn't be.",
+    "Graphite is the only accent.",
+    "It marks eyebrows on the cover, list numbers and the 40×2px rule. The employer names are the only colour on the page, and photos the only full-colour images.",
+  ],
+  [
+    "A little e-ink.",
+    "Anything procedural is drawn in square pixels and fades by ordered (Bayer) dithering, never by opacity or blur. Close to the ground colour, so it reads as texture, not decoration.",
+  ],
+  [
+    "Life in the footer.",
+    "The a* mark is seeded into Conway's Game of Life behind the contact block. The cells can drift up past the footer and dither away; only the footer takes the pointer. Off on phones, still under reduced motion.",
   ],
   [
     "Square and flat.",
@@ -158,7 +167,7 @@ export const VISUAL_RULES = [
   ],
   [
     "One column.",
-    "Content sits in a 896px column (max-w-4xl) with 24px side padding. Sections are separated by space (64px, 96px at md), not boxes.",
+    "Content sits in a 896px column (max-w-4xl) with 24px side padding. Sections are separated by space (64px, 96px at md), not boxes or borders.",
   ],
   [
     "Mono labels, sans content.",
@@ -177,7 +186,7 @@ export const MARK_RULES = [
   ],
   [
     "The star stays cobalt.",
-    "If colour isn't available, switch to a mono file. Don't recolour the star alone: a black star reads as a footnote.",
+    "It's the last place cobalt lives. If colour isn't available, switch to a mono file. Don't recolour the star alone: a black star reads as a footnote.",
   ],
   ["16px is the floor.", "Below that, use the star on its own or nothing."],
   [
@@ -194,6 +203,14 @@ export const VOICE_RULES = [
   [
     "First person, singular.",
     "It's \"I\", never \"we\". There is one person behind this.",
+  ],
+  [
+    "Lead with them.",
+    "Say who it's for and what they get before anything about me. \"I help businesses put AI to work\" beats \"I build software and AI systems\".",
+  ],
+  [
+    "Only claim what you can show.",
+    "Proof goes right under the promise: the employers, the decade, photos from real sessions. No invented numbers, clients or testimonials.",
   ],
   [
     "Say the specific thing.",
@@ -216,10 +233,10 @@ export const VOICE_RULES = [
 
 /* What the site actually says, for tone matching. */
 export const VOICE_SAMPLES = [
-  "I spent ten years shipping software the old way. Now agents do the heavy lifting and I keep the two calls that matter: what to build, what ships.",
-  "Either way you get a running system and the keys. No dependency on me, by design.",
+  "Most owners I meet know AI could save their team hours. They don't know where to start, or who to trust with it.",
+  "Tell me the problem. I build the software and hand over a running system and the keys. You won't need me to keep it alive.",
   "Fair question, and the answer keeps moving.",
-  "I'm not selling a methodology I read about.",
+  "Tell me what's slowing your team down.",
 ] as const;
 
 export function brandMarkdown() {
@@ -231,7 +248,7 @@ export function brandMarkdown() {
 Source of truth for anything made under the Asher Anjum name (${SITE}).
 Human version: ${SITE}/brand. This file: ${SITE}/brand.md.
 
-Asher builds software and AI systems in Dubai. The work covers agentic software development, AI inside existing business workflows, and in-person AI training. Before that came a decade at OLX, Careem, talabat and Delivery Hero.
+Asher helps Dubai businesses put AI to work: he builds the systems, connects them to the tools a business already uses, and trains its people to run them, in person. Before that came a decade at OLX, Careem, talabat and Delivery Hero.
 
 ## Mark
 
@@ -252,11 +269,11 @@ React components (in the site repo): \`MarkAStar\` and \`MarkADot\` in \`src/app
 
 ## Colour
 
-| Token | Hex | Role |
-|---|---|---|
-${PALETTE.map((c) => `| ${c.n} | ${c.hex} | ${c.role} |`).join("\n")}
+| Token | Light | Dark | Role |
+|---|---|---|---|
+${PALETTE.map((c) => `| ${c.n} | ${c.hex} | ${"dark" in c ? c.dark : "n/a"} | ${c.role} |`).join("\n")}
 
-Former-employer colours are only for each company's own name, set in semibold, in the track-record line: ${EMPLOYER_COLOURS.map((c) => `${c.n} ${c.hex}`).join(", ")}.
+Former-employer colours are only for each company's own name, set in semibold, in the track-record line: ${EMPLOYER_COLOURS.map((c) => `${c.n} ${c.hex} (dark ${c.dark})`).join(", ")}.
 
 ## Type
 
@@ -270,7 +287,7 @@ ${TYPE.map((t) => `| ${t.n} | ${t.spec} |`).join("\n")}
 
 ${rules(VISUAL_RULES)}
 
-Page pattern: an ink cover with a mono meta bar on top ("ASHER ANJUM" left, "DUBAI · UTC+4" right), then a cobalt-bright eyebrow, a 40×2px cobalt rule, the display heading and a dusk lede. Sections follow on ground: an eyebrow, then a section heading, then content. Numbered lists use a cobalt mono number (01, 02, 03) and a hairline between rows. The page closes with an ink footer.
+Page pattern: a cover on ground with a mono meta bar on top ("ASHER ANJUM" left, "DUBAI · UTC+4" right), then a graphite eyebrow, a 40×2px graphite rule, the display heading (who it's for and what they get), an ink-2 lede and the greyscale portrait. Sections follow: an eyebrow, a section heading, then content. Numbered lists use a graphite mono number (01, 02, 03) and a hairline between rows. The page closes with the contact block on ground, no border above it, with the footer Life behind it.
 
 ## Voice
 

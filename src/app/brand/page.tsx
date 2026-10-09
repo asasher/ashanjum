@@ -1,6 +1,7 @@
 import { type Metadata } from "next";
 
 import { MarkAStar } from "../brand";
+import { FooterLife } from "../footer-life";
 import { AssetCard } from "./asset-card";
 import { CopyButton } from "./copy-button";
 import {
@@ -49,7 +50,7 @@ function Rules({ rules }: { rules: readonly (readonly [string, string])[] }) {
           key={k}
           className="grid grid-cols-[2.5rem_1fr] gap-2 border-t border-line py-5 last:border-b md:grid-cols-[2.5rem_16rem_1fr] md:gap-8"
         >
-          <p className="pt-0.5 font-mono text-[13px] tracking-[0.05em] text-cobalt">
+          <p className="pt-0.5 font-mono text-[13px] tracking-[0.05em] text-accent">
             {String(i + 1).padStart(2, "0")}
           </p>
           <h3 className="text-[15px] font-semibold tracking-[-0.02em]">{k}</h3>
@@ -66,28 +67,28 @@ export default function BrandPage() {
   const md = brandMarkdown();
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="bg-ink text-white">
-        <div className="mx-auto flex w-full max-w-4xl items-center justify-between px-6 pt-6 font-mono text-[11px] tracking-[0.17em] text-dusk-2 uppercase">
-          <div className="flex items-center gap-2 text-white">
+    <div className="relative isolate flex min-h-screen flex-col">
+      <header className="text-ink">
+        <div className="mx-auto flex w-full max-w-4xl items-center justify-between px-6 pt-6 font-mono text-[11px] tracking-[0.17em] text-ink-3 uppercase">
+          <div className="flex items-center gap-2 text-ink">
             <MarkAStar size={24} />
-            <p className="text-dusk">Asher Anjum</p>
+            <p className="text-ink-3">Asher Anjum</p>
           </div>
           <p>Internal · not indexed</p>
         </div>
-        <div className="mx-auto w-full max-w-4xl px-6 pt-16 pb-16 md:pt-24 md:pb-24">
-          <p className="font-mono text-[11px] font-medium tracking-[0.2em] text-cobalt-bright uppercase">
+        <div className="mx-auto w-full max-w-4xl px-6 pt-16 pb-4 md:pt-24">
+          <p className="font-mono text-[11px] font-medium tracking-[0.2em] text-accent uppercase">
             Brand reference
           </p>
-          <div className="mt-8 h-0.5 w-10 bg-cobalt" />
+          <div className="mt-8 h-0.5 w-10 bg-accent" />
           <h1 className="mt-8 text-4xl leading-[1.05] font-semibold tracking-[-0.03em] md:text-6xl">
             a<span className="text-cobalt">*</span>
           </h1>
-          <p className="mt-8 max-w-[52ch] text-[17px] leading-relaxed text-dusk">
-            Anjum means stars. A* is the pathfinding search — the optimal route
-            through a graph you cannot see all of at once. That is the job, and
-            it is the same glyph. Outlined from Geist Mono Medium, so the mark
-            carries no font dependency.
+          <p className="mt-8 max-w-[52ch] text-[17px] leading-relaxed text-ink-2">
+            Anjum means stars. A* is the pathfinding search: the best route
+            through a graph you can&apos;t see all of at once. That&apos;s the
+            job, and it&apos;s the same glyph. Outlined from Geist Mono Medium,
+            so the mark carries no font dependency.
           </p>
         </div>
       </header>
@@ -167,19 +168,22 @@ export default function BrandPage() {
 
         <section className="pt-16 md:pt-24">
           <Eyebrow>Palette</Eyebrow>
-          <H2>Unchanged, from the proposal deck.</H2>
+          <H2>One accent, light and dark.</H2>
           <div className="mt-10 grid grid-cols-2 gap-px border border-line bg-line sm:grid-cols-3 lg:grid-cols-4">
             {PALETTE.map((c) => (
               <div key={c.n} className="bg-surface p-4">
-                <div
-                  className="h-14 w-full border border-line"
-                  style={{ background: c.hex }}
-                />
+                <div className="flex h-14 w-full border border-line">
+                  <div className="flex-1" style={{ background: c.hex }} />
+                  {"dark" in c && (
+                    <div className="flex-1" style={{ background: c.dark }} />
+                  )}
+                </div>
                 <p className="mt-3 font-mono text-[11px] tracking-[0.05em] text-ink">
                   {c.n}
                 </p>
                 <p className="font-mono text-[10px] tracking-[0.05em] text-ink-3">
                   {c.hex}
+                  {"dark" in c && ` · ${c.dark}`}
                 </p>
                 <p className="mt-2 text-[12px] leading-snug text-ink-2">
                   {c.role}
@@ -188,15 +192,16 @@ export default function BrandPage() {
             ))}
           </div>
           <p className="mt-6 max-w-[62ch] text-[14px] leading-relaxed text-ink-2">
+            The left half of each swatch is light mode, the right half dark.
             Former-employer colours only ever touch that company&apos;s own
-            name, in semibold:{" "}
+            name, in semibold, with a brighter tone in dark mode:{" "}
             {EMPLOYER_COLOURS.map((c, i) => (
               <span key={c.n}>
                 <span className="font-semibold" style={{ color: c.hex }}>
                   {c.n}
                 </span>{" "}
                 <span className="font-mono text-[11px] text-ink-3">
-                  {c.hex}
+                  {c.hex} / {c.dark}
                 </span>
                 {i < EMPLOYER_COLOURS.length - 1 ? ", " : "."}
               </span>
@@ -229,7 +234,7 @@ export default function BrandPage() {
 
         <section className="pt-16 md:pt-24">
           <Eyebrow>Layout</Eyebrow>
-          <H2>It should read like the proposal deck.</H2>
+          <H2>Light, flat, a little e-ink.</H2>
           <Rules rules={VISUAL_RULES} />
         </section>
 
@@ -253,11 +258,12 @@ export default function BrandPage() {
         </section>
       </main>
 
-      <footer className="bg-ink text-white">
-        <div className="mx-auto w-full max-w-4xl px-6 py-14">
-          <div className="flex items-center gap-2.5 text-white">
+      <footer className="relative text-ink">
+        <FooterLife />
+        <div className="relative mx-auto w-full max-w-4xl px-6 pt-10 pb-24 md:pb-40">
+          <div className="flex items-center gap-2.5">
             <MarkAStar size={22} />
-            <p className="font-mono text-[10px] tracking-[0.17em] text-dusk-2 uppercase">
+            <p className="font-mono text-[10px] tracking-[0.17em] text-ink-3 uppercase">
               asheranjum.com · brand reference
             </p>
           </div>

@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 /* One palette, taken verbatim from the proposal deck
-   (opportunity-exalogic-consultancy/deck.html). Light only. */
+   (opportunity-exalogic-consultancy/deck.html). Light by default; pages
+   opt into dark with data-theme (below). */
 @theme {
   --color-ground: #f5f6f7;
   --color-surface: #ffffff;
@@ -13,6 +14,12 @@
   --color-cobalt: #3e5bd9;
   --color-cobalt-bright: #7a90ec;
   --color-rust: #b4472e;
+
+  /* The homepage accent (graphite, the e-ink direction), and the tint its
+     footer Life is drawn in. Cobalt stays for the mark and /brand. */
+  --color-accent: #3b4048;
+  --color-accent-bright: #c3c8cf;
+  --color-life: #d2d5da;
 
   /* Former-employer marks: legible tones from each brand's own palette. */
   --color-olx: #6e0ad6;
@@ -28,6 +35,53 @@
 
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+/* Dark mode, by swapping the tokens: anything under data-theme="dark"
+   (or data-theme="auto" on a dark system) keeps its classes and picks up
+   these values. Employer colours use their brighter brand tones. Only
+   pages that opt in get this; /brand and the legal pages stay light. */
+[data-theme="dark"] {
+  --color-ground: #0f1215;
+  --color-surface: #161a1f;
+  --color-ink: #e8eaed;
+  --color-ink-2: #a3aab4;
+  --color-ink-3: #767e8a;
+  --color-line: #262b32;
+  --color-line-2: #1d2127;
+  --color-cobalt: #7a90ec;
+  --color-accent: #c3c8cf;
+  --color-life: #2b2f35;
+  --color-olx: #a46cf5;
+  --color-careem: #00e784;
+  --color-talabat: #ff6a1a;
+  --color-delivery-hero: #ff4f5c;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-theme="auto"] {
+    --color-ground: #0f1215;
+    --color-surface: #161a1f;
+    --color-ink: #e8eaed;
+    --color-ink-2: #a3aab4;
+    --color-ink-3: #767e8a;
+    --color-line: #262b32;
+    --color-line-2: #1d2127;
+    --color-cobalt: #7a90ec;
+    --color-accent: #c3c8cf;
+    --color-life: #2b2f35;
+    --color-olx: #a46cf5;
+    --color-careem: #00e784;
+    --color-talabat: #ff6a1a;
+    --color-delivery-hero: #ff4f5c;
+    color-scheme: dark;
+  }
+
+  /* so overscroll past the page edge matches */
+  html:has([data-theme="auto"]) {
+    background: #0f1215;
+  }
 }
 
 html {
